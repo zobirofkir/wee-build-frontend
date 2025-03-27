@@ -32,6 +32,20 @@ const HeaderComponent = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  /**
+   * Close mobile menu when window is resized to desktop size
+   */
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMenuOpen]);
+
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -42,7 +56,6 @@ const HeaderComponent = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -86,6 +99,7 @@ const HeaderComponent = () => {
 
           {/* Right side icons */}
           <div className="hidden md:flex items-center space-x-4">
+
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}
@@ -135,11 +149,12 @@ const HeaderComponent = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - with smooth transition */}
       <div
-        className={`md:hidden ${
-          isMenuOpen ? "block" : "hidden"
-        } bg-white dark:bg-gray-900 shadow-lg`}
+        className={`md:hidden fixed w-full bg-white dark:bg-gray-900 shadow-lg transition-all duration-300 ease-in-out overflow-hidden ${
+          isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+        style={{ top: scrolled ? "48px" : "64px" }}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a
