@@ -1,4 +1,5 @@
 import './App.css';
+import FeatureComponent from './component/home/feature-component';
 import HeroComponent from './component/home/hero-component';
 import HowItWorkComponent from './component/home/how-it-work-component';
 
@@ -8,6 +9,8 @@ function App() {
       <HeroComponent />
 
       <HowItWorkComponent />
+
+      <FeatureComponent />
     </div>
   );
 }
