@@ -1,5 +1,6 @@
 import './App.css';
 import DemoStoreComponent from './component/home/demo-store-component';
+import FaqComponent from './component/home/faq-component';
 import FeatureComponent from './component/home/feature-component';
 import HeroComponent from './component/home/hero-component';
 import HowItWorkComponent from './component/home/how-it-work-component';
@@ -20,6 +21,8 @@ function App() {
       <PricingPlanComponent />
 
       <TestimonialComponent />
+
+      <FaqComponent />
     </div>
   );
 }
