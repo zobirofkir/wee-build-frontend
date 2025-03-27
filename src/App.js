@@ -1,10 +1,13 @@
 import './App.css';
 import HeroComponent from './component/home/hero-component';
+import HowItWorkComponent from './component/home/how-it-work-component';
 
 function App() {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div>
       <HeroComponent />
+
+      <HowItWorkComponent />
     </div>
   );
 }
