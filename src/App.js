@@ -1,4 +1,5 @@
 import './App.css';
+import CallToActionComponent from './component/home/call-to-action-component';
 import DemoStoreComponent from './component/home/demo-store-component';
 import FaqComponent from './component/home/faq-component';
 import FeatureComponent from './component/home/feature-component';
@@ -23,6 +24,8 @@ function App() {
       <TestimonialComponent />
 
       <FaqComponent />
+
+      <CallToActionComponent />
     </div>
   );
 }
