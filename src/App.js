@@ -4,6 +4,7 @@ import FeatureComponent from './component/home/feature-component';
 import HeroComponent from './component/home/hero-component';
 import HowItWorkComponent from './component/home/how-it-work-component';
 import PricingPlanComponent from './component/home/pricing-plans-component';
+import TestimonialComponent from './component/home/testimonial-component';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
       <DemoStoreComponent />
 
       <PricingPlanComponent />
+
+      <TestimonialComponent />
     </div>
   );
 }
