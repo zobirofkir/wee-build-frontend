@@ -1,5 +1,6 @@
 import React from 'react'
 import HeaderComponent from '../component/header-component'
+import FooterComponent from '../component/footer-component'
 
 const AppLayout = ({children}) => {
   return (
@@ -9,7 +10,14 @@ const AppLayout = ({children}) => {
         <HeaderComponent />
       </header>
 
-      {children}
+       <body>
+        {children}
+       </body>
+
+      <footer>
+        <FooterComponent />
+      </footer>
+
     </main>
   )
 }
