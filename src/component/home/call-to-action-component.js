@@ -2,7 +2,7 @@ import React from "react";
 import { FiArrowRight, FiShoppingBag, FiZap } from "react-icons/fi";
 
 const CallToActionComponent = () => {
-  return (
+  return ( 
     <section className="py-16 md:py-24 bg-gradient-to-br from-purple-600 to-indigo-700 dark:from-purple-700 dark:to-indigo-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Background Elements */}
