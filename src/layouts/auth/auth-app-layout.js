@@ -52,7 +52,7 @@ const AuthAppLayout = ({ children }) => {
 
 
       {/* Main content */}
-      <div className="flex-1 overflow-auto">{children}</div>
+      <div className="flex-1 overflow-auto mb-16">{children}</div>
     </div>
   );
 };
