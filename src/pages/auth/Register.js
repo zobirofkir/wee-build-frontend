@@ -7,7 +7,11 @@ import AppLayout from "../../layouts/app-layout";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { loading, error: registerError, validationErrors } = useSelector((state) => state.register);
+  const {
+    loading,
+    error: registerError,
+    validationErrors,
+  } = useSelector((state) => state.register);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -26,24 +30,24 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setErrors(prev => {
+    setErrors((prev) => {
       const newErrors = { ...prev };
-      
+
       if (registerError) {
         newErrors.general = registerError;
       }
-      
+
       if (validationErrors) {
         if (validationErrors.email) {
           newErrors.email = validationErrors.email[0];
         }
-        
+
         if (validationErrors.password) {
           newErrors.password = validationErrors.password[0];
         }
-        
+
         if (validationErrors.username) {
-          newErrors.general = newErrors.general || '';
+          newErrors.general = newErrors.general || "";
           newErrors.general += ` Username error: ${validationErrors.username[0]}`;
         }
 
@@ -54,7 +58,7 @@ const Register = () => {
         if (validationErrors.location) {
           newErrors.location = validationErrors.location[0];
         }
-        
+
         if (validationErrors.phone) {
           newErrors.phone = validationErrors.phone[0];
         }
@@ -63,7 +67,7 @@ const Register = () => {
           newErrors.avatar = validationErrors.avatar[0];
         }
       }
-      
+
       return newErrors;
     });
   }, [registerError, validationErrors]);
@@ -86,33 +90,46 @@ const Register = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file type
-      const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+      
+      /**
+       * Validate file type
+       */
+      const validTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/jpg",
+        "image/gif",
+        "image/svg+xml",
+      ];
       if (!validTypes.includes(file.type)) {
         setErrors({
           ...errors,
-          avatar: "File must be an image (JPEG, PNG, JPG, GIF, SVG)"
+          avatar: "File must be an image (JPEG, PNG, JPG, GIF, SVG)",
         });
         return;
       }
-      
-      // Validate file size (max 2MB)
+
+      /**
+       * Validate file size (max 2MB)
+       */
       if (file.size > 2 * 1024 * 1024) {
         setErrors({
           ...errors,
-          avatar: "Image must be less than 2MB"
+          avatar: "Image must be less than 2MB",
         });
         return;
       }
-      
+
       setAvatar(file);
       setAvatarPreview(URL.createObjectURL(file));
-      
-      // Clear any previous errors
+
+      /**
+       * Clear any previous errors
+       */
       if (errors.avatar) {
         setErrors({
           ...errors,
-          avatar: ""
+          avatar: "",
         });
       }
     }
@@ -156,7 +173,7 @@ const Register = () => {
     if (formData.location && formData.location.length > 255) {
       newErrors.location = "Location must be less than 255 characters";
     }
-    
+
     if (formData.phone && formData.phone.length > 255) {
       newErrors.phone = "Phone number must be less than 255 characters";
     }
@@ -177,16 +194,18 @@ const Register = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      dispatch(RegisterAction(
-        formData.fullName,
-        formData.email,
-        formData.password,
-        formData.confirmPassword,
-        formData.accountType,
-        formData.location,
-        formData.phone,
-        avatar
-      ));
+      dispatch(
+        RegisterAction(
+          formData.fullName,
+          formData.email,
+          formData.password,
+          formData.confirmPassword,
+          formData.accountType,
+          formData.location,
+          formData.phone,
+          avatar
+        )
+      );
     }
   };
 
@@ -202,6 +221,99 @@ const Register = () => {
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Join the AI Store Generator community
             </p>
+          </div>
+
+          {/* Avatar Upload */}
+          <div>
+            <label
+              htmlFor="avatar"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Profile Picture (Optional)
+            </label>
+            <div className="mt-1 flex flex-col items-center space-y-4">
+              <div className="flex-shrink-0">
+                {avatarPreview ? (
+                  <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-purple-500 shadow-md">
+                    <img
+                      src={avatarPreview}
+                      alt="Avatar preview"
+                      className="h-full w-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveAvatar}
+                      className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 shadow-md transition-colors"
+                      aria-label="Remove avatar"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 border-2 border-dashed border-gray-300 dark:bg-gray-700 dark:border-gray-600">
+                    <svg
+                      className="h-12 w-12 text-gray-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col items-center w-full">
+                <div className="flex items-center space-x-2">
+                  <label
+                    htmlFor="file-upload"
+                    className="cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-medium text-purple-600 shadow-sm border border-purple-200 hover:bg-purple-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 dark:bg-gray-700 dark:text-purple-400 dark:hover:bg-gray-600 dark:border-purple-800 transition-colors"
+                  >
+                    <span>
+                      {avatarPreview ? "Change photo" : "Upload photo"}
+                    </span>
+                    <input
+                      id="file-upload"
+                      name="file-upload"
+                      type="file"
+                      ref={fileInputRef}
+                      className="sr-only"
+                      accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
+                      onChange={handleAvatarChange}
+                    />
+                  </label>
+                  {avatarPreview && (
+                    <button
+                      type="button"
+                      onClick={handleRemoveAvatar}
+                      className="rounded-md bg-white px-3 py-2 text-sm font-medium text-red-600 shadow-sm border border-red-200 hover:bg-red-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-red-500 focus-within:ring-offset-2 dark:bg-gray-700 dark:text-red-400 dark:hover:bg-gray-600 dark:border-red-800 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                  PNG, JPG, GIF up to 2MB. A professional profile picture
+                  helps others recognize you.
+                </p>
+              </div>
+            </div>
+            {errors.avatar && (
+              <p className="mt-1 text-sm text-red-600">{errors.avatar}</p>
+            )}
           </div>
 
           {/* Registration Form */}
@@ -232,7 +344,9 @@ const Register = () => {
                     placeholder="John Doe"
                   />
                   {errors.fullName && (
-                    <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.fullName}
+                    </p>
                   )}
                 </div>
               </div>
@@ -267,118 +381,100 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Avatar Upload */}
-              <div>
-                <label
-                  htmlFor="avatar"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Profile Picture (Optional)
-                </label>
-                <div className="mt-1 flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    {avatarPreview ? (
-                      <div className="relative h-16 w-16 overflow-hidden rounded-full">
-                        <img
-                          src={avatarPreview}
-                          alt="Avatar preview"
-                          className="h-full w-full object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={handleRemoveAvatar}
-                          className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
-                          aria-label="Remove avatar"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
-                        <svg className="h-8 w-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-1 flex-col">
-                    <div className="flex items-center">
-                      <label
-                        htmlFor="file-upload"
-                        className="cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-medium text-purple-600 shadow-sm hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 dark:bg-gray-700 dark:text-purple-400 dark:hover:text-purple-300"
-                      >
-                        <span>Upload a file</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          ref={fileInputRef}
-                          className="sr-only"
-                          accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
-                          onChange={handleAvatarChange}
-                        />
-                      </label>
-                    </div>
-                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                      PNG, JPG, GIF up to 2MB
-                    </p>
-                  </div>
-                </div>
-                {errors.avatar && (
-                  <p className="mt-1 text-sm text-red-600">{errors.avatar}</p>
-                )}
-              </div>
-
               {/* Account Type Selection */}
               <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Select Your Plan
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Free Plan Card */}
-                  <div 
+                  <div
                     className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                      formData.accountType === 'free' 
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-md' 
-                        : 'border-gray-300 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700'
+                      formData.accountType === "free"
+                        ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-md"
+                        : "border-gray-300 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700"
                     }`}
-                    onClick={() => setFormData({...formData, accountType: 'free'})}
+                    onClick={() =>
+                      setFormData({ ...formData, accountType: "free" })
+                    }
                   >
                     <div className="flex justify-between items-center mb-3">
                       <h3 className="font-medium text-lg">Free Plan</h3>
-                      <div className={`h-5 w-5 rounded-full border ${
-                        formData.accountType === 'free' 
-                          ? 'border-purple-500 bg-purple-500' 
-                          : 'border-gray-300 dark:border-gray-500'
-                      } flex items-center justify-center`}>
-                        {formData.accountType === 'free' && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <div
+                        className={`h-5 w-5 rounded-full border ${
+                          formData.accountType === "free"
+                            ? "border-purple-500 bg-purple-500"
+                            : "border-gray-300 dark:border-gray-500"
+                        } flex items-center justify-center`}
+                      >
+                        {formData.accountType === "free" && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3 w-3 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         )}
                       </div>
                     </div>
-                    <p className="text-2xl font-bold mb-4">$0 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+                    <p className="text-2xl font-bold mb-4">
+                      $0{" "}
+                      <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        /month
+                      </span>
+                    </p>
                     <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Basic features
                       </li>
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Limited storage
                       </li>
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Community support
                       </li>
@@ -386,54 +482,114 @@ const Register = () => {
                   </div>
 
                   {/* Premium Plan Card */}
-                  <div 
+                  <div
                     className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                      formData.accountType === 'premium' 
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-md' 
-                        : 'border-gray-300 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700'
+                      formData.accountType === "premium"
+                        ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-md"
+                        : "border-gray-300 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700"
                     }`}
-                    onClick={() => setFormData({...formData, accountType: 'premium'})}
+                    onClick={() =>
+                      setFormData({ ...formData, accountType: "premium" })
+                    }
                   >
                     <div className="flex justify-between items-center mb-3">
                       <div>
                         <h3 className="font-medium text-lg">Premium Plan</h3>
-                        <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-full">Recommended</span>
+                        <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-full">
+                          Recommended
+                        </span>
                       </div>
-                      <div className={`h-5 w-5 rounded-full border ${
-                        formData.accountType === 'premium' 
-                          ? 'border-purple-500 bg-purple-500' 
-                          : 'border-gray-300 dark:border-gray-500'
-                      } flex items-center justify-center`}>
-                        {formData.accountType === 'premium' && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <div
+                        className={`h-5 w-5 rounded-full border ${
+                          formData.accountType === "premium"
+                            ? "border-purple-500 bg-purple-500"
+                            : "border-gray-300 dark:border-gray-500"
+                        } flex items-center justify-center`}
+                      >
+                        {formData.accountType === "premium" && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3 w-3 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         )}
                       </div>
                     </div>
-                    <p className="text-2xl font-bold mb-4">$20 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+                    <p className="text-2xl font-bold mb-4">
+                      $20{" "}
+                      <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        /month
+                      </span>
+                    </p>
                     <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         All free features
                       </li>
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Unlimited storage
                       </li>
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Priority support
                       </li>
                       <li className="flex items-center">
-                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-4 w-4 text-green-500 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Advanced AI features
                       </li>
@@ -441,7 +597,9 @@ const Register = () => {
                   </div>
                 </div>
                 {errors.accountType && (
-                  <p className="mt-1 text-sm text-red-600">{errors.accountType}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.accountType}
+                  </p>
                 )}
               </div>
 
@@ -468,7 +626,9 @@ const Register = () => {
                     placeholder="City, Country"
                   />
                   {errors.location && (
-                    <p className="mt-1 text-sm text-red-600">{errors.location}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.location}
+                    </p>
                   )}
                 </div>
               </div>
@@ -537,7 +697,9 @@ const Register = () => {
                     )}
                   </button>
                   {errors.password && (
-                    <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.password}
+                    </p>
                   )}
                 </div>
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
