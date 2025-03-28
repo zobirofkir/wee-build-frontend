@@ -114,6 +114,16 @@ const HeaderComponent = () => {
               >
                 Dashboard
               </Link>
+              
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
+                aria-label="Toggle theme"
+              >
+                {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+              </button>
+
             </div>
 
           ) : (
