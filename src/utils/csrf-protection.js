@@ -11,7 +11,6 @@ export const protectWithCSRF = (actionCreator) => {
       const csrfToken = getCSRFToken();
       
       if (!csrfToken) {
-        // If no CSRF token is found, this could be a CSRF attack or the user's session has expired
         console.error('CSRF token missing. This could be a security issue.');
         return dispatch({ 
           type: 'CSRF_VALIDATION_FAILED',
@@ -19,7 +18,6 @@ export const protectWithCSRF = (actionCreator) => {
         });
       }
       
-      // If CSRF token exists, proceed with the original action
       return dispatch(actionCreator(...args));
     };
   };

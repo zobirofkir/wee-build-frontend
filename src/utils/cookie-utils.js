@@ -7,7 +7,6 @@
  */
 export const setCookie = (name, value, days = 7, path = '/') => {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  // Explicitly set SameSite=Strict for better CSRF protection
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=${path}; SameSite=Strict`;
 };
 
@@ -82,7 +81,7 @@ export const clearAuthCookies = () => {
   removeAuthToken();
   deleteCookie('userName');
   deleteCookie('userEmail');
-  deleteCookie('csrfToken'); // Also clear CSRF token when logging out
+  deleteCookie('csrfToken');
 };
 
 /**
