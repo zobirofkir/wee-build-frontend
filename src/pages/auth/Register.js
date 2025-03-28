@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle, FaGithub, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,9 @@ const Register = () => {
     location: "",
     phone: "",
   });
+  const [avatar, setAvatar] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const fileInputRef = useRef(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
@@ -55,6 +58,10 @@ const Register = () => {
         if (validationErrors.phone) {
           newErrors.phone = validationErrors.phone[0];
         }
+
+        if (validationErrors.avatar) {
+          newErrors.avatar = validationErrors.avatar[0];
+        }
       }
       
       return newErrors;
@@ -73,6 +80,49 @@ const Register = () => {
         ...errors,
         [name]: "",
       });
+    }
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+      if (!validTypes.includes(file.type)) {
+        setErrors({
+          ...errors,
+          avatar: "File must be an image (JPEG, PNG, JPG, GIF, SVG)"
+        });
+        return;
+      }
+      
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        setErrors({
+          ...errors,
+          avatar: "Image must be less than 2MB"
+        });
+        return;
+      }
+      
+      setAvatar(file);
+      setAvatarPreview(URL.createObjectURL(file));
+      
+      // Clear any previous errors
+      if (errors.avatar) {
+        setErrors({
+          ...errors,
+          avatar: ""
+        });
+      }
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    setAvatar(null);
+    setAvatarPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -115,6 +165,10 @@ const Register = () => {
       newErrors.terms = "You must agree to the terms and conditions";
     }
 
+    if (avatar && avatar.size > 2 * 1024 * 1024) {
+      newErrors.avatar = "Avatar must be less than 2MB";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -130,7 +184,8 @@ const Register = () => {
         formData.confirmPassword,
         formData.accountType,
         formData.location,
-        formData.phone
+        formData.phone,
+        avatar
       ));
     }
   };
@@ -210,6 +265,70 @@ const Register = () => {
                     <p className="mt-1 text-sm text-red-600">{errors.email}</p>
                   )}
                 </div>
+              </div>
+
+              {/* Avatar Upload */}
+              <div>
+                <label
+                  htmlFor="avatar"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Profile Picture (Optional)
+                </label>
+                <div className="mt-1 flex items-center space-x-4">
+                  <div className="flex-shrink-0">
+                    {avatarPreview ? (
+                      <div className="relative h-16 w-16 overflow-hidden rounded-full">
+                        <img
+                          src={avatarPreview}
+                          alt="Avatar preview"
+                          className="h-full w-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveAvatar}
+                          className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
+                          aria-label="Remove avatar"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
+                        <svg className="h-8 w-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col">
+                    <div className="flex items-center">
+                      <label
+                        htmlFor="file-upload"
+                        className="cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-medium text-purple-600 shadow-sm hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 dark:bg-gray-700 dark:text-purple-400 dark:hover:text-purple-300"
+                      >
+                        <span>Upload a file</span>
+                        <input
+                          id="file-upload"
+                          name="file-upload"
+                          type="file"
+                          ref={fileInputRef}
+                          className="sr-only"
+                          accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
+                          onChange={handleAvatarChange}
+                        />
+                      </label>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      PNG, JPG, GIF up to 2MB
+                    </p>
+                  </div>
+                </div>
+                {errors.avatar && (
+                  <p className="mt-1 text-sm text-red-600">{errors.avatar}</p>
+                )}
               </div>
 
               {/* Account Type Selection */}

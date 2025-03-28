@@ -18,21 +18,38 @@ export const registerFailure = (error, validationErrors = null) => ({
   payload: { message: error, validationErrors },
 });
 
-export const RegisterAction = (name, email, password, confirmPassword, accountType, location, phone) => {
+export const RegisterAction = (name, email, password, confirmPassword, accountType, location, phone, avatar) => {
   return async (dispatch) => {
     dispatch(registerRequest());
     try {
+      // Create FormData object to handle file upload
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('password_confirmation', confirmPassword);
+      formData.append('username', email.split("@")[0]);
+      formData.append('account_type', accountType);
+      
+      if (location) {
+        formData.append('location', location);
+      }
+      
+      if (phone) {
+        formData.append('phone', phone);
+      }
+      
+      if (avatar) {
+        formData.append('avatar', avatar);
+      }
+
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/register`,
+        formData,
         {
-          name,
-          email,
-          password,
-          password_confirmation: confirmPassword,
-          username: email.split("@")[0],
-          account_type: accountType,
-          location: location,
-          phone: phone
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
       );
 
