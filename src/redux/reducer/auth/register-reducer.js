@@ -4,6 +4,7 @@ const initialState = {
     loading: false, 
     user: null, 
     error: "",
+    validationErrors: null
 };
 
 const RegisterReducer = (state = initialState, action) => {
@@ -12,18 +13,24 @@ const RegisterReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true,
+                error: "",
+                validationErrors: null
             };
         case REGISTER_SUCCESS:
             return {
                 ...state,
+                loading: false,
                 user: action.payload,
                 error: "",
+                validationErrors: null
             };
         case REGISTER_FAILURE:
             return {
                 ...state,
+                loading: false,
                 user: null,
-                error: action.payload,
+                error: action.payload.message,
+                validationErrors: action.payload.validationErrors
             };
         default:
             return state;

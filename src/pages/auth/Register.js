@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle, FaGithub, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { RegisterAction } from "../../redux/action/auth/register-action";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error: registerError, validationErrors } = useSelector((state) => state.register);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -12,8 +17,34 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (registerError) {
+      setErrors(prev => ({ ...prev, general: registerError }));
+    }
+    
+    // Handle validation errors from API
+    if (validationErrors) {
+      const newErrors = { ...errors };
+      
+      if (validationErrors.email) {
+        newErrors.email = validationErrors.email[0];
+      }
+      
+      if (validationErrors.password) {
+        newErrors.password = validationErrors.password[0];
+      }
+      
+      if (validationErrors.username) {
+        // If username is required by the API but not in our form
+        newErrors.general = newErrors.general || '';
+        newErrors.general += ` Username error: ${validationErrors.username[0]}`;
+      }
+      
+      setErrors(newErrors);
+    }
+  }, [registerError, validationErrors]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,13 +97,12 @@ const Register = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      setIsLoading(true);
-      // Simulate API call
-      setTimeout(() => {
-        setIsLoading(false);
-        // Handle registration logic here
-        console.log({ ...formData, agreeToTerms });
-      }, 1500);
+      // Dispatch register action
+      dispatch(RegisterAction(
+        formData.fullName,
+        formData.email,
+        formData.password
+      ));
     }
   };
 
@@ -286,10 +316,10 @@ const Register = () => {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={loading}
               className="group relative flex w-full justify-center rounded-lg border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-75 dark:bg-purple-700 dark:hover:bg-purple-600"
             >
-              {isLoading ? (
+              {loading ? (
                 <svg
                   className="h-5 w-5 animate-spin text-white"
                   xmlns="http://www.w3.org/2000/svg"
@@ -315,6 +345,13 @@ const Register = () => {
               )}
             </button>
           </div>
+
+          {/* Display general error message */}
+          {errors.general && (
+            <div className="mt-2 text-center text-sm text-red-600">
+              {errors.general}
+            </div>
+          )}
 
           {/* Divider */}
           <div className="relative">
