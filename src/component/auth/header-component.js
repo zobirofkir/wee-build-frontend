@@ -22,7 +22,9 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
     dispatch(LogoutAction());
   };
 
-  // Close profile menu when clicking outside
+  /**
+   * Close profile menu when clicking outside
+   */
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showProfileMenu && !event.target.closest('.profile-menu-container')) {
@@ -38,9 +40,12 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
 
   return (
     <div className="flex justify-between items-center p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300">
-      <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
-        AI
-      </h1>
+
+      <Link to="/auth/dashboard">
+        <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
+          AI
+        </h1>
+      </Link>
       <div className="flex items-center space-x-4">
         <button
           onClick={toggleDarkMode}
