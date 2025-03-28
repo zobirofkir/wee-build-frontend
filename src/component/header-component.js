@@ -58,7 +58,7 @@ const HeaderComponent = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400">
               AI Store Builder
             </h1>
           </div>
@@ -99,11 +99,24 @@ const HeaderComponent = () => {
 
           {/* Right side icons */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Login/Register links */}
+            <a
+              href="/auth/login"
+              className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors"
+            >
+              Login
+            </a>
+            <a
+              href="/auth/register"
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+            >
+              Register
+            </a>
 
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
               aria-label="Toggle theme"
             >
               {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
@@ -112,7 +125,7 @@ const HeaderComponent = () => {
             {/* Cart */}
             <a
               href="/cart"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
               aria-label="Shopping cart"
             >
               <FiShoppingCart size={20} />
@@ -121,7 +134,7 @@ const HeaderComponent = () => {
             {/* User profile */}
             <a
               href="/profile"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
               aria-label="User profile"
             >
               <FiUser size={20} />
@@ -130,9 +143,15 @@ const HeaderComponent = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
+            <a
+              href="/auth/login"
+              className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors mr-2"
+            >
+              Login
+            </a>
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
               aria-label="Toggle theme"
             >
               {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
@@ -140,7 +159,7 @@ const HeaderComponent = () => {
 
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
               aria-label="Open menu"
             >
               {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -159,45 +178,51 @@ const HeaderComponent = () => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a
             href="/"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Home
           </a>
           <a
             href="/products"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Products
           </a>
           <a
             href="/features"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Features
           </a>
           <a
             href="/pricing"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Pricing
           </a>
           <a
             href="/contact"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Contact
+          </a>
+          <a
+            href="/auth/register"
+            className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700"
+          >
+            Register
           </a>
           <div className="flex items-center space-x-4 px-3 py-2">
             <a
               href="/cart"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors"
               aria-label="Shopping cart"
             >
               <FiShoppingCart size={20} />
             </a>
             <a
               href="/profile"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors"
               aria-label="User profile"
             >
               <FiUser size={20} />
