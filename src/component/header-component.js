@@ -107,14 +107,14 @@ const HeaderComponent = () => {
 
           {/* Right side icons */}
           {token ? (
-            <div className="flex items-center space-x-4">
+            <div className="md:flex hidden items-center space-x-4">
               <Link
                 to="/auth/dashboard"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
               >
                 Dashboard
               </Link>
-              
+
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
@@ -123,9 +123,7 @@ const HeaderComponent = () => {
               >
                 {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
               </button>
-
             </div>
-
           ) : (
             <div className="hidden md:flex items-center space-x-4">
               {/* Login/Register links */}
@@ -155,12 +153,21 @@ const HeaderComponent = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            <Link
-              to="/auth/login"
-              className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors mr-2"
-            >
-              Login
-            </Link>
+            {token ? (
+              <Link
+                to="/auth/dashboard"
+                className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors mr-2"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                to="/auth/login"
+                className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors mr-2"
+              >
+                Login
+              </Link>
+            )}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
@@ -218,12 +225,14 @@ const HeaderComponent = () => {
           >
             Contact
           </Link>
-          <Link
-            to="/auth/register"
-            className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700 max-w-[100px] text-center"
-          >
-            Register
-          </Link>
+          {!token ? (
+            <Link
+              to="/auth/register"
+              className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700 max-w-[100px] text-center"
+            >
+              Register
+            </Link>
+          ) : null}
         </div>
       </div>
     </nav>
