@@ -1,24 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import {
-  FiHome,
-  FiShoppingBag,
-  FiUsers,
-  FiSettings,
   FiBarChart2,
-  FiMessageSquare,
+  FiUsers,
+  FiShoppingBag,
   FiHelpCircle,
-  FiSun,
-  FiMoon,
 } from "react-icons/fi";
-import { useDispatch } from "react-redux";
-import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
-
   /**
    * Stats
    */
@@ -52,15 +42,6 @@ const Dashboard = () => {
   /**
    * Recent Activity
    */
-  const dispatch = useDispatch();
-
-  /**
-   * Handle Logout
-   */
-  const handleLogout = () => {
-    dispatch(LogoutAction());
-  };
-
   const recentActivity = [
     {
       user: "John Doe",
@@ -80,169 +61,113 @@ const Dashboard = () => {
     },
   ];
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-
   return (
     <AuthAppLayout>
-      <div className={`min-h-screen ${darkMode ? "dark" : ""}`}>
-        <div className="dark:bg-gray-900 bg-gray-50 transition-colors duration-300 min-h-screen">
-          {/* Dashboard header */}
-          <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
-            <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
-              AI
-            </h1>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 flex items-center"
+      <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 min-h-screen">
+        {/* Dashboard content */}
+        <div className="p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Stats cards */}
+          <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all hover:shadow-lg"
               >
-                {darkMode ? (
-                  <FiSun className="h-5 w-5 mr-2" />
-                ) : (
-                  <FiMoon className="h-5 w-5 mr-2" />
-                )}
-              </button>
-              <div className="relative">
-                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-                <button className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
-                  <FiMessageSquare className="h-5 w-5" />
-                </button>
-              </div>
-              <div className="relative">
-                <button 
-                  onClick={() => setShowProfileMenu(!showProfileMenu)}
-                  className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-medium hover:bg-purple-700 transition-colors"
-                >
-                  JD
-                </button>
-                {showProfileMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-10 border dark:border-gray-700">
-                    <Link
-                      to="/auth/profile"
-                      className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/50"
-                    >
-                      Profile
-                    </Link>
-                    <button
-                      onClick={() => handleLogout()}
-                      className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/50"
-                    >
-                      Logout
-                    </button>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {stat.title}
+                    </p>
+                    <p className="text-2xl font-bold mt-1 text-gray-800 dark:text-white">
+                      {stat.value}
+                    </p>
+                    <p className="text-sm font-medium text-green-500 mt-1">
+                      {stat.change}
+                    </p>
                   </div>
-                )}
+                  <div className="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400">
+                    {stat.icon}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Main content area */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Chart section */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                Sales Overview
+              </h2>
+              <div className="h-64 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                <p className="text-purple-600 dark:text-purple-400">
+                  Sales Chart Placeholder
+                </p>
+              </div>
+            </div>
+
+            {/* Recent sales */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                Recent Activity
+              </h2>
+              <div className="space-y-4">
+                {recentActivity.map((activity, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start border-b dark:border-gray-700 pb-4 last:border-0 last:pb-0"
+                  >
+                    <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400 mr-4">
+                      {activity.user.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white">
+                        <span className="font-semibold">{activity.user}</span>{" "}
+                        {activity.action}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {activity.time}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Dashboard content */}
-          <div className="p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Stats cards */}
-            <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all hover:shadow-lg"
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {stat.title}
-                      </p>
-                      <p className="text-2xl font-bold mt-1 text-gray-800 dark:text-white">
-                        {stat.value}
-                      </p>
-                      <p className="text-sm font-medium text-green-500 mt-1">
-                        {stat.change}
-                      </p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400">
-                      {stat.icon}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Main content area */}
-            <div className="lg:col-span-3 space-y-6">
-              {/* Chart section */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                  Sales Overview
-                </h2>
-                <div className="h-64 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                  <p className="text-purple-600 dark:text-purple-400">
-                    Sales Chart Placeholder
-                  </p>
-                </div>
-              </div>
-
-              {/* Recent sales */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                  Recent Activity
-                </h2>
-                <div className="space-y-4">
-                  {recentActivity.map((activity, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start border-b dark:border-gray-700 pb-4 last:border-0 last:pb-0"
-                    >
-                      <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400 mr-4">
-                        {activity.user.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-800 dark:text-white">
-                          <span className="font-semibold">{activity.user}</span>{" "}
-                          {activity.action}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {activity.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1 space-y-6">
-              {/* Quick actions */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                  Quick Actions
-                </h2>
-                <div className="space-y-2">
-                  <button className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
-                    Add New AI Model
-                  </button>
-                  <button className="w-full py-2 px-4 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900 transition-colors">
-                    View Analytics
-                  </button>
-                  <button className="w-full py-2 px-4 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900 transition-colors">
-                    Manage Users
-                  </button>
-                </div>
-              </div>
-
-              {/* Help section */}
-              <div className="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-md p-6 text-white">
-                <div className="flex justify-between items-start">
-                  <h2 className="text-lg font-semibold mb-2">Need Help?</h2>
-                  <FiHelpCircle className="h-5 w-5" />
-                </div>
-                <p className="text-sm text-purple-100 mb-4">
-                  Contact our support team for assistance with your AI store.
-                </p>
-                <button className="w-full py-2 px-4 bg-white text-purple-700 rounded-lg hover:bg-purple-50 transition-colors">
-                  Contact Support
+          {/* Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Quick actions */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                Quick Actions
+              </h2>
+              <div className="space-y-2">
+                <button className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
+                  Add New AI Model
+                </button>
+                <button className="w-full py-2 px-4 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900 transition-colors">
+                  View Analytics
+                </button>
+                <button className="w-full py-2 px-4 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900 transition-colors">
+                  Manage Users
                 </button>
               </div>
+            </div>
+
+            {/* Help section */}
+            <div className="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-md p-6 text-white">
+              <div className="flex justify-between items-start">
+                <h2 className="text-lg font-semibold mb-2">Need Help?</h2>
+                <FiHelpCircle className="h-5 w-5" />
+              </div>
+              <p className="text-sm text-purple-100 mb-4">
+                Contact our support team for assistance with your AI store.
+              </p>
+              <button className="w-full py-2 px-4 bg-white text-purple-700 rounded-lg hover:bg-purple-50 transition-colors">
+                Contact Support
+              </button>
             </div>
           </div>
         </div>
