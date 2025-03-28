@@ -8,16 +8,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-       {/**
-        * Home Route
-        */}
+
+       {/* Home Route */}
       <Route path="/" element={<Home />} />
-      {/**
-       * Authenticated Routes
-       */}
+
+      {/* Authenticated Routes */}
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
-      
+
       </Routes>
     </BrowserRouter>
   );
