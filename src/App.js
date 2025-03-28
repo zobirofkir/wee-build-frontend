@@ -6,6 +6,7 @@ import Register from './pages/auth/Register';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProtectedRoute from './protected/protected-route';
 import { Toaster } from 'react-hot-toast';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         {/* Authenticated Routes */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
         
         {/* Protected Dashboard Routes */}
         <Route 
@@ -49,6 +51,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
+
       </Routes>
     </BrowserRouter>
   );
