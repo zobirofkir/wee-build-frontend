@@ -4,12 +4,14 @@ import RegisterReducer from '../reducer/auth/register-reducer';
 import LoginReducer from '../reducer/auth/login-reducer';
 import LogoutReducer from '../reducer/auth/logout-reducer';
 import ForgetPasswordReducer from '../reducer/auth/forget-password-reducer';
+import GetCurrentAuthenticatedUserReducer from '../reducer/auth/get-current-authenticated-user-reducer';
 
 const rootReducer = combineReducers({
   register: RegisterReducer,
   login: LoginReducer,
   logout: LogoutReducer,
-  forgotPassword: ForgetPasswordReducer
+  forgotPassword: ForgetPasswordReducer,
+  getCurrentAuthenticatedUser: GetCurrentAuthenticatedUserReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

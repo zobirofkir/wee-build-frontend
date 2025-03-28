@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import {
   FiUser,
@@ -11,22 +11,37 @@ import {
   FiShield,
   FiBell,
   FiGlobe,
+  FiAlertCircle,
 } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
+import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const dispatch = useDispatch();
 
-  // Mock user data - in a real app, this would come from your Redux store or API
-  const userData = {
+  /**
+   * Get current user from Redux store
+   */
+  const { currentUser, loading, error } = useSelector(
+    (state) => state.getCurrentAuthenticatedUser || {}
+  );
+
+  useEffect(() => {
+    dispatch(getCurrentAuthenticatedUser());
+  }, [dispatch]);
+
+  /**
+   * Use currentUser data if available, otherwise fallback to mock data
+   */
+  const userData = currentUser || {
     name: "John Doe",
     email: "john.doe@example.com",
     phone: "+1 (555) 123-4567",
     location: "San Francisco, CA",
     joinDate: "January 2023",
-    avatar: null, // URL to avatar image or null
+    avatar: null,
     role: "Administrator",
     plan: "Premium",
   };
@@ -34,6 +49,51 @@ const Profile = () => {
   const handleLogout = () => {
     dispatch(LogoutAction());
   };
+
+  /**
+   * Show loading state
+   */
+  if (loading && !currentUser) {
+    return (
+      <AuthAppLayout>
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-300">
+              Loading profile...
+            </p>
+          </div>
+        </div>
+      </AuthAppLayout>
+    );
+  }
+
+  /**
+   * Show error state
+   */
+  if (error && !currentUser) {
+    return (
+      <AuthAppLayout>
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center bg-red-50 dark:bg-red-900/20 p-6 rounded-lg max-w-md">
+            <div className="text-red-500 text-5xl mb-4">
+              <FiAlertCircle className="mx-auto" />
+            </div>
+            <h2 className="text-xl font-bold text-red-700 dark:text-red-400 mb-2">
+              Error Loading Profile
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">{error}</p>
+            <button
+              onClick={() => dispatch(getCurrentAuthenticatedUser())}
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </AuthAppLayout>
+    );
+  }
 
   return (
     <AuthAppLayout>
