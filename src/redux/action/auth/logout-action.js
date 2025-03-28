@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAuthToken, clearAuthCookies } from "../../../utils/cookie-utils";
 
 export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
@@ -22,8 +23,11 @@ export const LogoutAction = () => {
     dispatch(logoutRequest());
 
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = getAuthToken();
 
+      /**
+       * Use the existing API endpoint with the token in the header
+       */
       await axios.post(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/logout`,
         {},
@@ -35,15 +39,16 @@ export const LogoutAction = () => {
       );
 
       /**
-       * Clear all authentication data from localStorage
+       * Clear all authentication cookies
        */
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("name");
-      localStorage.removeItem("email");
+      clearAuthCookies();
 
       /**
-       * Dispatch success action
+       * Clear any remaining user data from localStorage if needed
        */
+      localStorage.removeItem("rememberedEmail");
+
+      // Dispatch success action
       dispatch(logoutSuccess());
 
       /**
@@ -54,11 +59,9 @@ export const LogoutAction = () => {
       console.error("Logout error:", error);
 
       /**
-       * Even if the API call fails, we should still clear local storage and redirect
+       * Even if the API call fails, we should still clear cookies
        */
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("name");
-      localStorage.removeItem("email");
+      clearAuthCookies();
 
       const errorMessage =
         error.response?.data?.message || "Failed to logout. Please try again.";

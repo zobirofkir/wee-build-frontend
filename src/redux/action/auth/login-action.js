@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setAuthToken, setUserData } from "../../../utils/cookie-utils";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -21,17 +22,36 @@ const loginFailure = (error) => ({
 export const LoginAction = (email, password) => {
     return async (dispatch) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_APP_URL}/auth/login`, {
-                email,
-                password
-            });
+            dispatch(loginRequest());
+            
+            /**
+             * Use the existing API endpoint without withCredentials
+             */
+            const response = await axios.post(
+                `${process.env.REACT_APP_BACKEND_APP_URL}/auth/login`, 
+                { email, password }
+            );
 
             const data = response.data.data;
-
-            localStorage.setItem('accessToken', data.accessToken);
             
-            localStorage.setItem('name', data.name);
-            localStorage.setItem('email', data.email);
+            /**
+             * Store the token in a cookie instead of localStorage
+             */
+            if (data.accessToken) {
+                setAuthToken(data.accessToken);
+                
+                /**
+                 * Store non-sensitive user data in cookies
+                 */
+                setUserData({
+                    name: data.name,
+                    email: data.email
+                });
+            }
+            
+            /**
+             * Still store user data in Redux state
+             */
             dispatch(loginSuccess(data));
 
             window.location.href = '/auth/dashboard';

@@ -5,6 +5,7 @@ import AppLayout from "../../layouts/app-layout";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginAction } from "../../redux/action/auth/login-action";
 import { toast } from "react-hot-toast";
+import { getAuthToken } from "../../utils/cookie-utils";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,12 +18,14 @@ const Login = () => {
   const { loading, error, user } = useSelector((state) => state.login);
 
   useEffect(() => {
-
-    const token = localStorage.getItem("accessToken");
-    if (token && user) {
+    /**
+     * Check if user is already authenticated via cookie
+     */
+    const token = getAuthToken();
+    if (token) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     if (error) {
