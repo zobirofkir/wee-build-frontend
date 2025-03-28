@@ -43,7 +43,13 @@ export const updateCurrentAuthenticatedUser = (userData) => {
         phone: userData.phone,
         location: userData.location,
         account_type: userData.account_type || "free", // Add account_type field with default value
-        // Add any other fields required by the API
+        // Add password fields only if password is provided
+        ...(userData.password
+          ? {
+              password: userData.password,
+              password_confirmation: userData.password_confirmation,
+            }
+          : {}),
       };
 
       const response = await axios.put(

@@ -28,6 +28,11 @@ const Profile = () => {
     username: "",
     account_type: "",
   });
+  const [passwordData, setPasswordData] = useState({
+    current_password: "",
+    password: "",
+    password_confirmation: ""
+  });
   const dispatch = useDispatch();
 
   /**
@@ -97,9 +102,29 @@ const Profile = () => {
     });
   };
 
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData({
+      ...passwordData,
+      [name]: value,
+    });
+  };
+
   const handleUpdateProfile = (e) => {
     e.preventDefault();
     dispatch(updateCurrentAuthenticatedUser(formData));
+  };
+
+  const handleUpdatePassword = (e) => {
+    e.preventDefault();
+    
+    // Combine the current user data with the new password
+    const updateData = {
+      ...formData,
+      ...passwordData
+    };
+    
+    dispatch(updateCurrentAuthenticatedUser(updateData));
   };
 
   /**
@@ -472,18 +497,33 @@ const Profile = () => {
                     Security Settings
                   </h2>
 
+                  {updateSuccess && (
+                    <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-300">
+                      {updateMessage}
+                    </div>
+                  )}
+                  
+                  {updateError && (
+                    <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
+                      {updateError}
+                    </div>
+                  )}
+
                   <div className="space-y-6">
                     <div className="pb-6 border-b dark:border-gray-700">
                       <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
                         Change Password
                       </h3>
-                      <form className="space-y-4">
+                      <form className="space-y-4" onSubmit={handleUpdatePassword}>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Current Password
                           </label>
                           <input
                             type="password"
+                            name="current_password"
+                            value={passwordData.current_password}
+                            onChange={handlePasswordChange}
                             className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                           />
                         </div>
@@ -493,6 +533,9 @@ const Profile = () => {
                           </label>
                           <input
                             type="password"
+                            name="password"
+                            value={passwordData.password}
+                            onChange={handlePasswordChange}
                             className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                           />
                         </div>
@@ -502,15 +545,44 @@ const Profile = () => {
                           </label>
                           <input
                             type="password"
+                            name="password_confirmation"
+                            value={passwordData.password_confirmation}
+                            onChange={handlePasswordChange}
                             className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                           />
                         </div>
                         <div className="flex justify-end">
                           <button
-                            type="submit"
-                            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                            type="button"
+                            onClick={() => {
+                              setPasswordData({
+                                current_password: "",
+                                password: "",
+                                password_confirmation: ""
+                              });
+                              dispatch(resetUpdateUserState());
+                            }}
+                            className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg mr-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                            disabled={updateLoading}
                           >
-                            Update Password
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center"
+                            disabled={updateLoading}
+                          >
+                            {updateLoading ? (
+                              <>
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Updating...
+                              </>
+                            ) : (
+                              "Update Password"
+                            )}
                           </button>
                         </div>
                       </form>
