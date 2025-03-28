@@ -1,19 +1,20 @@
 /**
- * 
- * @param {Set a cookie with options} name 
- * @param {*} value 
- * @param {*} days 
- * @param {*} path 
+ * Set a cookie with options
+ * @param {string} name - Cookie name
+ * @param {string} value - Cookie value
+ * @param {number} days - Cookie expiration in days
+ * @param {string} path - Cookie path
  */
 export const setCookie = (name, value, days = 7, path = '/') => {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  // Explicitly set SameSite=Strict for better CSRF protection
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=${path}; SameSite=Strict`;
 };
 
 /**
- * 
- * @param {Get a cookie by name} name 
- * @returns 
+ * Get a cookie by name
+ * @param {string} name - Cookie name
+ * @returns {string|null} - Cookie value or null if not found
  */
 export const getCookie = (name) => {
   const value = `; ${document.cookie}`;
@@ -23,25 +24,25 @@ export const getCookie = (name) => {
 };
 
 /**
- * 
- * @param {Delete a cookie by name} name 
- * @param {*} path 
+ * Delete a cookie by name
+ * @param {string} name - Cookie name
+ * @param {string} path - Cookie path
  */
 export const deleteCookie = (name, path = '/') => {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}; SameSite=Strict`;
 };
 
 /**
- * 
- * @param {Set authentication token in cookie} token 
+ * Set authentication token in cookie
+ * @param {string} token - Authentication token
  */
 export const setAuthToken = (token) => {
   setCookie('authToken', token);
 };
 
 /**
- * 
- * @returns Get authentication token from cookie
+ * Get authentication token from cookie
+ * @returns {string|null} - Authentication token or null if not found
  */
 export const getAuthToken = () => {
   return getCookie('authToken');
@@ -55,8 +56,8 @@ export const removeAuthToken = () => {
 };
 
 /**
- * 
- * @param {Store user data in cookies} userData 
+ * Store user data in cookies
+ * @param {Object} userData - User data object
  */
 export const setUserData = (userData) => {
   if (userData.name) setCookie('userName', userData.name);
@@ -64,8 +65,8 @@ export const setUserData = (userData) => {
 };
 
 /**
- * 
- * @returns Get user data from cookies
+ * Get user data from cookies
+ * @returns {Object} - User data object
  */
 export const getUserData = () => {
   return {
@@ -81,4 +82,35 @@ export const clearAuthCookies = () => {
   removeAuthToken();
   deleteCookie('userName');
   deleteCookie('userEmail');
+  deleteCookie('csrfToken'); // Also clear CSRF token when logging out
+};
+
+/**
+ * Generate a random CSRF token
+ * @returns {string} - Random CSRF token
+ */
+export const generateCSRFToken = () => {
+  const randomBytes = new Uint8Array(32);
+  window.crypto.getRandomValues(randomBytes);
+  return Array.from(randomBytes)
+    .map(byte => byte.toString(16).padStart(2, '0'))
+    .join('');
+};
+
+/**
+ * Set CSRF token in cookie and return it
+ * @returns {string} - Generated CSRF token
+ */
+export const setCSRFToken = () => {
+  const token = generateCSRFToken();
+  setCookie('csrfToken', token);
+  return token;
+};
+
+/**
+ * Get CSRF token from cookie
+ * @returns {string|null} - CSRF token or null if not found
+ */
+export const getCSRFToken = () => {
+  return getCookie('csrfToken');
 }; 

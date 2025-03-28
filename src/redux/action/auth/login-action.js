@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAuthToken, setUserData } from "../../../utils/cookie-utils";
+import { setAuthToken, setUserData, setCSRFToken } from "../../../utils/cookie-utils";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -47,6 +47,11 @@ export const LoginAction = (email, password) => {
                     name: data.name,
                     email: data.email
                 });
+                
+                /**
+                 * Generate and store a CSRF token for protection against CSRF attacks
+                 */
+                setCSRFToken();
             }
             
             /**
