@@ -8,6 +8,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { useTheme } from "../context/theme-context";
+import { Link } from "react-router-dom";
 
 const HeaderComponent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,62 +59,62 @@ const HeaderComponent = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <a href="/">
+            <Link to="/">
               <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400">
                 AI Store Builder
               </h1>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Home
-            </a>
-            <a
-              href="/products"
+            </Link>
+            <Link
+              to="/products"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Products
-            </a>
-            <a
-              href="/features"
+            </Link>
+            <Link
+              to="/features"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Features
-            </a>
-            <a
-              href="/pricing"
+            </Link>
+            <Link
+              to="/pricing"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Pricing
-            </a>
-            <a
-              href="/contact"
+            </Link>
+            <Link
+              to="/contact"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Contact
-            </a>
+            </Link>
           </div>
 
           {/* Right side icons */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Login/Register links */}
-            <a
-              href="/auth/login"
+            <Link
+              to="/auth/login"
               className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors"
             >
               Login
-            </a>
-            <a
-              href="/auth/register"
+            </Link>
+            <Link
+              to="/auth/register"
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
             >
               Register
-            </a>
+            </Link>
 
             {/* Theme toggle */}
             <button
@@ -128,12 +129,12 @@ const HeaderComponent = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            <a
-              href="/auth/login"
+            <Link
+              to="/auth/login"
               className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors mr-2"
             >
               Login
-            </a>
+            </Link>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
@@ -161,42 +162,42 @@ const HeaderComponent = () => {
         style={{ top: scrolled ? "48px" : "64px" }}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Home
-          </a>
-          <a
-            href="/products"
+          </Link>
+          <Link
+            to="/products"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Products
-          </a>
-          <a
-            href="/features"
+          </Link>
+          <Link
+            to="/features"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Features
-          </a>
-          <a
-            href="/pricing"
+          </Link>
+          <Link
+            to="/pricing"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Pricing
-          </a>
-          <a
-            href="/contact"
+          </Link>
+          <Link
+            to="/contact"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Contact
-          </a>
-          <a
-            href="/auth/register"
+          </Link>
+          <Link
+            to="/auth/register"
             className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700 max-w-[100px] text-center"
           >
             Register
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
