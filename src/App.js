@@ -7,6 +7,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import ProtectedRoute from './protected/protected-route';
 import { Toaster } from 'react-hot-toast';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import Profile from './pages/auth/Profile';
 
 function App() {
   return (
@@ -50,6 +51,14 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           } 
+        />
+        <Route 
+          path='/auth/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }  
         />
 
       </Routes>

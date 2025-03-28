@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -119,12 +120,12 @@ const Dashboard = () => {
                 </button>
                 {showProfileMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-10 border dark:border-gray-700">
-                    <a
-                      href="/profile"
+                    <Link
+                      to="/auth/profile"
                       className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/50"
                     >
                       Profile
-                    </a>
+                    </Link>
                     <button
                       onClick={() => handleLogout()}
                       className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/50"
