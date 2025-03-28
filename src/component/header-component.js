@@ -47,6 +47,11 @@ const HeaderComponent = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [isMenuOpen]);
 
+  /**
+   * Get authentication token from localStorage
+   */
+  const token = localStorage.getItem("accessToken");
+
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -101,31 +106,42 @@ const HeaderComponent = () => {
           </div>
 
           {/* Right side icons */}
-          <div className="hidden md:flex items-center space-x-4">
-            {/* Login/Register links */}
-            <Link
-              to="/auth/login"
-              className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              to="/auth/register"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
-            >
-              Register
-            </Link>
+          {token ? (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/auth/dashboard"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+              >
+                Dashboard
+              </Link>
+            </div>
 
-            {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
-            </button>
+          ) : (
+            <div className="hidden md:flex items-center space-x-4">
+              {/* Login/Register links */}
+              <Link
+                to="/auth/login"
+                className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                to="/auth/register"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+              >
+                Register
+              </Link>
 
-          </div>
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
+                aria-label="Toggle theme"
+              >
+                {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+              </button>
+            </div>
+          )}
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
