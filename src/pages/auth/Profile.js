@@ -132,7 +132,7 @@ const Profile = () => {
               </div>
               <div className="mt-4 flex flex-wrap gap-2 justify-center md:justify-start">
                 <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
-                  {userData.plan} Plan
+                  {userData.account_type} Plan
                 </span>
                 <button
                   onClick={() => setActiveTab("account")}
@@ -270,7 +270,7 @@ const Profile = () => {
                         <span>Account Type</span>
                       </div>
                       <div className="md:w-2/3 text-gray-800 dark:text-white mt-1 md:mt-0">
-                        {userData.role} - {userData.plan} Plan
+                        {userData.account_type} Plan
                       </div>
                     </div>
                   </div>

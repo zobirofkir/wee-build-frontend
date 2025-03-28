@@ -13,6 +13,9 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    accountType: "free",
+    location: "",
+    phone: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -39,6 +42,18 @@ const Register = () => {
         if (validationErrors.username) {
           newErrors.general = newErrors.general || '';
           newErrors.general += ` Username error: ${validationErrors.username[0]}`;
+        }
+
+        if (validationErrors.account_type) {
+          newErrors.accountType = validationErrors.account_type[0];
+        }
+
+        if (validationErrors.location) {
+          newErrors.location = validationErrors.location[0];
+        }
+        
+        if (validationErrors.phone) {
+          newErrors.phone = validationErrors.phone[0];
         }
       }
       
@@ -84,6 +99,18 @@ const Register = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
+    if (!formData.accountType) {
+      newErrors.accountType = "Account type is required";
+    }
+
+    if (formData.location && formData.location.length > 255) {
+      newErrors.location = "Location must be less than 255 characters";
+    }
+    
+    if (formData.phone && formData.phone.length > 255) {
+      newErrors.phone = "Phone number must be less than 255 characters";
+    }
+
     if (!agreeToTerms) {
       newErrors.terms = "You must agree to the terms and conditions";
     }
@@ -96,12 +123,14 @@ const Register = () => {
     e.preventDefault();
 
     if (validateForm()) {
-
       dispatch(RegisterAction(
         formData.fullName,
         formData.email,
         formData.password,
-        formData.confirmPassword
+        formData.confirmPassword,
+        formData.accountType,
+        formData.location,
+        formData.phone
       ));
     }
   };
@@ -179,6 +208,176 @@ const Register = () => {
                   />
                   {errors.email && (
                     <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Account Type Selection */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Select Your Plan
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Free Plan Card */}
+                  <div 
+                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                      formData.accountType === 'free' 
+                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-md' 
+                        : 'border-gray-300 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700'
+                    }`}
+                    onClick={() => setFormData({...formData, accountType: 'free'})}
+                  >
+                    <div className="flex justify-between items-center mb-3">
+                      <h3 className="font-medium text-lg">Free Plan</h3>
+                      <div className={`h-5 w-5 rounded-full border ${
+                        formData.accountType === 'free' 
+                          ? 'border-purple-500 bg-purple-500' 
+                          : 'border-gray-300 dark:border-gray-500'
+                      } flex items-center justify-center`}>
+                        {formData.accountType === 'free' && (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-2xl font-bold mb-4">$0 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Basic features
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Limited storage
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Community support
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Premium Plan Card */}
+                  <div 
+                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                      formData.accountType === 'premium' 
+                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-md' 
+                        : 'border-gray-300 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700'
+                    }`}
+                    onClick={() => setFormData({...formData, accountType: 'premium'})}
+                  >
+                    <div className="flex justify-between items-center mb-3">
+                      <div>
+                        <h3 className="font-medium text-lg">Premium Plan</h3>
+                        <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-full">Recommended</span>
+                      </div>
+                      <div className={`h-5 w-5 rounded-full border ${
+                        formData.accountType === 'premium' 
+                          ? 'border-purple-500 bg-purple-500' 
+                          : 'border-gray-300 dark:border-gray-500'
+                      } flex items-center justify-center`}>
+                        {formData.accountType === 'premium' && (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-2xl font-bold mb-4">$20 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        All free features
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Unlimited storage
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Priority support
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-4 w-4 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Advanced AI features
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                {errors.accountType && (
+                  <p className="mt-1 text-sm text-red-600">{errors.accountType}</p>
+                )}
+              </div>
+
+              {/* Location Input */}
+              <div>
+                <label
+                  htmlFor="location"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Location (Optional)
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    value={formData.location}
+                    onChange={handleChange}
+                    className={`block w-full appearance-none rounded-lg border ${
+                      errors.location
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    } px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-400 sm:text-sm`}
+                    placeholder="City, Country"
+                  />
+                  {errors.location && (
+                    <p className="mt-1 text-sm text-red-600">{errors.location}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Phone Input */}
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Phone Number (Optional)
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`block w-full appearance-none rounded-lg border ${
+                      errors.phone
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    } px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-400 sm:text-sm`}
+                    placeholder="+1 (123) 456-7890"
+                  />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
                   )}
                 </div>
               </div>

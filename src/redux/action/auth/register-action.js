@@ -18,7 +18,7 @@ export const registerFailure = (error, validationErrors = null) => ({
   payload: { message: error, validationErrors },
 });
 
-export const RegisterAction = (name, email, password, confirmPassword) => {
+export const RegisterAction = (name, email, password, confirmPassword, accountType, location, phone) => {
   return async (dispatch) => {
     dispatch(registerRequest());
     try {
@@ -30,6 +30,9 @@ export const RegisterAction = (name, email, password, confirmPassword) => {
           password,
           password_confirmation: confirmPassword,
           username: email.split("@")[0],
+          account_type: accountType,
+          location: location,
+          phone: phone
         }
       );
 
