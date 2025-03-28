@@ -4,22 +4,51 @@ import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/dashboard/Dashboard';
+import ProtectedRoute from './protected/protected-route';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-
-       {/* Home Route */}
-      <Route path="/" element={<Home />} />
-
-      {/* Authenticated Routes */}
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/register" element={<Register />} />
+      {/* Toast notifications */}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#333',
+            color: '#fff',
+          },
+          success: {
+            style: {
+              background: 'green',
+            },
+          },
+          error: {
+            style: {
+              background: 'red',
+            },
+          },
+        }}
+      />
       
-      {/* Dashboard Routes */}
-      <Route path="/auth/dashboard" element={<Dashboard />} />
+      <Routes>
+        {/* Home Route */}
+        <Route path="/" element={<Home />} />
 
+        {/* Authenticated Routes */}
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
+        
+        {/* Protected Dashboard Routes */}
+        <Route 
+          path="/auth/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </BrowserRouter>
   );
