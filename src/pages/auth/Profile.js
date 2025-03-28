@@ -587,34 +587,6 @@ const Profile = () => {
                         </div>
                       </form>
                     </div>
-
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
-                        Sessions
-                      </h3>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <FiShield className="h-5 w-5 text-green-500" />
-                            <div>
-                              <p className="text-gray-800 dark:text-white font-medium">
-                                Current Session
-                              </p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">
-                                San Francisco, CA •{" "}
-                                {new Date().toLocaleDateString()}
-                              </p>
-                            </div>
-                          </div>
-                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                            Active
-                          </span>
-                        </div>
-                        <button className="text-red-600 dark:text-red-400 text-sm font-medium hover:underline">
-                          Sign out of all other sessions
-                        </button>
-                      </div>
-                    </div>
                   </div>
                 </div>
               )}
