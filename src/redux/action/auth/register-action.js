@@ -18,7 +18,7 @@ export const registerFailure = (error, validationErrors = null) => ({
   payload: { message: error, validationErrors },
 });
 
-export const RegisterAction = (name, email, password) => {
+export const RegisterAction = (name, email, password, confirmPassword) => {
   return async (dispatch) => {
     dispatch(registerRequest());
     try {
@@ -28,21 +28,20 @@ export const RegisterAction = (name, email, password) => {
           name,
           email,
           password,
-          username: email.split("@")[0], // Generate a username from email if needed
+          password_confirmation: confirmPassword,
+          username: email.split("@")[0],
         }
       );
 
       const data = response.data.data;
       dispatch(registerSuccess(data));
 
-      // Redirect to login page after successful registration
       window.location.href = "/auth/login";
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
       let validationErrors = null;
 
       if (error.response) {
-        // Handle validation errors (422 status)
         if (error.response.status === 422 && error.response.data.errors) {
           errorMessage = error.response.data.message || errorMessage;
           validationErrors = error.response.data.errors;

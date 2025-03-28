@@ -97,11 +97,12 @@ const Register = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Dispatch register action
+      // Dispatch register action with password confirmation
       dispatch(RegisterAction(
         formData.fullName,
         formData.email,
-        formData.password
+        formData.password,
+        formData.confirmPassword
       ));
     }
   };
