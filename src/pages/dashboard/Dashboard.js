@@ -8,6 +8,8 @@ import {
   FiBarChart2,
   FiMessageSquare,
   FiHelpCircle,
+  FiSun,
+  FiMoon,
 } from "react-icons/fi";
 
 const Dashboard = () => {
@@ -74,14 +76,18 @@ const Dashboard = () => {
           {/* Dashboard header */}
           <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
             <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
-              AI Store Dashboard
+              AI
             </h1>
             <div className="flex items-center space-x-4">
               <button
                 onClick={toggleDarkMode}
-                className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200"
+                className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 flex items-center"
               >
-                {darkMode ? "Light Mode" : "Dark Mode"}
+                {darkMode ? (
+                  <FiSun className="h-5 w-5 mr-2" />
+                ) : (
+                  <FiMoon className="h-5 w-5 mr-2" />
+                )}
               </button>
               <div className="relative">
                 <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
