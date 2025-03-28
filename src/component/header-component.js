@@ -10,6 +10,7 @@ import {
 } from "react-icons/fi";
 import { useTheme } from "../context/theme-context";
 import { Link, useLocation } from "react-router-dom";
+import { getAuthToken } from "../utils/cookie-utils";
 
 const HeaderComponent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ const HeaderComponent = () => {
   const location = useLocation();
 
   // Get authentication token from localStorage
-  const token = localStorage.getItem("accessToken");
+  const token = getAuthToken();
 
   /**
    * Handle scroll event to determine if the header should be scrolled
