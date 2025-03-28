@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaGoogle, FaGithub, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { RegisterAction } from "../../redux/action/auth/register-action";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { loading, error: registerError, validationErrors } = useSelector((state) => state.register);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -20,30 +19,30 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (registerError) {
-      setErrors(prev => ({ ...prev, general: registerError }));
-    }
-    
-    // Handle validation errors from API
-    if (validationErrors) {
-      const newErrors = { ...errors };
+    setErrors(prev => {
+      const newErrors = { ...prev };
       
-      if (validationErrors.email) {
-        newErrors.email = validationErrors.email[0];
+      if (registerError) {
+        newErrors.general = registerError;
       }
       
-      if (validationErrors.password) {
-        newErrors.password = validationErrors.password[0];
+      if (validationErrors) {
+        if (validationErrors.email) {
+          newErrors.email = validationErrors.email[0];
+        }
+        
+        if (validationErrors.password) {
+          newErrors.password = validationErrors.password[0];
+        }
+        
+        if (validationErrors.username) {
+          newErrors.general = newErrors.general || '';
+          newErrors.general += ` Username error: ${validationErrors.username[0]}`;
+        }
       }
       
-      if (validationErrors.username) {
-        // If username is required by the API but not in our form
-        newErrors.general = newErrors.general || '';
-        newErrors.general += ` Username error: ${validationErrors.username[0]}`;
-      }
-      
-      setErrors(newErrors);
-    }
+      return newErrors;
+    });
   }, [registerError, validationErrors]);
 
   const handleChange = (e) => {
@@ -53,7 +52,6 @@ const Register = () => {
       [name]: value,
     });
 
-    // Clear error when user types
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -97,7 +95,7 @@ const Register = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Dispatch register action with password confirmation
+
       dispatch(RegisterAction(
         formData.fullName,
         formData.email,
