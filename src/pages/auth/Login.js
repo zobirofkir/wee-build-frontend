@@ -1,25 +1,59 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle, FaGithub, FaEye, FaEyeSlash } from "react-icons/fa";
 import AppLayout from "../../layouts/app-layout";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginAction } from "../../redux/action/auth/login-action";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error, user } = useSelector((state) => state.login);
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("accessToken");
+    if (token && user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      console.log({ email, password, rememberMe });
-    }, 1500);
+    
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    
+    dispatch(LoginAction(email, password));
+    
+    if (rememberMe) {
+      localStorage.setItem("rememberedEmail", email);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+    }
   };
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   return (
     <AppLayout>
@@ -37,6 +71,17 @@ const Login = () => {
 
           {/* Login Form */}
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            {/* Show error message if exists */}
+            {error && (
+              <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/30">
+                <div className="flex">
+                  <div className="text-sm text-red-700 dark:text-red-400">
+                    {error}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-4 rounded-md shadow-sm">
               {/* Email Input */}
               <div>
@@ -129,10 +174,10 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={loading}
                 className="group relative flex w-full justify-center rounded-lg border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-75 dark:bg-purple-700 dark:hover:bg-purple-600"
               >
-                {isLoading ? (
+                {loading ? (
                   <svg
                     className="h-5 w-5 animate-spin text-white"
                     xmlns="http://www.w3.org/2000/svg"
