@@ -58,9 +58,11 @@ const HeaderComponent = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400">
-              AI Store Builder
-            </h1>
+            <a href="/">
+              <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400">
+                AI Store Builder
+              </h1>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
