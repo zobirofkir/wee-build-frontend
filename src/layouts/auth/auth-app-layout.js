@@ -5,8 +5,9 @@ import {
   FiUsers,
   FiSettings,
   FiBarChart2,
-  FiLogOut,
 } from "react-icons/fi";
+import DesktopSidebareComponent from "../../component/auth/desktop-sidebare-component";
+import MobileSidebareComponent from "../../component/auth/mobile-sidebare-component";
 
 const AuthAppLayout = ({ children }) => {
   const navItems = [
@@ -35,25 +36,12 @@ const AuthAppLayout = ({ children }) => {
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
+      <DesktopSidebareComponent navItems={navItems}/>
 
-      {/* Mobile sidebar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-white dark:bg-gray-800 border-t dark:border-gray-700 flex justify-around p-2">
-        {navItems.map((item, index) => (
-          <a
-            key={index}
-            href="/"
-            className={`flex flex-col items-center p-2 rounded-lg ${
-              item.active
-                ? "text-purple-800 dark:text-purple-400"
-                : "text-gray-700 dark:text-gray-300"
-            }`}
-          >
-            {item.icon}
-            <span className="text-xs mt-1">{item.label}</span>
-          </a>
-        ))}
-      </div>
+      {/* Mobile Sidebar */}
+      <MobileSidebareComponent navItems={navItems}/>
+
 
       {/* Main content */}
       <div className="flex-1 overflow-auto">{children}</div>
