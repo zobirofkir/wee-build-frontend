@@ -8,6 +8,8 @@ import {
 } from "react-icons/fi";
 import DesktopSidebareComponent from "../../component/auth/desktop-sidebare-component";
 import MobileSidebareComponent from "../../component/auth/mobile-sidebare-component";
+import { LogoutAction } from "../../redux/action/auth/logout-action";
+import { useDispatch } from "react-redux";
 
 const AuthAppLayout = ({ children }) => {
   const navItems = [
@@ -34,13 +36,19 @@ const AuthAppLayout = ({ children }) => {
     },
   ];
 
+  const dispatch = useDispatch();
+  
+  const logout = () => {
+    dispatch(LogoutAction());
+  };
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       {/* Desktop Sidebar */}
-      <DesktopSidebareComponent navItems={navItems}/>
+      <DesktopSidebareComponent navItems={navItems} logout={logout}/>
 
       {/* Mobile Sidebar */}
-      <MobileSidebareComponent navItems={navItems}/>
+      <MobileSidebareComponent navItems={navItems} logout={logout}/>
 
 
       {/* Main content */}

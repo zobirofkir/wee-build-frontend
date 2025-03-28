@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MobileSidebareComponent = ({navItems}) => {
+const MobileSidebareComponent = ({navItems, logout}) => {
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-white dark:bg-gray-800 border-t dark:border-gray-700 flex justify-around p-2">
         {navItems.map((item, index) => (

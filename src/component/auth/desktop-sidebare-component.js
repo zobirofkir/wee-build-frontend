@@ -1,7 +1,7 @@
 import React from 'react'
 import {  FiLogOut } from "react-icons/fi";
 
-const DesktopSidebareComponent = ({navItems}) => {
+const DesktopSidebareComponent = ({navItems, logout}) => {
   return (
     <div className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-800 border-r dark:border-gray-700">
         <div className="p-4 border-b dark:border-gray-700">
@@ -29,7 +29,7 @@ const DesktopSidebareComponent = ({navItems}) => {
         </div>
 
         <div className="p-4 border-t dark:border-gray-700">
-        <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg w-full">
+        <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg w-full" onClick={logout}>
             <FiLogOut className="h-5 w-5 mr-3" />
             Logout
         </button>
