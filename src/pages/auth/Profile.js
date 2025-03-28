@@ -16,9 +16,18 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
+import { updateCurrentAuthenticatedUser, resetUpdateUserState } from "../../redux/action/auth/update-current-authenticated-user-action";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    username: "",
+    account_type: "",
+  });
   const dispatch = useDispatch();
 
   /**
@@ -28,9 +37,39 @@ const Profile = () => {
     (state) => state.getCurrentAuthenticatedUser || {}
   );
 
+  /**
+   * Get update user state from Redux store
+   */
+  const { 
+    loading: updateLoading, 
+    success: updateSuccess, 
+    message: updateMessage, 
+    error: updateError 
+  } = useSelector((state) => state.updateCurrentAuthenticatedUser || {});
+
   useEffect(() => {
     dispatch(getCurrentAuthenticatedUser());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        name: currentUser.name || "",
+        email: currentUser.email || "",
+        phone: currentUser.phone || "",
+        location: currentUser.location || "",
+        username: currentUser.username || currentUser.email || "",
+        account_type: currentUser.account_type || "free",
+      });
+    }
+  }, [currentUser]);
+
+  /**
+   * Reset update state when changing tabs
+   */
+  useEffect(() => {
+    dispatch(resetUpdateUserState());
+  }, [activeTab, dispatch]);
 
   /**
    * Use currentUser data if available, otherwise fallback to mock data
@@ -48,6 +87,19 @@ const Profile = () => {
 
   const handleLogout = () => {
     dispatch(LogoutAction());
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleUpdateProfile = (e) => {
+    e.preventDefault();
+    dispatch(updateCurrentAuthenticatedUser(formData));
   };
 
   /**
@@ -282,7 +334,20 @@ const Profile = () => {
                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
                     Account Settings
                   </h2>
-                  <form className="space-y-6">
+                  
+                  {updateSuccess && (
+                    <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-300">
+                      {updateMessage}
+                    </div>
+                  )}
+                  
+                  {updateError && (
+                    <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
+                      {updateError}
+                    </div>
+                  )}
+                  
+                  <form className="space-y-6" onSubmit={handleUpdateProfile}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -290,7 +355,9 @@ const Profile = () => {
                         </label>
                         <input
                           type="text"
-                          defaultValue={userData.name}
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
                           className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                         />
                       </div>
@@ -300,7 +367,9 @@ const Profile = () => {
                         </label>
                         <input
                           type="email"
-                          defaultValue={userData.email}
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
                           className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                         />
                       </div>
@@ -310,7 +379,9 @@ const Profile = () => {
                         </label>
                         <input
                           type="tel"
-                          defaultValue={userData.phone}
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
                           className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                         />
                       </div>
@@ -320,7 +391,9 @@ const Profile = () => {
                         </label>
                         <input
                           type="text"
-                          defaultValue={userData.location}
+                          name="location"
+                          value={formData.location}
+                          onChange={handleInputChange}
                           className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
                         />
                       </div>
@@ -353,15 +426,40 @@ const Profile = () => {
                     <div className="flex justify-end">
                       <button
                         type="button"
+                        onClick={() => {
+                          if (currentUser) {
+                            setFormData({
+                              name: currentUser.name || "",
+                              email: currentUser.email || "",
+                              phone: currentUser.phone || "",
+                              location: currentUser.location || "",
+                              username: currentUser.username || currentUser.email || "",
+                              account_type: currentUser.account_type || "free",
+                            });
+                          }
+                          dispatch(resetUpdateUserState());
+                        }}
                         className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg mr-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                        disabled={updateLoading}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                        className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center"
+                        disabled={updateLoading}
                       >
-                        Save Changes
+                        {updateLoading ? (
+                          <>
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Saving...
+                          </>
+                        ) : (
+                          "Save Changes"
+                        )}
                       </button>
                     </div>
                   </form>
