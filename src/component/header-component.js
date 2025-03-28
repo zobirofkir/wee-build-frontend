@@ -75,25 +75,25 @@ const HeaderComponent = () => {
               Home
             </Link>
             <Link
-              to="/products"
+              to="#"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Products
             </Link>
             <Link
-              to="/features"
+              to="#"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Features
             </Link>
             <Link
-              to="/pricing"
+              to="#"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Pricing
             </Link>
             <Link
-              to="/contact"
+              to="#"
               className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               Contact
@@ -169,25 +169,25 @@ const HeaderComponent = () => {
             Home
           </Link>
           <Link
-            to="/products"
+            to="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Products
           </Link>
           <Link
-            to="/features"
+            to="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Features
           </Link>
           <Link
-            to="/pricing"
+            to="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Pricing
           </Link>
           <Link
-            to="/contact"
+            to="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800"
           >
             Contact
