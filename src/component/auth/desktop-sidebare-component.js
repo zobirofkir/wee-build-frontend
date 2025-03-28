@@ -1,5 +1,6 @@
 import React from 'react'
 import {  FiLogOut } from "react-icons/fi";
+import { Link } from 'react-router-dom'
 
 const DesktopSidebareComponent = ({navItems, logout}) => {
   return (
@@ -12,9 +13,9 @@ const DesktopSidebareComponent = ({navItems, logout}) => {
         <div className="flex-1 overflow-y-auto py-4">
         <nav className="px-2 space-y-1">
             {navItems.map((item, index) => (
-            <a
+            <Link
                 key={index}
-                href="/"
+                to="/auth/dashboard"
                 className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg ${
                 item.active
                     ? "bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300"
@@ -23,7 +24,7 @@ const DesktopSidebareComponent = ({navItems, logout}) => {
             >
                 <span className="mr-3">{item.icon}</span>
                 {item.label}
-            </a>
+            </Link>
             ))}
         </nav>
         </div>
