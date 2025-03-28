@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCurrentAuthenticatedUser } from "./get-current-authenticated-user-action";
+import { getAuthToken } from "../../../utils/cookie-utils";
 
 export const UPDATE_CURRENT_USER_REQUEST = "UPDATE_CURRENT_USER_REQUEST";
 export const UPDATE_CURRENT_USER_SUCCESS = "UPDATE_CURRENT_USER_SUCCESS";
@@ -29,13 +30,18 @@ export const updateCurrentAuthenticatedUser = (userData) => {
     dispatch(updateCurrentUserRequest());
 
     try {
-      const token = localStorage.getItem("accessToken");
+      /**
+       * Get token from cookie instead of localStorage
+       */
+      const token = getAuthToken();
 
       if (!token) {
         throw new Error("No access token found");
       }
 
-      // Map form data to the format expected by the API if needed
+      /**
+       * Map form data to the format expected by the API if needed
+       */
       const apiData = {
         username: userData.username || userData.email, // Ensure username is provided
         name: userData.name,
@@ -52,6 +58,10 @@ export const updateCurrentAuthenticatedUser = (userData) => {
           : {}),
       };
 
+      /**
+       * The axios interceptor will automatically add the token to the request headers
+       * but we're keeping the explicit headers here for clarity
+       */
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/update`,
         apiData,
@@ -66,7 +76,9 @@ export const updateCurrentAuthenticatedUser = (userData) => {
         response.data.message || "Profile updated successfully";
       dispatch(updateCurrentUserSuccess(successMessage));
 
-      // Refresh user data after successful update
+      /**
+       * Refresh user data after successful update
+       */
       dispatch(getCurrentAuthenticatedUser());
 
       return successMessage;

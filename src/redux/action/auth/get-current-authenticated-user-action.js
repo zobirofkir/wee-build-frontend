@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAuthToken } from "../../../utils/cookie-utils";
 
 export const GET_CURRENT_USER_REQUEST = "GET_CURRENT_USER_REQUEST";
 export const GET_CURRENT_USER_SUCCESS = "GET_CURRENT_USER_SUCCESS";
@@ -23,7 +24,7 @@ export const getCurrentAuthenticatedUser = () => {
     dispatch(getCurrentUserRequest());
 
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = getAuthToken();
 
       if (!token) {
         throw new Error("No access token found");
