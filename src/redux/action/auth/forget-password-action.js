@@ -37,21 +37,47 @@ export const ForgetPasswordAction = (email) => {
       );
 
       /**
-       * Dispatch success with the response message
+       * Dispatch success with the response message based on status code
        */
-      const successMessage =
-        response.data.message ||
-        "Password reset link has been sent to your email.";
-      dispatch(forgetPasswordSuccess(successMessage));
+      if (response.status >= 200 && response.status < 300) {
+        const successMessage =
+          response.data.message ||
+          "Password reset link has been sent to your email.";
+        dispatch(forgetPasswordSuccess(successMessage));
+      } else {
+        // Handle unexpected success status codes
+        throw new Error("Unexpected response from server");
+      }
     } catch (error) {
       console.error("Forget password error:", error);
 
       /**
-       * Handle error and dispatch failure
+       * Handle error and dispatch failure based on status code
        */
-      const errorMessage =
-        error.response?.data?.message ||
-        "Failed to send reset link. Please try again.";
+      let errorMessage = "Failed to send reset link. Please try again.";
+
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const statusCode = error.response.status;
+
+        if (statusCode === 404) {
+          errorMessage = "Email address not found in our records.";
+        } else if (statusCode === 429) {
+          errorMessage = "Too many attempts. Please try again later.";
+        } else if (statusCode >= 400 && statusCode < 500) {
+          errorMessage =
+            error.response.data.message ||
+            "Invalid request. Please check your email and try again.";
+        } else if (statusCode >= 500) {
+          errorMessage = "Server error. Please try again later.";
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        errorMessage =
+          "No response from server. Please check your internet connection.";
+      }
+
       dispatch(forgetPasswordFailure(errorMessage));
     }
   };

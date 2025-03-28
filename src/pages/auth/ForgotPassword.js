@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     success = false,
     message = "",
     error = "",
-  } = useSelector((state) => state.forgetPassword || {});
+  } = useSelector((state) => state.forgotPassword || {});
 
   useEffect(() => {
     if (success && message) {
