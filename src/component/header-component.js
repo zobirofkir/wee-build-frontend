@@ -147,7 +147,9 @@ const HeaderComponent = () => {
                 onClick={toggleTheme}
                 className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
                 aria-label="Toggle theme"
-                title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                title={
+                  darkMode ? "Switch to light mode" : "Switch to dark mode"
+                }
               >
                 {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
               </button>
@@ -181,7 +183,9 @@ const HeaderComponent = () => {
                 onClick={toggleTheme}
                 className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
                 aria-label="Toggle theme"
-                title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                title={
+                  darkMode ? "Switch to light mode" : "Switch to dark mode"
+                }
               >
                 {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
               </button>
@@ -253,7 +257,7 @@ const HeaderComponent = () => {
               {link.label}
             </Link>
           ))}
-          
+
           {token ? (
             <button
               onClick={handleLogout}
