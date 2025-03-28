@@ -122,23 +122,6 @@ const HeaderComponent = () => {
               {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
             </button>
 
-            {/* Cart */}
-            <a
-              href="/cart"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
-              aria-label="Shopping cart"
-            >
-              <FiShoppingCart size={20} />
-            </a>
-
-            {/* User profile */}
-            <a
-              href="/profile"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
-              aria-label="User profile"
-            >
-              <FiUser size={20} />
-            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -208,26 +191,10 @@ const HeaderComponent = () => {
           </a>
           <a
             href="/auth/register"
-            className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700"
+            className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700 max-w-[100px] text-center"
           >
             Register
           </a>
-          <div className="flex items-center space-x-4 px-3 py-2">
-            <a
-              href="/cart"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors"
-              aria-label="Shopping cart"
-            >
-              <FiShoppingCart size={20} />
-            </a>
-            <a
-              href="/profile"
-              className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors"
-              aria-label="User profile"
-            >
-              <FiUser size={20} />
-            </a>
-          </div>
         </div>
       </div>
     </nav>
