@@ -7,26 +7,29 @@ import PricingPlanComponent from '../component/home/pricing-plans-component'
 import TestimonialComponent from '../component/home/testimonial-component'
 import FaqComponent from '../component/home/faq-component'
 import CallToActionComponent from '../component/home/call-to-action-component'
+import AppLayout from '../layouts/app-layout'
 
 const Home = () => {
   return (
-    <div>
-        <HeroComponent />
+    <AppLayout>
+      <div>
+          <HeroComponent />
 
-        <HowItWorkComponent />
+          <HowItWorkComponent />
 
-        <FeatureComponent />
+          <FeatureComponent />
 
-        <DemoStoreComponent />
+          <DemoStoreComponent />
 
-        <PricingPlanComponent />
+          <PricingPlanComponent />
 
-        <TestimonialComponent />
+          <TestimonialComponent />
 
-        <FaqComponent />
+          <FaqComponent />
 
-        <CallToActionComponent />
-    </div>
+          <CallToActionComponent />
+      </div>
+    </AppLayout>
   )
 }
 
