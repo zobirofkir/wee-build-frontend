@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import {
   FiUser,
@@ -59,6 +59,11 @@ const Profile = () => {
   );
 
   /**
+   * Check if initial fetch has been done
+   */
+  const initialFetchDone  = useRef(false);
+
+  /**
    * Get update user state from Redux store
    */
   const {
@@ -79,7 +84,10 @@ const Profile = () => {
   } = useSelector((state) => state.deleteCurrentAuthenticatedAccount || {});
 
   useEffect(() => {
-    dispatch(getCurrentAuthenticatedUser());
+    if (!initialFetchDone.current) {
+      dispatch(getCurrentAuthenticatedUser());
+      initialFetchDone.current = true;
+    }
   }, [dispatch]);
 
   useEffect(() => {
