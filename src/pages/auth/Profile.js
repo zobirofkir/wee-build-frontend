@@ -262,17 +262,6 @@ const Profile = () => {
                   <span>Security</span>
                 </button>
                 <button
-                  onClick={() => setActiveTab("notifications")}
-                  className={`flex items-center gap-3 px-4 py-3 text-left ${
-                    activeTab === "notifications"
-                      ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-l-4 border-purple-600"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                  }`}
-                >
-                  <FiBell className="h-5 w-5" />
-                  <span>Notifications</span>
-                </button>
-                <button
                   onClick={handleLogout}
                   className="flex items-center gap-3 px-4 py-3 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                 >
@@ -586,108 +575,6 @@ const Profile = () => {
                           </button>
                         </div>
                       </form>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "notifications" && (
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
-                    Notification Preferences
-                  </h2>
-
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between py-3 border-b dark:border-gray-700">
-                        <div>
-                          <p className="font-medium text-gray-800 dark:text-white">
-                            Email Notifications
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Receive updates about your account via email
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <label className="inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              defaultChecked
-                              className="sr-only peer"
-                            />
-                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between py-3 border-b dark:border-gray-700">
-                        <div>
-                          <p className="font-medium text-gray-800 dark:text-white">
-                            Product Updates
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Receive notifications about new features and
-                            improvements
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <label className="inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              defaultChecked
-                              className="sr-only peer"
-                            />
-                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between py-3 border-b dark:border-gray-700">
-                        <div>
-                          <p className="font-medium text-gray-800 dark:text-white">
-                            Security Alerts
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Get notified about important security updates
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <label className="inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              defaultChecked
-                              className="sr-only peer"
-                            />
-                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between py-3">
-                        <div>
-                          <p className="font-medium text-gray-800 dark:text-white">
-                            Marketing Emails
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Receive promotional offers and newsletters
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <label className="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" />
-                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end">
-                      <button
-                        type="button"
-                        className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                      >
-                        Save Preferences
-                      </button>
                     </div>
                   </div>
                 </div>
