@@ -195,12 +195,14 @@ const Theme = () => {
                       Popular
                     </div>
                   )}
-                  <button
-                    className="absolute bottom-2 right-2 bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 p-2 rounded-full shadow-md hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors"
-                    aria-label="Preview theme"
-                  >
-                    <FiEye className="h-4 w-4" />
-                  </button>
+                  <a href={theme.url || '#'} target="_blank" rel="noopener noreferrer">
+                    <button
+                      className="absolute bottom-2 right-2 bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 p-2 rounded-full shadow-md hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors"
+                      aria-label="Preview theme"
+                    >
+                      <FiEye className="h-4 w-4" />
+                    </button>
+                  </a>
                 </div>
 
                 {/* Theme details */}
