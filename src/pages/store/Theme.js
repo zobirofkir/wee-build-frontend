@@ -78,7 +78,7 @@ const Theme = () => {
     /**
      * Logic to apply the selected theme would go here
      */
-    alert(`Theme ${selectedTheme} applied successfully!`);
+    alert(`Theme ${themes.find(theme => theme.id === selectedTheme).name} applied successfully!`);
   };
 
   return (
