@@ -16,7 +16,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
-import { updateCurrentAuthenticatedUser, resetUpdateUserState } from "../../redux/action/auth/update-current-authenticated-user-action";
+import {
+  updateCurrentAuthenticatedUser,
+  resetUpdateUserState,
+} from "../../redux/action/auth/update-current-authenticated-user-action";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -27,12 +30,14 @@ const Profile = () => {
     location: "",
     username: "",
     account_type: "",
+    avatar: null,
   });
   const [passwordData, setPasswordData] = useState({
     current_password: "",
     password: "",
-    password_confirmation: ""
+    password_confirmation: "",
   });
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const dispatch = useDispatch();
 
   /**
@@ -45,11 +50,11 @@ const Profile = () => {
   /**
    * Get update user state from Redux store
    */
-  const { 
-    loading: updateLoading, 
-    success: updateSuccess, 
-    message: updateMessage, 
-    error: updateError 
+  const {
+    loading: updateLoading,
+    success: updateSuccess,
+    message: updateMessage,
+    error: updateError,
   } = useSelector((state) => state.updateCurrentAuthenticatedUser || {});
 
   useEffect(() => {
@@ -65,7 +70,14 @@ const Profile = () => {
         location: currentUser.location || "",
         username: currentUser.username || currentUser.email || "",
         account_type: currentUser.account_type || "free",
+        avatar: null,
       });
+
+      if (currentUser.avatar) {
+        setAvatarPreview(currentUser.avatar);
+      } else {
+        setAvatarPreview(null);
+      }
     }
   }, [currentUser]);
 
@@ -110,21 +122,67 @@ const Profile = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({
+        ...formData,
+        avatar: file,
+      });
+
+      const previewUrl = URL.createObjectURL(file);
+      setAvatarPreview(previewUrl);
+    }
+  };
+
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    dispatch(updateCurrentAuthenticatedUser(formData));
+
+    const formDataToSend = new FormData();
+
+    // Ensure all required fields are included
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("username", formData.username || formData.email);
+    formDataToSend.append("account_type", formData.account_type || "free");
+
+    // Add optional fields if they exist
+    if (formData.phone) formDataToSend.append("phone", formData.phone);
+    if (formData.location) formDataToSend.append("location", formData.location);
+
+    // Add avatar if it exists
+    if (formData.avatar) {
+      formDataToSend.append("avatar", formData.avatar);
+    }
+
+    dispatch(updateCurrentAuthenticatedUser(formDataToSend));
   };
 
   const handleUpdatePassword = (e) => {
     e.preventDefault();
-    
-    // Combine the current user data with the new password
-    const updateData = {
-      ...formData,
-      ...passwordData
-    };
-    
-    dispatch(updateCurrentAuthenticatedUser(updateData));
+
+    // Create FormData for password update
+    const formDataToSend = new FormData();
+
+    // Add required user fields
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("username", formData.username || formData.email);
+    formDataToSend.append("account_type", formData.account_type || "free");
+
+    // Add password fields
+    formDataToSend.append("current_password", passwordData.current_password);
+    formDataToSend.append("password", passwordData.password);
+    formDataToSend.append(
+      "password_confirmation",
+      passwordData.password_confirmation
+    );
+
+    // Add optional fields
+    if (formData.phone) formDataToSend.append("phone", formData.phone);
+    if (formData.location) formDataToSend.append("location", formData.location);
+
+    dispatch(updateCurrentAuthenticatedUser(formDataToSend));
   };
 
   /**
@@ -181,7 +239,13 @@ const Profile = () => {
             {/* Avatar */}
             <div className="relative">
               <div className="h-24 w-24 md:h-32 md:w-32 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400 text-4xl font-bold overflow-hidden">
-                {userData.avatar ? (
+                {avatarPreview ? (
+                  <img
+                    src={avatarPreview}
+                    alt={userData.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : userData.avatar ? (
                   <img
                     src={userData.avatar}
                     alt={userData.name}
@@ -191,9 +255,19 @@ const Profile = () => {
                   userData.name.charAt(0)
                 )}
               </div>
-              <button className="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition-colors">
+              <label
+                htmlFor="avatar-upload"
+                className="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition-colors cursor-pointer"
+              >
                 <FiCamera className="h-4 w-4" />
-              </button>
+              </label>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
+                className="hidden"
+                onChange={handleFileChange}
+              />
             </div>
 
             {/* User Info */}
@@ -348,19 +422,19 @@ const Profile = () => {
                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
                     Account Settings
                   </h2>
-                  
+
                   {updateSuccess && (
                     <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-300">
                       {updateMessage}
                     </div>
                   )}
-                  
+
                   {updateError && (
                     <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
                       {updateError}
                     </div>
                   )}
-                  
+
                   <form className="space-y-6" onSubmit={handleUpdateProfile}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
@@ -415,6 +489,47 @@ const Profile = () => {
 
                     <div className="pt-4 border-t dark:border-gray-700">
                       <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
+                        Profile Picture
+                      </h3>
+                      <div className="flex items-start space-x-4">
+                        <div className="h-20 w-20 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400 text-2xl font-bold overflow-hidden">
+                          {avatarPreview ? (
+                            <img
+                              src={avatarPreview}
+                              alt="Avatar preview"
+                              className="h-full w-full object-cover"
+                            />
+                          ) : userData.avatar ? (
+                            <img
+                              src={userData.avatar}
+                              alt={userData.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            userData.name.charAt(0)
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Upload New Picture
+                          </label>
+                          <input
+                            type="file"
+                            name="avatar"
+                            accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
+                            onChange={handleFileChange}
+                            className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 text-sm"
+                          />
+                          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            Accepted formats: JPEG, PNG, JPG, GIF, SVG. Max
+                            size: 2MB.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t dark:border-gray-700">
+                      <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
                         Subscription Plan
                       </h3>
                       <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
@@ -447,8 +562,10 @@ const Profile = () => {
                               email: currentUser.email || "",
                               phone: currentUser.phone || "",
                               location: currentUser.location || "",
-                              username: currentUser.username || currentUser.email || "",
+                              username:
+                                currentUser.username || currentUser.email || "",
                               account_type: currentUser.account_type || "free",
+                              avatar: null,
                             });
                           }
                           dispatch(resetUpdateUserState());
@@ -465,9 +582,25 @@ const Profile = () => {
                       >
                         {updateLoading ? (
                           <>
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <svg
+                              className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                              ></path>
                             </svg>
                             Saving...
                           </>
@@ -491,7 +624,7 @@ const Profile = () => {
                       {updateMessage}
                     </div>
                   )}
-                  
+
                   {updateError && (
                     <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
                       {updateError}
@@ -503,7 +636,10 @@ const Profile = () => {
                       <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
                         Change Password
                       </h3>
-                      <form className="space-y-4" onSubmit={handleUpdatePassword}>
+                      <form
+                        className="space-y-4"
+                        onSubmit={handleUpdatePassword}
+                      >
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Current Password
@@ -547,7 +683,7 @@ const Profile = () => {
                               setPasswordData({
                                 current_password: "",
                                 password: "",
-                                password_confirmation: ""
+                                password_confirmation: "",
                               });
                               dispatch(resetUpdateUserState());
                             }}
@@ -563,9 +699,25 @@ const Profile = () => {
                           >
                             {updateLoading ? (
                               <>
-                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                <svg
+                                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                  ></circle>
+                                  <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                  ></path>
                                 </svg>
                                 Updating...
                               </>

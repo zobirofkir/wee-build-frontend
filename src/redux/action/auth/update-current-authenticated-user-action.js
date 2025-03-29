@@ -30,61 +30,76 @@ export const updateCurrentAuthenticatedUser = (userData) => {
     dispatch(updateCurrentUserRequest());
 
     try {
-      /**
-       * Get token from cookie instead of localStorage
-       */
       const token = getAuthToken();
 
       if (!token) {
         throw new Error("No access token found");
       }
 
-      /**
-       * Map form data to the format expected by the API if needed
-       */
-      const apiData = {
-        username: userData.username || userData.email, // Ensure username is provided
-        name: userData.name,
-        email: userData.email,
-        phone: userData.phone,
-        location: userData.location,
-        account_type: userData.account_type || "free", // Add account_type field with default value
-        // Add password fields only if password is provided
-        ...(userData.password
-          ? {
-              password: userData.password,
-              password_confirmation: userData.password_confirmation,
-            }
-          : {}),
+      let apiData;
+      let headers = {
+        Authorization: `Bearer ${token}`,
       };
 
-      /**
-       * The axios interceptor will automatically add the token to the request headers
-       * but we're keeping the explicit headers here for clarity
-       */
-      const response = await axios.put(
+      // Check if userData is FormData (for file uploads) or regular object
+      if (userData instanceof FormData) {
+        // Use FormData directly
+        apiData = userData;
+        
+        // Add _method=PUT for Laravel file uploads
+        apiData.append('_method', 'PUT');
+        
+        // Log FormData contents for debugging
+        console.log("FormData contents:");
+        for (let pair of apiData.entries()) {
+          console.log(pair[0] + ': ' + (pair[0] === 'avatar' ? 'File object' : pair[1]));
+        }
+      } else {
+        // For regular object data, create a new FormData object
+        apiData = new FormData();
+        
+        // Add _method=PUT for Laravel file uploads
+        apiData.append('_method', 'PUT');
+        
+        // Add required fields
+        apiData.append('name', userData.name);
+        apiData.append('email', userData.email);
+        apiData.append('username', userData.username || userData.email);
+        apiData.append('account_type', userData.account_type || 'free');
+        
+        // Add optional fields
+        if (userData.phone) apiData.append('phone', userData.phone);
+        if (userData.location) apiData.append('location', userData.location);
+        
+        // Add avatar if it exists
+        if (userData.avatar) {
+          apiData.append('avatar', userData.avatar);
+        }
+        
+        // Add password fields only if password is provided
+        if (userData.password) {
+          apiData.append('password', userData.password);
+          apiData.append('password_confirmation', userData.password_confirmation);
+        }
+      }
+
+      // Send the request with FormData - use POST for file uploads
+      const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/update`,
         apiData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers }
       );
 
-      const successMessage =
-        response.data.message || "Profile updated successfully";
+      const successMessage = response.data.message || "Profile updated successfully";
       dispatch(updateCurrentUserSuccess(successMessage));
-
-      /**
-       * Refresh user data after successful update
-       */
+      
+      // Refresh user data after successful update
       dispatch(getCurrentAuthenticatedUser());
 
       return successMessage;
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Failed to update user profile";
+      console.error("Update user error:", error.response?.data || error.message);
+      const errorMessage = error.response?.data?.message || "Failed to update user profile";
       dispatch(updateCurrentUserFailure(errorMessage));
       throw error;
     }
