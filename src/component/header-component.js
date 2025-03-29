@@ -18,7 +18,9 @@ const HeaderComponent = () => {
   const { darkMode, toggleTheme } = useTheme();
   const location = useLocation();
 
-  // Get authentication token from localStorage
+  /**
+   * Get authentication token from cookie
+   */
   const token = getAuthToken();
 
   /**
@@ -70,7 +72,9 @@ const HeaderComponent = () => {
     window.location.href = "/auth/login";
   };
 
-  // Navigation links configuration for DRY code
+  /**
+   * Navigation links configuration for DRY code
+   */
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/products", label: "Products" },
@@ -79,7 +83,11 @@ const HeaderComponent = () => {
     { path: "/contact", label: "Contact" },
   ];
 
-  // Check if a link is active
+  /**
+   * 
+   * @param {Check if a link is active} path 
+   * @returns 
+   */
   const isActive = (path) => {
     return location.pathname === path;
   };
