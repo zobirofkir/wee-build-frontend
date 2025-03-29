@@ -45,7 +45,6 @@ export const ForgetPasswordAction = (email) => {
           "Password reset link has been sent to your email.";
         dispatch(forgetPasswordSuccess(successMessage));
       } else {
-        // Handle unexpected success status codes
         throw new Error("Unexpected response from server");
       }
     } catch (error) {
@@ -57,8 +56,7 @@ export const ForgetPasswordAction = (email) => {
       let errorMessage = "Failed to send reset link. Please try again.";
 
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
+
         const statusCode = error.response.status;
 
         if (statusCode === 404) {
@@ -73,7 +71,9 @@ export const ForgetPasswordAction = (email) => {
           errorMessage = "Server error. Please try again later.";
         }
       } else if (error.request) {
-        // The request was made but no response was received
+        /**
+         * The request was made but no response was received
+         */
         errorMessage =
           "No response from server. Please check your internet connection.";
       }

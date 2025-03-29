@@ -41,49 +41,47 @@ export const updateCurrentAuthenticatedUser = (userData) => {
         Authorization: `Bearer ${token}`,
       };
 
-      // Check if userData is FormData (for file uploads) or regular object
+      /**
+       * Check if userData is FormData (for file uploads) or regular object
+       */
       if (userData instanceof FormData) {
-        // Use FormData directly
         apiData = userData;
         
-        // Add _method=PUT for Laravel file uploads
         apiData.append('_method', 'PUT');
         
-        // Log FormData contents for debugging
         console.log("FormData contents:");
         for (let pair of apiData.entries()) {
           console.log(pair[0] + ': ' + (pair[0] === 'avatar' ? 'File object' : pair[1]));
         }
       } else {
-        // For regular object data, create a new FormData object
         apiData = new FormData();
         
-        // Add _method=PUT for Laravel file uploads
         apiData.append('_method', 'PUT');
         
-        // Add required fields
         apiData.append('name', userData.name);
         apiData.append('email', userData.email);
         apiData.append('username', userData.username || userData.email);
         apiData.append('account_type', userData.account_type || 'free');
         
-        // Add optional fields
         if (userData.phone) apiData.append('phone', userData.phone);
         if (userData.location) apiData.append('location', userData.location);
         
-        // Add avatar if it exists
         if (userData.avatar) {
           apiData.append('avatar', userData.avatar);
         }
         
-        // Add password fields only if password is provided
+        /**
+         * Add password fields only if password is provided
+         */
         if (userData.password) {
           apiData.append('password', userData.password);
           apiData.append('password_confirmation', userData.password_confirmation);
         }
       }
 
-      // Send the request with FormData - use POST for file uploads
+      /**
+       * Send the request with FormData - use POST for file uploads
+       */
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/update`,
         apiData,
@@ -93,7 +91,9 @@ export const updateCurrentAuthenticatedUser = (userData) => {
       const successMessage = response.data.message || "Profile updated successfully";
       dispatch(updateCurrentUserSuccess(successMessage));
       
-      // Refresh user data after successful update
+      /**
+       * Refresh user data after successful update
+       */
       dispatch(getCurrentAuthenticatedUser());
 
       return successMessage;

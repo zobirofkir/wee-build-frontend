@@ -22,7 +22,9 @@ export const RegisterAction = (name, email, password, confirmPassword, accountTy
   return async (dispatch) => {
     dispatch(registerRequest());
     try {
-      // Create FormData object to handle file upload
+      /**
+       * Create FormData object to handle file upload
+       */
       const formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);

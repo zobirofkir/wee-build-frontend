@@ -140,17 +140,23 @@ const Profile = () => {
 
     const formDataToSend = new FormData();
 
-    // Ensure all required fields are included
+    /**
+     * Ensure all required fields are included
+     */
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("username", formData.username || formData.email);
     formDataToSend.append("account_type", formData.account_type || "free");
 
-    // Add optional fields if they exist
+    /**
+     * Add optional fields if they exist
+     */
     if (formData.phone) formDataToSend.append("phone", formData.phone);
     if (formData.location) formDataToSend.append("location", formData.location);
 
-    // Add avatar if it exists
+    /**
+     * Add avatar if it exists
+     */
     if (formData.avatar) {
       formDataToSend.append("avatar", formData.avatar);
     }
@@ -161,16 +167,22 @@ const Profile = () => {
   const handleUpdatePassword = (e) => {
     e.preventDefault();
 
-    // Create FormData for password update
+    /**
+     * Create FormData for password update
+     */
     const formDataToSend = new FormData();
 
-    // Add required user fields
+    /**
+     * Add required user fields
+     */
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("username", formData.username || formData.email);
     formDataToSend.append("account_type", formData.account_type || "free");
 
-    // Add password fields
+    /**
+     * Add password fields
+     */
     formDataToSend.append("current_password", passwordData.current_password);
     formDataToSend.append("password", passwordData.password);
     formDataToSend.append(
@@ -178,7 +190,9 @@ const Profile = () => {
       passwordData.password_confirmation
     );
 
-    // Add optional fields
+    /**
+     * Add optional fields
+     */
     if (formData.phone) formDataToSend.append("phone", formData.phone);
     if (formData.location) formDataToSend.append("location", formData.location);
 
