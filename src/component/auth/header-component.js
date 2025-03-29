@@ -87,15 +87,22 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
 
   return (
     <div className="flex justify-between items-center p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300">
-      <Link to="/auth/dashboard" className="flex items-center gap-4">
+      <div className="flex items-center gap-4">
         <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
           AI
         </h1>
 
         {currentUser && currentUser.domain && (
-          <a href={currentUser.domain} className="md:text-md text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300">{currentUser.domain}</a>
+          <a 
+            href={`http://${currentUser.domain}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="md:text-md text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300"
+          >
+            {currentUser.domain}
+          </a>
         )}
-      </Link>
+      </div>
       <div className="flex items-center space-x-4">
         <button
           onClick={toggleDarkMode}
