@@ -15,7 +15,9 @@ import { useDispatch } from "react-redux";
 const AuthAppLayout = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
   
-  // Initialize dark mode from localStorage
+  /**
+   * Initialize dark mode from localStorage
+   */
   useEffect(() => {
     const savedDarkMode = localStorage.getItem("darkMode") === "true";
     setDarkMode(savedDarkMode);
@@ -27,7 +29,9 @@ const AuthAppLayout = ({ children }) => {
     }
   }, []);
 
-  // Update HTML class when darkMode changes
+  /**
+   * Update HTML class when darkMode changes
+   */
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
