@@ -6,12 +6,50 @@ import {
   FiUser 
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 
 const HeaderComponent = ({ darkMode, setDarkMode }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    username: "",
+    account_type: "",
+    avatar: null,
+  });
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
   const dispatch = useDispatch();
+
+  const { currentUser, loading, error } = useSelector(
+    (state) => state.getCurrentAuthenticatedUser || {}
+  );
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        name: currentUser.name || "",
+        email: currentUser.email || "",
+        phone: currentUser.phone || "",
+        location: currentUser.location || "",
+        username: currentUser.username || currentUser.email || "",
+        account_type: currentUser.account_type || "free",
+        avatar: null,
+      });
+      
+
+      if (currentUser.avatar) {
+        setAvatarPreview(currentUser.avatar);
+      } else {
+        setAvatarPreview(null);
+      }
+    }
+  }, [currentUser]);
+
+
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -73,7 +111,15 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
             className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-medium hover:bg-purple-700 transition-colors"
             aria-label="Profile menu"
           >
-            <FiUser className="h-4 w-4" />
+            {avatarPreview ? (
+              <img
+                src={avatarPreview}
+                alt="Avatar"
+                className="h-8 w-8 rounded-full"
+              />
+            ) : (
+              <FiUser className="h-5 w-5" />
+            )}
           </button>
           {showProfileMenu && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-10 border dark:border-gray-700 transition-all duration-200">
