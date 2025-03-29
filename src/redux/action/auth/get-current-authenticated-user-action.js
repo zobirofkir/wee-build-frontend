@@ -40,6 +40,7 @@ export const getCurrentAuthenticatedUser = () => {
       );
 
       const userData = response.data.data;
+      console.log(userData);
       dispatch(getCurrentUserSuccess(userData));
       return userData;
     } catch (error) {

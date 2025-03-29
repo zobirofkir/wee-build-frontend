@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import {
@@ -14,13 +14,17 @@ import { fetchGithubThemes } from "../../redux/action/store/get-github-themes-ac
 const Theme = () => {
   const dispatch = useDispatch();
   const { themes, loading, error } = useSelector((state) => state.githubThemes);
+  const initialFetchDone = useRef(false);
 
   const [viewMode, setViewMode] = useState("grid");
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    dispatch(fetchGithubThemes());
+    if (!initialFetchDone.current) {
+      dispatch(fetchGithubThemes());
+      initialFetchDone.current = true;
+    }
   }, [dispatch]);
 
   /**
