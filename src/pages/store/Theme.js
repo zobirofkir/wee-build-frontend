@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
-import { FiCheck, FiEye, FiGrid, FiList, FiStar } from "react-icons/fi";
+import {
+  FiCheck,
+  FiEye,
+  FiGrid,
+  FiList,
+  FiStar,
+  FiSearch,
+} from "react-icons/fi";
 import { fetchGithubThemes } from "../../redux/action/store/get-github-themes-action";
 
 const Theme = () => {
   const dispatch = useDispatch();
   const { themes, loading, error } = useSelector((state) => state.githubThemes);
-  
+
   const [viewMode, setViewMode] = useState("grid");
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [filterCategory, setFilterCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     dispatch(fetchGithubThemes());
@@ -20,44 +28,52 @@ const Theme = () => {
    * Filter categories - dynamically generated from available themes
    */
   const getCategories = () => {
-    if (!themes || themes.length === 0) return [{ id: "all", name: "All Templates" }];
-    
+    if (!themes || themes.length === 0)
+      return [{ id: "all", name: "All Templates" }];
+
     /**
      * Create a set of unique categories, handling undefined categories
      */
     const categorySet = new Set();
-    themes.forEach(theme => {
+    themes.forEach((theme) => {
       if (theme.category) {
         categorySet.add(theme.category);
       } else if (theme.type) {
         categorySet.add(theme.type);
       }
     });
-    
+
     const categories = [
       { id: "all", name: "All Templates" },
-      ...Array.from(categorySet).map(category => ({
+      ...Array.from(categorySet).map((category) => ({
         id: category,
-        name: category.charAt(0).toUpperCase() + category.slice(1)
-      }))
+        name: category.charAt(0).toUpperCase() + category.slice(1),
+      })),
     ];
-    
+
     return categories;
   };
 
   const categories = getCategories();
 
   /**
-   * Filter themes based on selected category
+   * Filter themes based on selected category and search query
    */
-  const filteredThemes =
-    !themes ? [] :
-    filterCategory === "all"
-      ? themes
-      : themes.filter((theme) => {
-          const themeCategory = theme.category || theme.type;
-          return themeCategory === filterCategory;
-        });
+  const filteredThemes = !themes
+    ? []
+    : themes.filter((theme) => {
+        // Filter by category
+        const categoryMatch =
+          filterCategory === "all" ||
+          (theme.category || theme.type) === filterCategory;
+
+        // Filter by search query
+        const searchMatch =
+          !searchQuery ||
+          theme.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+        return categoryMatch && searchMatch;
+      });
 
   /**
    * Handle theme selection
@@ -78,7 +94,11 @@ const Theme = () => {
     /**
      * Logic to apply the selected theme would go here
      */
-    alert(`Theme ${themes.find(theme => theme.id === selectedTheme).name} applied successfully!`);
+    alert(
+      `Theme ${
+        themes.find((theme) => theme.id === selectedTheme).name
+      } applied successfully!`
+    );
   };
 
   return (
@@ -92,6 +112,22 @@ const Theme = () => {
           <p className="text-gray-600 dark:text-gray-300">
             Choose a template to customize your store's appearance
           </p>
+        </div>
+
+        {/* Search form */}
+        <div className="mb-6">
+          <div className="relative max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FiSearch className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              placeholder="Search themes by name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
 
         {/* Filters and view options */}
@@ -151,7 +187,7 @@ const Theme = () => {
         {error && (
           <div className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-4 rounded-lg mb-6">
             <p>Error loading themes: {error}</p>
-            <button 
+            <button
               onClick={() => dispatch(fetchGithubThemes())}
               className="mt-2 text-sm font-medium underline hover:text-red-800 dark:hover:text-red-200"
             >
@@ -176,14 +212,37 @@ const Theme = () => {
                   selectedTheme === theme.id
                     ? "ring-2 ring-purple-600 dark:ring-purple-400"
                     : ""
-                } ${viewMode === "list" ? "flex flex-col md:flex-row" : ""}`}
+                } ${
+                  viewMode === "list" ? "flex flex-col md:flex-row" : ""
+                } relative`}
               >
+                {/* Pro/Best badge */}
+                {theme.pro && (
+                  <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden">
+                    <div className="absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 rotate-45 translate-y-12 -translate-x-3 w-36 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-center py-1 font-bold text-xs">
+                      PRO
+                    </div>
+                  </div>
+                )}
+                {theme.best && !theme.pro && (
+                  <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden">
+                    <div className="absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 rotate-45 translate-y-12 -translate-x-3 w-36 bg-gradient-to-r from-blue-500 to-teal-500 text-white text-center py-1 font-bold text-xs">
+                      BEST CHOICE
+                    </div>
+                  </div>
+                )}
+
                 {/* Theme image */}
                 <div
-                  className={`relative ${viewMode === "list" ? "md:w-1/3" : ""}`}
+                  className={`relative ${
+                    viewMode === "list" ? "md:w-1/3" : ""
+                  }`}
                 >
                   <img
-                    src={theme.image || `https://placehold.co/600x400/purple/white?text=${theme.name}`}
+                    src={
+                      theme.image ||
+                      `https://placehold.co/600x400/purple/white?text=${theme.name}`
+                    }
                     alt={theme.name}
                     className="w-full h-48 object-cover"
                   />
@@ -206,6 +265,11 @@ const Theme = () => {
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                       {theme.name}
+                      {theme.pro && (
+                        <span className="ml-2 inline-block align-middle bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">
+                          PRO
+                        </span>
+                      )}
                     </h3>
                     <span className="text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">
                       {theme.category || theme.type || "General"}
@@ -238,6 +302,8 @@ const Theme = () => {
                       className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
                         selectedTheme === theme.id
                           ? "bg-purple-600 text-white"
+                          : theme.pro
+                          ? "bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600"
                           : "bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900"
                       }`}
                     >
@@ -276,16 +342,25 @@ const Theme = () => {
           </div>
         )}
 
-        {/* Empty state */}
+        {/* Empty state - updated to include search query */}
         {!loading && !error && filteredThemes.length === 0 && (
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 text-center">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
               No themes found
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
-              No themes match your current filter. Try selecting a different
-              category.
+              {searchQuery
+                ? `No themes match your search for "${searchQuery}".`
+                : "No themes match your current filter. Try selecting a different category."}
             </p>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="mt-4 text-purple-600 dark:text-purple-400 font-medium hover:underline"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         )}
       </div>
