@@ -12,6 +12,7 @@ import {
   FiBell,
   FiGlobe,
   FiAlertCircle,
+  FiTrash2,
 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
@@ -20,6 +21,10 @@ import {
   updateCurrentAuthenticatedUser,
   resetUpdateUserState,
 } from "../../redux/action/auth/update-current-authenticated-user-action";
+import {
+  deleteCurrentAuthenticatedAccount,
+  resetDeleteAccountState,
+} from "../../redux/action/auth/delete-current-authenticated-account-action";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -38,6 +43,11 @@ const Profile = () => {
     password_confirmation: "",
   });
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [deleteAccountData, setDeleteAccountData] = useState({
+    password: "",
+    confirmText: "",
+  });
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const dispatch = useDispatch();
 
   /**
@@ -56,6 +66,16 @@ const Profile = () => {
     message: updateMessage,
     error: updateError,
   } = useSelector((state) => state.updateCurrentAuthenticatedUser || {});
+
+  /**
+   * Get delete account state from Redux store
+   */
+  const {
+    loading: deleteLoading,
+    success: deleteSuccess,
+    message: deleteMessage,
+    error: deleteError,
+  } = useSelector((state) => state.deleteCurrentAuthenticatedAccount || {});
 
   useEffect(() => {
     dispatch(getCurrentAuthenticatedUser());
@@ -86,6 +106,15 @@ const Profile = () => {
    */
   useEffect(() => {
     dispatch(resetUpdateUserState());
+  }, [activeTab, dispatch]);
+
+  /**
+   * Reset delete account state when changing tabs
+   */
+  useEffect(() => {
+    dispatch(resetDeleteAccountState());
+    setShowDeleteConfirm(false);
+    setDeleteAccountData({ password: "", confirmText: "" });
   }, [activeTab, dispatch]);
 
   /**
@@ -197,6 +226,19 @@ const Profile = () => {
     if (formData.location) formDataToSend.append("location", formData.location);
 
     dispatch(updateCurrentAuthenticatedUser(formDataToSend));
+  };
+
+  const handleDeleteAccountChange = (e) => {
+    const { name, value } = e.target;
+    setDeleteAccountData({
+      ...deleteAccountData,
+      [name]: value,
+    });
+  };
+
+  const handleDeleteAccount = (e) => {
+    e.preventDefault();
+    dispatch(deleteCurrentAuthenticatedAccount(deleteAccountData.password));
   };
 
   /**
@@ -741,6 +783,135 @@ const Profile = () => {
                           </button>
                         </div>
                       </form>
+                    </div>
+
+                    <div className="pt-6 border-t dark:border-gray-700">
+                      <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4 flex items-center">
+                        <FiTrash2 className="mr-2 text-red-500" />
+                        Delete Account
+                      </h3>
+
+                      {!showDeleteConfirm ? (
+                        <div>
+                          <p className="text-gray-600 dark:text-gray-400 mb-4">
+                            Deleting your account is permanent and cannot be
+                            undone. All your data will be permanently removed.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setShowDeleteConfirm(true)}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                          >
+                            Delete Account
+                          </button>
+                        </div>
+                      ) : (
+                        <div>
+                          {deleteError && (
+                            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
+                              {deleteError}
+                            </div>
+                          )}
+
+                          <form
+                            className="space-y-4"
+                            onSubmit={handleDeleteAccount}
+                          >
+                            <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                              <p className="text-red-700 dark:text-red-300 font-medium mb-2">
+                                Warning: This action cannot be undone
+                              </p>
+                              <p className="text-gray-700 dark:text-gray-300">
+                                Once you delete your account, all of your data
+                                will be permanently removed. This action cannot
+                                be undone.
+                              </p>
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Your Password
+                              </label>
+                              <input
+                                type="password"
+                                name="password"
+                                value={deleteAccountData.password}
+                                onChange={handleDeleteAccountChange}
+                                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400"
+                                required
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Type "DELETE" to confirm
+                              </label>
+                              <input
+                                type="text"
+                                name="confirmText"
+                                value={deleteAccountData.confirmText}
+                                onChange={handleDeleteAccountChange}
+                                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400"
+                                required
+                              />
+                            </div>
+
+                            <div className="flex justify-end">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setShowDeleteConfirm(false);
+                                  setDeleteAccountData({
+                                    password: "",
+                                    confirmText: "",
+                                  });
+                                  dispatch(resetDeleteAccountState());
+                                }}
+                                className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg mr-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                disabled={deleteLoading}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="submit"
+                                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
+                                disabled={
+                                  deleteLoading ||
+                                  deleteAccountData.confirmText !== "DELETE"
+                                }
+                              >
+                                {deleteLoading ? (
+                                  <>
+                                    <svg
+                                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                      ></circle>
+                                      <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                      ></path>
+                                    </svg>
+                                    Deleting...
+                                  </>
+                                ) : (
+                                  "Permanently Delete Account"
+                                )}
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
