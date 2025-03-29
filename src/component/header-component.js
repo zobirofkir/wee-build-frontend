@@ -4,8 +4,6 @@ import {
   FiX,
   FiMoon,
   FiSun,
-  FiShoppingCart,
-  FiUser,
   FiLogOut,
 } from "react-icons/fi";
 import { useTheme } from "../context/theme-context";
