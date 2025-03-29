@@ -94,10 +94,14 @@ const Theme = () => {
 
   /**
    * Handle theme selection
-   * @param {*} themeId 
+   * @param {*} themeId
    */
   const handleSelectTheme = (themeId) => {
-    setSelectedTheme(themeId);
+    if (selectedTheme === themeId) {
+      setSelectedTheme(null);
+    } else {
+      setSelectedTheme(themeId);
+    }
   };
 
   /**
