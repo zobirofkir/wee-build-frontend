@@ -25,6 +25,7 @@ import {
   deleteCurrentAuthenticatedAccount,
   resetDeleteAccountState,
 } from "../../redux/action/auth/delete-current-authenticated-account-action";
+import { toast } from "react-hot-toast";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -191,6 +192,8 @@ const Profile = () => {
     }
 
     dispatch(updateCurrentAuthenticatedUser(formDataToSend));
+
+    toast.success("Profile updated successfully");
   };
 
   const handleUpdatePassword = (e) => {
