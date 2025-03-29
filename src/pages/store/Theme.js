@@ -17,7 +17,6 @@ const Theme = () => {
 
   const [viewMode, setViewMode] = useState("grid");
   const [selectedTheme, setSelectedTheme] = useState(null);
-  const [filterCategory, setFilterCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -25,54 +24,15 @@ const Theme = () => {
   }, [dispatch]);
 
   /**
-   * Filter categories - dynamically generated from available themes
-   */
-  const getCategories = () => {
-    if (!themes || themes.length === 0)
-      return [{ id: "all", name: "All Templates" }];
-
-    /**
-     * Create a set of unique categories, handling undefined categories
-     */
-    const categorySet = new Set();
-    themes.forEach((theme) => {
-      if (theme.category) {
-        categorySet.add(theme.category);
-      } else if (theme.type) {
-        categorySet.add(theme.type);
-      }
-    });
-
-    const categories = [
-      { id: "all", name: "All Templates" },
-      ...Array.from(categorySet).map((category) => ({
-        id: category,
-        name: category.charAt(0).toUpperCase() + category.slice(1),
-      })),
-    ];
-
-    return categories;
-  };
-
-  const categories = getCategories();
-
-  /**
-   * Filter themes based on selected category and search query
+   * Filter themes based on search query only
    */
   const filteredThemes = !themes
     ? []
     : themes.filter((theme) => {
-        // Filter by category
-        const categoryMatch =
-          filterCategory === "all" ||
-          (theme.category || theme.type) === filterCategory;
-
-        // Filter by search query
-        const searchMatch =
+        return (
           !searchQuery ||
-          theme.name.toLowerCase().includes(searchQuery.toLowerCase());
-
-        return categoryMatch && searchMatch;
+          theme.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
       });
 
   /**
@@ -130,25 +90,8 @@ const Theme = () => {
           </div>
         </div>
 
-        {/* Filters and view options */}
+        {/* Filters and view options - removed category filters */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
-          {/* Category filters */}
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setFilterCategory(category.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  filterCategory === category.id
-                    ? "bg-purple-600 text-white"
-                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-900/30"
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-
           {/* View options */}
           <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg p-1 shadow-sm">
             <button
@@ -351,7 +294,7 @@ const Theme = () => {
             <p className="text-gray-600 dark:text-gray-300">
               {searchQuery
                 ? `No themes match your search for "${searchQuery}".`
-                : "No themes match your current filter. Try selecting a different category."}
+                : "No themes available."}
             </p>
             {searchQuery && (
               <button
