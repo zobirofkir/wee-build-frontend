@@ -63,7 +63,14 @@ function App() {
         />
         
         {/* Themes Routes */}
-        <Route path="/auth/themes" element={<Theme />} />
+        <Route
+          path="/auth/themes"
+          element={
+            <ProtectedRoute>
+              <Theme />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </BrowserRouter>
