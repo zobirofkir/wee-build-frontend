@@ -236,7 +236,7 @@ const Theme = () => {
                         {theme.category || "General"}
                       </span>
                       {theme.type && (
-                        <span className="text-xs text-center font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">
+                        <span className="text-xs text-center font-medium text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">
                           {theme.type}
                         </span>
                       )}
