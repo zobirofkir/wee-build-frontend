@@ -8,6 +8,7 @@ import ProtectedRoute from './protected/protected-route';
 import { Toaster } from 'react-hot-toast';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import Profile from './pages/auth/Profile';
+import Theme from './pages/store/Theme';
 
 function App() {
   return (
@@ -60,6 +61,9 @@ function App() {
             </ProtectedRoute>
           }  
         />
+        
+        {/* Themes Routes */}
+        <Route path="/auth/themes" element={<Theme />} />
 
       </Routes>
     </BrowserRouter>
