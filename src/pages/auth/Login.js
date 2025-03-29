@@ -12,7 +12,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, user } = useSelector((state) => state.login);
@@ -30,19 +31,28 @@ const Login = () => {
   useEffect(() => {
     if (error) {
       toast.error(error);
+      setIsSubmitting(false);
     }
   }, [error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
-    
-    dispatch(LoginAction(email, password));
-    
+
+    setIsSubmitting(true);
+    dispatch(LoginAction(email, password))
+      .then(() => {
+        // Success case is handled by the redirect in the other useEffect
+      })
+      .catch(() => {
+        // Error is handled in the error useEffect
+        setIsSubmitting(false);
+      });
+
     if (rememberMe) {
       localStorage.setItem("rememberedEmail", email);
     } else {
@@ -177,10 +187,10 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="group relative flex w-full justify-center rounded-lg border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-75 dark:bg-purple-700 dark:hover:bg-purple-600"
               >
-                {loading ? (
+                {isSubmitting ? (
                   <svg
                     className="h-5 w-5 animate-spin text-white"
                     xmlns="http://www.w3.org/2000/svg"
