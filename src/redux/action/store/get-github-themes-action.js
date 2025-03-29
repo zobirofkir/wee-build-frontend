@@ -44,7 +44,6 @@ export const fetchGithubThemes = () => {
       );
 
       const themes = response.data.themes;
-      console.log(themes);
       dispatch(getGithubThemesSuccess(themes));
       return themes;
     } catch (error) {
