@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   FiHome,
   FiShoppingBag,
-  FiUsers,
-  FiSettings,
-  FiBarChart2,
 } from "react-icons/fi";
 import DesktopSidebareComponent from "../../component/auth/desktop-sidebare-component";
 import MobileSidebareComponent from "../../component/auth/mobile-sidebare-component";
@@ -44,27 +41,9 @@ const AuthAppLayout = ({ children }) => {
     { icon: <FiHome className="h-5 w-5" />, label: "Dashboard", active: true, path: "/auth/dashboard" },
     {
       icon: <FiShoppingBag className="h-5 w-5" />,
-      label: "AI Models",
+      label: "Themes",
       active: false,
-      path: "/auth/models"
-    },
-    {
-      icon: <FiUsers className="h-5 w-5" />,
-      label: "Customers",
-      active: false,
-      path: "/auth/customers"
-    },
-    {
-      icon: <FiBarChart2 className="h-5 w-5" />,
-      label: "Analytics",
-      active: false,
-      path: "/auth/analytics"
-    },
-    {
-      icon: <FiSettings className="h-5 w-5" />,
-      label: "Settings",
-      active: false,
-      path: "/auth/settings"
+      path: "/auth/themes",
     },
   ];
 
