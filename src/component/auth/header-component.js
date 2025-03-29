@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { 
-  FiSun, 
-  FiMoon, 
-  FiMessageSquare, 
-  FiUser 
-} from "react-icons/fi";
+import React, { useState, useEffect, useRef } from "react";
+import { FiSun, FiMoon, FiMessageSquare, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
+import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
 
 const HeaderComponent = ({ darkMode, setDarkMode }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -28,6 +24,21 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
     (state) => state.getCurrentAuthenticatedUser || {}
   );
 
+  /**
+   * Check if initial fetch has been done
+   */
+  const initialFetchDone = useRef(false);
+
+  /**
+   * Fetch current user
+   */
+  useEffect(() => {
+    if (!initialFetchDone.current) {
+      dispatch(getCurrentAuthenticatedUser());
+      initialFetchDone.current = true;
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     if (currentUser) {
       setFormData({
@@ -37,9 +48,9 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
         location: currentUser.location || "",
         username: currentUser.username || currentUser.email || "",
         account_type: currentUser.account_type || "free",
+        domain: currentUser.domain,
         avatar: null,
       });
-      
 
       if (currentUser.avatar) {
         setAvatarPreview(currentUser.avatar);
@@ -48,8 +59,6 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
       }
     }
   }, [currentUser]);
-
-
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -65,24 +74,27 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
    */
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showProfileMenu && !event.target.closest('.profile-menu-container')) {
+      if (showProfileMenu && !event.target.closest(".profile-menu-container")) {
         setShowProfileMenu(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showProfileMenu]);
 
   return (
     <div className="flex justify-between items-center p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300">
-
       <Link to="/auth/dashboard">
         <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
           AI
         </h1>
+
+        {currentUser && currentUser.domain && (
+          <a href={currentUser.domain}>{currentUser.domain}</a>
+        )}
       </Link>
       <div className="flex items-center space-x-4">
         <button
@@ -98,7 +110,7 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
         </button>
         <div className="relative">
           <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-          <button 
+          <button
             className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 transition-colors duration-300"
             aria-label="Messages"
           >
@@ -106,7 +118,7 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
           </button>
         </div>
         <div className="relative profile-menu-container">
-          <button 
+          <button
             onClick={() => setShowProfileMenu(!showProfileMenu)}
             className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-medium hover:bg-purple-700 transition-colors"
             aria-label="Profile menu"
@@ -143,4 +155,4 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
   );
 };
 
-export default HeaderComponent; 
+export default HeaderComponent;
