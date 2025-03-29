@@ -162,14 +162,14 @@ const Theme = () => {
                 {/* Pro/Best badge */}
                 {theme.pro && (
                   <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden">
-                    <div className="absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 rotate-45 translate-y-12 -translate-x-3 w-36 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-center py-1 font-bold text-xs">
+                    <div className="absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 rotate-45 translate-y-12 -translate-x-3 w-36 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-center py-1 font-bold text-xs shadow-md">
                       PRO
                     </div>
                   </div>
                 )}
                 {theme.best && !theme.pro && (
                   <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden">
-                    <div className="absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 rotate-45 translate-y-12 -translate-x-3 w-36 bg-gradient-to-r from-blue-500 to-teal-500 text-white text-center py-1 font-bold text-xs">
+                    <div className="absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 rotate-45 translate-y-12 -translate-x-3 w-36 bg-gradient-to-r from-blue-500 to-teal-500 text-white text-center py-1 font-bold text-xs shadow-md">
                       BEST CHOICE
                     </div>
                   </div>
@@ -187,15 +187,25 @@ const Theme = () => {
                       `https://placehold.co/600x400/purple/white?text=${theme.name}`
                     }
                     alt={theme.name}
-                    className="w-full h-48 object-cover"
+                    className={`w-full h-48 object-cover ${
+                      theme.pro
+                        ? "border-b-2 border-amber-500"
+                        : theme.best
+                        ? "border-b-2 border-blue-500"
+                        : ""
+                    }`}
                   />
                   {theme.popular && (
-                    <div className="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                    <div className="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center shadow-md">
                       <FiStar className="mr-1 h-3 w-3" />
                       Popular
                     </div>
                   )}
-                  <a href={theme.test_url || '#'} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={theme.test_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button
                       className="absolute bottom-2 right-2 bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 p-2 rounded-full shadow-md hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors"
                       aria-label="Preview theme"
@@ -211,14 +221,26 @@ const Theme = () => {
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                       {theme.name}
                       {theme.pro && (
-                        <span className="ml-2 inline-block align-middle bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">
+                        <span className="ml-2 inline-block align-middle bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">
                           PRO
                         </span>
                       )}
+                      {theme.best && !theme.pro && (
+                        <span className="ml-2 inline-block align-middle bg-gradient-to-r from-blue-500 to-teal-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">
+                          BEST
+                        </span>
+                      )}
                     </h3>
-                    <span className="text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">
-                      {theme.category || theme.type || "General"}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">
+                        {theme.category || "General"}
+                      </span>
+                      {theme.type && (
+                        <span className="text-xs text-center font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">
+                          {theme.type}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   {/* Features */}
@@ -231,8 +253,15 @@ const Theme = () => {
                         {theme.features.map((feature, index) => (
                           <span
                             key={index}
-                            className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded"
+                            className={`text-xs px-2 py-1 rounded flex items-center ${
+                              theme.pro
+                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
+                                : theme.best
+                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                            }`}
                           >
+                            <FiCheck className="mr-1 h-3 w-3" />
                             {feature}
                           </span>
                         ))}
@@ -246,9 +275,11 @@ const Theme = () => {
                       onClick={() => handleSelectTheme(theme.id)}
                       className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
                         selectedTheme === theme.id
-                          ? "bg-purple-600 text-white"
+                          ? "bg-purple-600 text-white shadow-md"
                           : theme.pro
-                          ? "bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600"
+                          ? "bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 shadow-md"
+                          : theme.best
+                          ? "bg-gradient-to-r from-blue-500 to-teal-500 text-white hover:from-blue-600 hover:to-teal-600 shadow-md"
                           : "bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900"
                       }`}
                     >
