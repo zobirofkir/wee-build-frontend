@@ -2,9 +2,7 @@ import React from 'react';
 import { 
   FiShoppingBag, 
   FiLayout, 
-  FiGrid,
   FiCpu,
-  FiSettings,
   FiTrendingUp 
 } from "react-icons/fi";
 
