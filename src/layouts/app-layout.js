@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderComponent from '../components/header-component'
 import FooterComponent from '../components/footer-component'
-import { ThemeProvider } from '../context/theme-context'
+import { ThemeProvider } from '../contexts/theme-context'
 
 const AppLayout = ({children}) => {
   return (

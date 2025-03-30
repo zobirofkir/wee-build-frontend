@@ -6,7 +6,7 @@ import {
   FiSun,
   FiLogOut,
 } from "react-icons/fi";
-import { useTheme } from "../context/theme-context";
+import { useTheme } from "../contexts/theme-context";
 import { Link, useLocation } from "react-router-dom";
 import { getAuthToken } from "../utils/cookie-utils";
 
