@@ -1,6 +1,6 @@
 import React from 'react'
-import HeaderComponent from '../component/header-component'
-import FooterComponent from '../component/footer-component'
+import HeaderComponent from '../components/header-component'
+import FooterComponent from '../components/footer-component'
 import { ThemeProvider } from '../context/theme-context'
 
 const AppLayout = ({children}) => {

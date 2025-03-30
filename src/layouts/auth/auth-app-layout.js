@@ -3,9 +3,9 @@ import {
   FiHome,
   FiShoppingBag,
 } from "react-icons/fi";
-import DesktopSidebareComponent from "../../component/auth/desktop-sidebare-component";
-import MobileSidebareComponent from "../../component/auth/mobile-sidebare-component";
-import HeaderComponent from "../../component/auth/header-component";
+import DesktopSidebareComponent from "../../components/auth/desktop-sidebare-component";
+import MobileSidebareComponent from "../../components/auth/mobile-sidebare-component";
+import HeaderComponent from "../../components/auth/header-component";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { useDispatch } from "react-redux";
 

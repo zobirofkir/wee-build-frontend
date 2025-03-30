@@ -7,13 +7,13 @@ import {
   FiShoppingBag,
 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import DashboardHeaderComponent from "../../component/dashboard/dashboard-header-component";
-import DashboardStatsComponent from "../../component/dashboard/dashboard-stats-component";
-import ChatDashboardComponent from "../../component/dashboard/chat-dashboard-component";
-import RecentDashboardComponent from "../../component/dashboard/recent-dashboard-component";
-import UserProfileCardComponent from "../../component/dashboard/user-profile-card-component";
-import QuickActionComponent from "../../component/dashboard/quick-action-component";
-import HelpActionComponent from "../../component/dashboard/help-action-component";
+import DashboardHeaderComponent from "../../components/dashboard/dashboard-header-component";
+import DashboardStatsComponent from "../../components/dashboard/dashboard-stats-component";
+import ChatDashboardComponent from "../../components/dashboard/chat-dashboard-component";
+import RecentDashboardComponent from "../../components/dashboard/recent-dashboard-component";
+import UserProfileCardComponent from "../../components/dashboard/user-profile-card-component";
+import QuickActionComponent from "../../components/dashboard/quick-action-component";
+import HelpActionComponent from "../../components/dashboard/help-action-component";
 
 const Dashboard = () => {
   /**
