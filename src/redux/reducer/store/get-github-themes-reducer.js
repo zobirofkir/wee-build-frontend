@@ -7,6 +7,7 @@ import {
 const initialState = {
   loading: false,
   themes: [],
+  currentTheme: null,
   error: null,
 };
 
@@ -22,7 +23,8 @@ const GetGithubThemesReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        themes: action.payload,
+        themes: action.payload.themes,
+        currentTheme: action.payload.currentTheme,
         error: null,
       };
     case GET_GITHUB_THEMES_FAILURE:

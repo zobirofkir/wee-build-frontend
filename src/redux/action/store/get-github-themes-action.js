@@ -9,9 +9,9 @@ export const getGithubThemesRequest = () => ({
   type: GET_GITHUB_THEMES_REQUEST,
 });
 
-export const getGithubThemesSuccess = (themes) => ({
+export const getGithubThemesSuccess = (data) => ({
   type: GET_GITHUB_THEMES_SUCCESS,
-  payload: themes,
+  payload: data,
 });
 
 export const getGithubThemesFailure = (error) => ({
@@ -20,13 +20,9 @@ export const getGithubThemesFailure = (error) => ({
 });
 
 export const fetchGithubThemes = () => {
-
   return async (dispatch) => {
     dispatch(getGithubThemesRequest());
 
-   /**
-   * Get authentication token
-   */
     try {
       const token = getAuthToken();
 
@@ -44,8 +40,10 @@ export const fetchGithubThemes = () => {
       );
 
       const themes = response.data.themes;
-      dispatch(getGithubThemesSuccess(themes));
-      return themes;
+      const currentTheme = response.data.currentTheme || null;
+
+      dispatch(getGithubThemesSuccess({ themes, currentTheme }));
+      return { themes, currentTheme };
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Failed to fetch themes";

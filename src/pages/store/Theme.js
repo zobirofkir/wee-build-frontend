@@ -10,10 +10,19 @@ import {
   FiSearch,
 } from "react-icons/fi";
 import { fetchGithubThemes } from "../../redux/action/store/get-github-themes-action";
+import { applyTheme } from "../../redux/action/store/apply-theme-action";
+import { toast } from "react-hot-toast";
 
 const Theme = () => {
   const dispatch = useDispatch();
-  const { themes, loading, error } = useSelector((state) => state.githubThemes);
+  const { themes, currentTheme, loading, error } = useSelector(
+    (state) => state.githubThemes
+  );
+  const {
+    loading: applyLoading,
+    success: applySuccess,
+    error: applyError,
+  } = useSelector((state) => state.applyTheme);
   const initialFetchDone = useRef(false);
 
   const [viewMode, setViewMode] = useState("grid");
@@ -26,6 +35,26 @@ const Theme = () => {
       initialFetchDone.current = true;
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (applySuccess) {
+      toast.success("Theme applied successfully!");
+      setSelectedTheme(null);
+    }
+    if (applyError) {
+      toast.error(`Failed to apply theme: ${applyError}`);
+    }
+  }, [applySuccess, applyError]);
+
+  // Set the selected theme to the current theme when data is loaded
+  useEffect(() => {
+    if (currentTheme && themes.length > 0) {
+      const currentThemeObj = themes.find((t) => t.id === currentTheme.theme);
+      if (currentThemeObj) {
+        setSelectedTheme(currentThemeObj.id);
+      }
+    }
+  }, [currentTheme, themes]);
 
   /**
    * Filter themes based on search query only
@@ -55,14 +84,11 @@ const Theme = () => {
    * Handle theme application
    */
   const handleApplyTheme = () => {
-    /**
-     * Logic to apply the selected theme would go here
-     */
-    alert(
-      `Theme ${
-        themes.find((theme) => theme.id === selectedTheme).name
-      } applied successfully!`
-    );
+    if (!selectedTheme) return;
+
+    dispatch(applyTheme(selectedTheme)).catch((error) => {
+      console.error("Error applying theme:", error);
+    });
   };
 
   return (
@@ -76,6 +102,21 @@ const Theme = () => {
           <p className="text-gray-600 dark:text-gray-300">
             Choose a template to customize your store's appearance
           </p>
+
+          {/* Show current theme info */}
+          {currentTheme && (
+            <div className="mt-2 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+              <p className="text-purple-700 dark:text-purple-300">
+                <span className="font-medium">Current theme:</span>{" "}
+                {themes.find((t) => t.id === currentTheme.theme)?.name}
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                  (Applied on{" "}
+                  {new Date(currentTheme.theme_applied_at).toLocaleDateString()}
+                  )
+                </span>
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Search form */}
@@ -314,9 +355,21 @@ const Theme = () => {
               </p>
               <button
                 onClick={handleApplyTheme}
-                className="py-2 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                disabled={applyLoading}
+                className={`py-2 px-6 ${
+                  applyLoading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-purple-600 hover:bg-purple-700"
+                } text-white rounded-lg transition-colors flex items-center`}
               >
-                Apply Theme
+                {applyLoading ? (
+                  <>
+                    <span className="mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Applying...
+                  </>
+                ) : (
+                  "Apply Theme"
+                )}
               </button>
             </div>
           </div>

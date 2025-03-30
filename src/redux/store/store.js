@@ -7,6 +7,7 @@ import ForgetPasswordReducer from '../reducer/auth/forget-password-reducer';
 import GetCurrentAuthenticatedUserReducer from '../reducer/auth/get-current-authenticated-user-reducer';
 import { updateCurrentAuthenticatedUser } from '../action/auth/update-current-authenticated-user-action';
 import GetGithubThemesReducer from '../reducer/store/get-github-themes-reducer';
+import ApplyThemeReducer from '../reducer/store/apply-theme-reducer';
 
 const rootReducer = combineReducers({
   register: RegisterReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   forgotPassword: ForgetPasswordReducer,
   getCurrentAuthenticatedUser: GetCurrentAuthenticatedUserReducer,
   updateCurrentAuthenticatedUser: updateCurrentAuthenticatedUser,
-  githubThemes: GetGithubThemesReducer
+  githubThemes: GetGithubThemesReducer,
+  applyTheme: ApplyThemeReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
