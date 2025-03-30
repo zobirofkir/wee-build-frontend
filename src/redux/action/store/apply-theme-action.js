@@ -19,8 +19,8 @@ export const applyThemeFailure = (error) => ({
   payload: error,
 });
 
-export const applyTheme = (themeId) => {
-  return async (dispatch) => {
+export const applyTheme = (themeIdOrName) => {
+  return async (dispatch, getState) => {
     dispatch(applyThemeRequest());
 
     try {
@@ -30,9 +30,22 @@ export const applyTheme = (themeId) => {
         throw new Error("No access token found");
       }
 
+      // Get the themes from the state
+      const { themes } = getState().githubThemes;
+
+      // Find the theme object by ID
+      const themeObj = themes.find((theme) => theme.id === themeIdOrName);
+
+      // Use the theme name if found, otherwise use the original value
+      // This handles both cases: passing an ID or directly passing a name
+      const themeName = themeObj ? themeObj.name : themeIdOrName;
+
+      const url = `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/${themeName}/apply`;
+      console.log("Attempting to connect to:", url);
+
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/store/apply-theme`,
-        { themeId },
+        url,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -44,10 +57,11 @@ export const applyTheme = (themeId) => {
       dispatch(applyThemeSuccess(themeData));
       return themeData;
     } catch (error) {
+      console.error("Full error details:", error);
       const errorMessage =
         error.response?.data?.message || "Failed to apply theme";
       dispatch(applyThemeFailure(errorMessage));
       throw error;
     }
   };
-}; 
+};
