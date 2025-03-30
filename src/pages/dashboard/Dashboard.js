@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
+import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
 import {
   FiBarChart2,
   FiUsers,
@@ -7,8 +8,26 @@ import {
   FiHelpCircle,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
+  /**
+   * Dispatch
+   */
+  const dispatch = useDispatch();
+
+  /**
+   * Get Current Authenticated User
+   */
+  useEffect(() => {
+    dispatch(getCurrentAuthenticatedUser());
+  }, [dispatch]);
+
+  /**
+   * Current User
+   */
+  const {currentUser} = useSelector(state => state.getCurrentAuthenticatedUser);
+
   /**
    * Stats
    */
@@ -66,6 +85,18 @@ const Dashboard = () => {
       <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 min-h-screen">
         {/* Dashboard content */}
         <div className="p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+          {/* Auth User Info */}
+          <div>
+            <h1>
+              {currentUser ? currentUser.name : "User"}
+            </h1>
+
+            <a href={currentUser ? `http://${currentUser.domain}` : "/auth/dashboard"} target="_blank">
+              Live And Preview
+            </a>
+          </div>
+
           {/* Stats cards */}
           <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat, index) => (
