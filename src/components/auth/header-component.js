@@ -88,9 +88,9 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
       <div className="flex items-center space-x-4">
       
       {/* View Live Store */}
-      {currentUser && currentUser.domain && (
+      {currentUser && currentUser.preview_url && (
             <a
-            href={`http://${currentUser.domain}`}
+            href={`${currentUser.preview_url}`}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 md:mt-0 md:flex hidden items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-md"
