@@ -8,9 +8,9 @@ const DesktopSidebareComponent = ({navItems, logout}) => {
   return (
     <div className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-800 border-r dark:border-gray-700 transition-colors duration-300">
         <div className="p-4 border-b dark:border-gray-700">
-          <h1 className="text-xl font-bold text-purple-800 dark:text-purple-400">
+          <Link to="/auth/dashboard" className='text-xl font-bold text-purple-800 dark:text-purple-400'>
               AI Store
-          </h1>
+          </Link>
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <nav className="px-2 space-y-1">
