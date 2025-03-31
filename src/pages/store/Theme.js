@@ -17,6 +17,7 @@ import SearchThemeComponent from "../../components/themes/search-theme-component
 import FilterThemeComponent from "../../components/themes/filter-theme-component";
 import ThemeListComponent from "../../components/themes/theme-list-component";
 import ApplyThemeButtonComponent from "../../components/themes/apply-theme-button-component";
+import EmptyThemeComponent from "../../components/themes/empty-theme-component";
 const Theme = () => {
   const dispatch = useDispatch();
   const { themes, currentTheme, loading, error } = useSelector(
@@ -179,26 +180,8 @@ const Theme = () => {
         <ApplyThemeButtonComponent selectedTheme={selectedTheme} themes={themes} applyLoading={applyLoading} applyProgress={applyProgress} handleApplyTheme={handleApplyTheme} />
 
         {/* Empty state - updated to include search query */}
-        {!loading && !error && filteredThemes.length === 0 && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 text-center">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-              No themes found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              {searchQuery
-                ? `No themes match your search for "${searchQuery}".`
-                : "No themes available."}
-            </p>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="mt-4 text-purple-600 dark:text-purple-400 font-medium hover:underline"
-              >
-                Clear search
-              </button>
-            )}
-          </div>
-        )}
+        <EmptyThemeComponent loading={loading} error={error} filteredThemes={filteredThemes} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      
       </div>
     </AuthAppLayout>
   );
