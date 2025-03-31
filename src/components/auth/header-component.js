@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { 
-  FiSun, 
-  FiMoon, 
-  FiMessageSquare, 
-  FiUser 
+import {
+  FiSun,
+  FiMoon,
+  FiMessageSquare,
+  FiUser,
+  FiSettings,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +25,7 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
 
   const dispatch = useDispatch();
 
-  const { currentUser, loading, error } = useSelector(
+  const { currentUser } = useSelector(
     (state) => state.getCurrentAuthenticatedUser || {}
   );
 
@@ -39,7 +40,6 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
         account_type: currentUser.account_type || "free",
         avatar: null,
       });
-      
 
       if (currentUser.avatar) {
         setAvatarPreview(currentUser.avatar);
@@ -48,8 +48,6 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
       }
     }
   }, [currentUser]);
-
-
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -65,48 +63,55 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
    */
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showProfileMenu && !event.target.closest('.profile-menu-container')) {
+      if (showProfileMenu && !event.target.closest(".profile-menu-container")) {
         setShowProfileMenu(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showProfileMenu]);
 
   return (
     <div className="flex justify-between items-center p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300">
-
       <Link to="/auth/dashboard">
         <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
           AI
         </h1>
       </Link>
-      
+
       <div className="flex items-center space-x-4">
-      
-      {/* View Live Store */}
-      {currentUser && currentUser.preview_url && (
-            <a
+        {/* View Live Store */}
+        {currentUser && currentUser.preview_url && (
+          <a
             href={`${currentUser.preview_url}`}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 md:mt-0 md:flex hidden items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-md"
-            >
+          >
             <span className="mr-2">View Live Store</span>
             <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
-                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
             </svg>
-            </a>
+          </a>
         )}
+
+        {/* Theme Customization Button */}
+        <Link
+          to="/auth/themes/customize"
+          className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 flex items-center transition-colors duration-300"
+          title="Customize Theme"
+        >
+          <FiSettings className="h-5 w-5" />
+        </Link>
 
         <button
           onClick={toggleDarkMode}
@@ -121,7 +126,7 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
         </button>
         <div className="relative">
           <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-          <button 
+          <button
             className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 transition-colors duration-300"
             aria-label="Messages"
           >
@@ -129,7 +134,7 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
           </button>
         </div>
         <div className="relative profile-menu-container">
-          <button 
+          <button
             onClick={() => setShowProfileMenu(!showProfileMenu)}
             className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-medium hover:bg-purple-700 transition-colors"
             aria-label="Profile menu"
@@ -166,4 +171,4 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
   );
 };
 
-export default HeaderComponent; 
+export default HeaderComponent;

@@ -9,11 +9,11 @@ import { Toaster } from "react-hot-toast";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Profile from "./pages/auth/Profile";
 import Theme from "./pages/store/Theme";
+import CustomizeTheme from "./pages/store/CustomizeTheme";
 
 function App() {
   return (
     <BrowserRouter>
-
       {/* Toast notifications */}
       <Toaster
         position="top-right"
@@ -37,13 +37,11 @@ function App() {
       />
 
       <Routes>
-
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
 
         {/* Auth Routes With Prefix /auth*/}
         <Route path="/auth">
-        
           {/* Auth Pages */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -71,6 +69,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Theme />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="themes/customize"
+            element={
+              <ProtectedRoute>
+                <CustomizeTheme />
               </ProtectedRoute>
             }
           />

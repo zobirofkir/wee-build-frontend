@@ -8,6 +8,7 @@ import GetCurrentAuthenticatedUserReducer from '../reducer/auth/get-current-auth
 import { updateCurrentAuthenticatedUser } from '../action/auth/update-current-authenticated-user-action';
 import GetGithubThemesReducer from '../reducer/store/get-github-themes-reducer';
 import ApplyThemeReducer from '../reducer/store/apply-theme-reducer';
+import GetCurrentThemeReducer from '../reducer/store/get-current-theme-reducer';
 
 const rootReducer = combineReducers({
   register: RegisterReducer,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   getCurrentAuthenticatedUser: GetCurrentAuthenticatedUserReducer,
   updateCurrentAuthenticatedUser: updateCurrentAuthenticatedUser,
   githubThemes: GetGithubThemesReducer,
-  applyTheme: ApplyThemeReducer
+  applyTheme: ApplyThemeReducer,
+  currentTheme: GetCurrentThemeReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
