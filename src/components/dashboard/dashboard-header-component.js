@@ -17,7 +17,7 @@ const DashboardHeaderComponent = ({ currentUser }) => {
             href={`http://${currentUser.domain}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 md:mt-0 flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-md"
+            className="mt-4 md:mt-0 flex items-center md:hidden block px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-md"
             >
             <span className="mr-2">View Live Store</span>
             <svg
