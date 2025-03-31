@@ -12,6 +12,7 @@ import {
 import { fetchGithubThemes } from "../../redux/action/store/get-github-themes-action";
 import { applyTheme } from "../../redux/action/store/apply-theme-action";
 import { toast } from "react-hot-toast";
+import HeaderThemeComponent from "../../components/themes/header-theme-component";
 
 const Theme = () => {
   const dispatch = useDispatch();
@@ -140,29 +141,7 @@ const Theme = () => {
     <AuthAppLayout>
       <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 min-h-screen p-4 md:p-6 lg:p-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">
-            Store Themes
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Choose a template to customize your store's appearance
-          </p>
-
-          {/* Show current theme info */}
-          {currentTheme && (
-            <div className="mt-2 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-              <p className="text-purple-700 dark:text-purple-300">
-                <span className="font-medium">Current theme:</span>{" "}
-                {themes.find((t) => t.id === currentTheme.theme)?.name}
-                <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                  (Applied on{" "}
-                  {new Date(currentTheme.theme_applied_at).toLocaleDateString()}
-                  )
-                </span>
-              </p>
-            </div>
-          )}
-        </div>
+        <HeaderThemeComponent currentTheme={currentTheme} themes={themes} />
 
         {/* Search form */}
         <div className="mb-6">
