@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   FiHome,
+  FiSettings,
   FiShoppingBag,
 } from "react-icons/fi";
 import DesktopSidebareComponent from "../../components/auth/desktop-sidebare-component";
@@ -38,13 +39,23 @@ const AuthAppLayout = ({ children }) => {
   }, [darkMode]);
 
   const navItems = [
-    { icon: <FiHome className="h-5 w-5" />, label: "Dashboard", active: true, path: "/auth/dashboard" },
+    { 
+      icon: <FiHome className="h-5 w-5" />,
+      label: "Dashboard", active: true,
+      path: "/auth/dashboard"
+    },
     {
       icon: <FiShoppingBag className="h-5 w-5" />,
       label: "Themes",
       active: false,
       path: "/auth/themes",
     },
+    {
+      icon: <FiSettings className="h-5 w-5" />,
+      label: "Settings",
+      active: false,
+      path: "/auth/themes/customize",
+    }
   ];
 
   const dispatch = useDispatch();
