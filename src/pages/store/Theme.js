@@ -40,7 +40,7 @@ const Theme = () => {
       toast.success("Theme applied successfully!");
       setSelectedTheme(null);
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = "/auth/dashboard";
       }, 2000);
     }
     if (applyError) {
