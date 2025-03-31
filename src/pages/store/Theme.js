@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
-import {
-  FiCheck,
-  FiEye,
-  FiGrid,
-  FiList,
-  FiStar,
-  FiSearch,
-} from "react-icons/fi";
 import { fetchGithubThemes } from "../../redux/action/store/get-github-themes-action";
 import { applyTheme } from "../../redux/action/store/apply-theme-action";
 import { toast } from "react-hot-toast";
@@ -53,7 +45,9 @@ const Theme = () => {
     }
   }, [applySuccess, applyError]);
 
-  // Set the selected theme to the current theme when data is loaded
+  /**
+   * Set the selected theme to the current theme when data is loaded
+   */
   useEffect(() => {
     if (currentTheme && themes.length > 0) {
       const currentThemeObj = themes.find((t) => t.id === currentTheme.theme);
@@ -86,10 +80,14 @@ const Theme = () => {
       return;
     }
 
-    // Start progress animation
+    /**
+     * Start progress animation
+     */
     setSelectProgress((prev) => ({ ...prev, [themeId]: 0 }));
 
-    // Simulate progress
+    /**
+     * Simulate progress
+     */
     let progress = 0;
     const interval = setInterval(() => {
       progress += 5;
@@ -98,7 +96,7 @@ const Theme = () => {
       if (progress >= 100) {
         clearInterval(interval);
         setSelectedTheme(themeId);
-        // Clear progress after a short delay
+
         setTimeout(() => {
           setSelectProgress((prev) => {
             const newProgress = { ...prev };
@@ -116,19 +114,23 @@ const Theme = () => {
   const handleApplyTheme = () => {
     if (!selectedTheme) return;
 
-    // Start progress animation
+    /**
+     * Set progress to 0
+     */
     setApplyProgress(0);
     let progress = 0;
     const interval = setInterval(() => {
       progress += 2;
-      setApplyProgress(Math.min(progress, 95)); // Cap at 95% until actual completion
+      setApplyProgress(Math.min(progress, 95));
 
       if (progress >= 95) {
         clearInterval(interval);
       }
     }, 50);
 
-    // Actual theme application
+    /**
+     * Actual theme application
+     */
     dispatch(applyTheme(selectedTheme))
       .then(() => {
         setApplyProgress(100);
