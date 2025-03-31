@@ -9,7 +9,7 @@ import { updateCurrentAuthenticatedUser } from '../action/auth/update-current-au
 import GetGithubThemesReducer from '../reducer/store/get-github-themes-reducer';
 import ApplyThemeReducer from '../reducer/store/apply-theme-reducer';
 import GetCurrentThemeReducer from '../reducer/store/get-current-theme-reducer';
-
+import CustomizeCurrentThemeReducer from '../reducer/store/customize-current-theme-reducer';
 const rootReducer = combineReducers({
   register: RegisterReducer,
   login: LoginReducer,
@@ -20,6 +20,7 @@ const rootReducer = combineReducers({
   githubThemes: GetGithubThemesReducer,
   applyTheme: ApplyThemeReducer,
   currentTheme: GetCurrentThemeReducer,
+  customizeCurrentTheme: CustomizeCurrentThemeReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
