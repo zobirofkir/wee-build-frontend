@@ -39,6 +39,9 @@ const Theme = () => {
     if (applySuccess) {
       toast.success("Theme applied successfully!");
       setSelectedTheme(null);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
     if (applyError) {
       toast.error(`Failed to apply theme: ${applyError}`);
