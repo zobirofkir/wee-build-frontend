@@ -14,7 +14,7 @@ import { applyTheme } from "../../redux/action/store/apply-theme-action";
 import { toast } from "react-hot-toast";
 import HeaderThemeComponent from "../../components/themes/header-theme-component";
 import SearchThemeComponent from "../../components/themes/search-theme-component";
-
+import FilterThemeComponent from "../../components/themes/filter-theme-component";
 const Theme = () => {
   const dispatch = useDispatch();
   const { themes, currentTheme, loading, error } = useSelector(
@@ -148,6 +148,7 @@ const Theme = () => {
         <SearchThemeComponent searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         {/* Filters and view options - removed category filters */}
+        <FilterThemeComponent viewMode={viewMode} setViewMode={setViewMode} />
 
         {/* Loading state */}
         {loading && (
