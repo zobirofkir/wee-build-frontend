@@ -28,6 +28,8 @@ const Theme = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectProgress, setSelectProgress] = useState({});
+  const [applyProgress, setApplyProgress] = useState(0);
 
   useEffect(() => {
     if (!initialFetchDone.current) {
@@ -69,26 +71,69 @@ const Theme = () => {
       });
 
   /**
-   * Handle theme selection
+   * Handle theme selection with progress animation
    * @param {*} themeId
    */
   const handleSelectTheme = (themeId) => {
     if (selectedTheme === themeId) {
       setSelectedTheme(null);
-    } else {
-      setSelectedTheme(themeId);
+      setSelectProgress({});
+      return;
     }
+
+    // Start progress animation
+    setSelectProgress((prev) => ({ ...prev, [themeId]: 0 }));
+
+    // Simulate progress
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 5;
+      setSelectProgress((prev) => ({ ...prev, [themeId]: progress }));
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        setSelectedTheme(themeId);
+        // Clear progress after a short delay
+        setTimeout(() => {
+          setSelectProgress((prev) => {
+            const newProgress = { ...prev };
+            delete newProgress[themeId];
+            return newProgress;
+          });
+        }, 200);
+      }
+    }, 20);
   };
 
   /**
-   * Handle theme application
+   * Handle theme application with progress animation
    */
   const handleApplyTheme = () => {
     if (!selectedTheme) return;
 
-    dispatch(applyTheme(selectedTheme)).catch((error) => {
-      console.error("Error applying theme:", error);
-    });
+    // Start progress animation
+    setApplyProgress(0);
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 2;
+      setApplyProgress(Math.min(progress, 95)); // Cap at 95% until actual completion
+
+      if (progress >= 95) {
+        clearInterval(interval);
+      }
+    }, 50);
+
+    // Actual theme application
+    dispatch(applyTheme(selectedTheme))
+      .then(() => {
+        setApplyProgress(100);
+        setTimeout(() => setApplyProgress(0), 500);
+      })
+      .catch((error) => {
+        console.error("Error applying theme:", error);
+        clearInterval(interval);
+        setApplyProgress(0);
+      });
   };
 
   return (
@@ -318,7 +363,7 @@ const Theme = () => {
                   <div className="flex space-x-2 mt-auto">
                     <button
                       onClick={() => handleSelectTheme(theme.id)}
-                      className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
+                      className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors relative overflow-hidden ${
                         selectedTheme === theme.id
                           ? "bg-purple-600 text-white shadow-md"
                           : theme.pro
@@ -327,8 +372,19 @@ const Theme = () => {
                           ? "bg-gradient-to-r from-blue-500 to-teal-500 text-white hover:from-blue-600 hover:to-teal-600 shadow-md"
                           : "bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900"
                       }`}
+                      disabled={selectProgress[theme.id] !== undefined}
                     >
-                      {selectedTheme === theme.id ? (
+                      {selectProgress[theme.id] !== undefined ? (
+                        <div className="flex items-center justify-center">
+                          <span className="mr-2">
+                            {selectProgress[theme.id]}%
+                          </span>
+                          <div
+                            className="absolute left-0 bottom-0 h-1 bg-white/30 transition-all duration-100"
+                            style={{ width: `${selectProgress[theme.id]}%` }}
+                          ></div>
+                        </div>
+                      ) : selectedTheme === theme.id ? (
                         <span className="flex items-center justify-center">
                           <FiCheck className="mr-1 h-4 w-4" /> Selected
                         </span>
@@ -355,14 +411,22 @@ const Theme = () => {
               </p>
               <button
                 onClick={handleApplyTheme}
-                disabled={applyLoading}
-                className={`py-2 px-6 ${
-                  applyLoading
+                disabled={applyLoading || applyProgress > 0}
+                className={`py-2 px-6 relative overflow-hidden ${
+                  applyLoading || applyProgress > 0
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-purple-600 hover:bg-purple-700"
                 } text-white rounded-lg transition-colors flex items-center`}
               >
-                {applyLoading ? (
+                {applyProgress > 0 ? (
+                  <div className="flex items-center">
+                    <span className="mr-2">{Math.round(applyProgress)}%</span>
+                    <div
+                      className="absolute left-0 bottom-0 h-1 bg-white/30 transition-all duration-100"
+                      style={{ width: `${applyProgress}%` }}
+                    />
+                  </div>
+                ) : applyLoading ? (
                   <>
                     <span className="mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     Applying...
