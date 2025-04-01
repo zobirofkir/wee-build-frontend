@@ -101,8 +101,8 @@ const FileListSidebar = ({
 
   return (
     <div className="h-full border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 overflow-y-auto">
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-3 sm:p-4">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
             <DefaultFileIcon />
             <span className="ml-2">Theme Files</span>

@@ -151,15 +151,15 @@ const ThemeFileEditorComponent = ({
   return (
     <div className="flex flex-col h-full">
       {/* Editor Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           <button
             onClick={onToggleFileList}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             aria-label={isFileListVisible ? "Hide file list" : "Show file list"}
           >
             <svg
-              className={`w-5 h-5 text-gray-600 dark:text-gray-300 transform transition-transform ${
+              className={`w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-300 transform transition-transform ${
                 isFileListVisible ? "rotate-0" : "rotate-180"
               }`}
               fill="none"
@@ -175,20 +175,20 @@ const ThemeFileEditorComponent = ({
             </svg>
           </button>
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center">
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white flex items-center">
               {getFileIcon(fileName)}
-              <span className="ml-2">{fileName}</span>
+              <span className="ml-2 truncate">{fileName}</span>
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 break-all">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 break-all">
               {filePath}
             </p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
           {updateError && (
-            <span className="text-sm text-red-600 dark:text-red-400 flex items-center">
+            <span className="text-xs sm:text-sm text-red-600 dark:text-red-400 flex items-center">
               <svg
-                className="w-4 h-4 mr-1"
+                className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -206,17 +206,17 @@ const ThemeFileEditorComponent = ({
           <button
             onClick={handleSave}
             disabled={updating}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
           >
             {updating ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-1.5 sm:mr-2"></div>
                 Saving...
               </>
             ) : (
               <>
                 <svg
-                  className="w-4 h-4 mr-2"
+                  className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -243,7 +243,7 @@ const ThemeFileEditorComponent = ({
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full h-full p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none"
+              className="w-full h-full p-3 sm:p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none"
               spellCheck="false"
             />
           </div>

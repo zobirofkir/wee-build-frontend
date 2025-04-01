@@ -106,9 +106,9 @@ const CustomizeTheme = () => {
               } transition-all duration-300 overflow-hidden`}
             >
               <div className="h-full bg-white dark:bg-gray-800 shadow-xl border-r border-gray-200 dark:border-gray-700">
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                       Theme Preview
                     </h2>
                     <button
@@ -119,7 +119,7 @@ const CustomizeTheme = () => {
                       }
                     >
                       <svg
-                        className={`w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform ${
+                        className={`w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-300 transform transition-transform ${
                           isPreviewMode ? "rotate-0" : "rotate-180"
                         }`}
                         fill="none"
@@ -150,9 +150,9 @@ const CustomizeTheme = () => {
               } transition-all duration-300`}
             >
               <div className="h-full bg-white dark:bg-gray-800 shadow-xl">
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                       Theme Editor
                     </h2>
                     {!isPreviewMode && (
@@ -162,7 +162,7 @@ const CustomizeTheme = () => {
                         aria-label="Show preview"
                       >
                         <svg
-                          className="w-6 h-6 text-gray-600 dark:text-gray-300 transform rotate-180"
+                          className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-300 transform rotate-180"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -179,12 +179,12 @@ const CustomizeTheme = () => {
                   </div>
                 </div>
 
-                <div className="p-4 sm:p-6 overflow-y-auto h-[calc(100%-4rem)]">
+                <div className="p-3 sm:p-6 overflow-y-auto h-[calc(100%-4rem)]">
                   {/* Tab Navigation */}
-                  <div className="flex space-x-4 mb-8 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+                  <div className="flex space-x-2 sm:space-x-4 mb-4 sm:mb-8 border-b border-gray-200 dark:border-gray-700 overflow-x-auto pb-2">
                     <button
                       onClick={() => setActiveTab("visual")}
-                      className={`px-4 sm:px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
+                      className={`px-3 sm:px-6 py-2 sm:py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
                         activeTab === "visual"
                           ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
                           : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -192,7 +192,7 @@ const CustomizeTheme = () => {
                     >
                       <span className="flex items-center">
                         <svg
-                          className="w-5 h-5 mr-2"
+                          className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -209,7 +209,7 @@ const CustomizeTheme = () => {
                     </button>
                     <button
                       onClick={() => setActiveTab("code")}
-                      className={`px-4 sm:px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
+                      className={`px-3 sm:px-6 py-2 sm:py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
                         activeTab === "code"
                           ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
                           : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -217,7 +217,7 @@ const CustomizeTheme = () => {
                     >
                       <span className="flex items-center">
                         <svg
-                          className="w-5 h-5 mr-2"
+                          className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -251,7 +251,7 @@ const CustomizeTheme = () => {
                       <div className="flex flex-col lg:flex-row h-full">
                         <div
                           className={`transition-all duration-300 ${
-                            isFileListVisible ? "w-64" : "w-0"
+                            isFileListVisible ? "w-full lg:w-64" : "w-0"
                           }`}
                         >
                           <FileListSidebar
@@ -266,7 +266,7 @@ const CustomizeTheme = () => {
                         </div>
 
                         {/* Editor Area */}
-                        <div className="flex-1 p-4">
+                        <div className="flex-1 p-3 sm:p-4">
                           {selectedFile ? (
                             <ThemeFileEditorComponent
                               filePath={selectedFile.path}
