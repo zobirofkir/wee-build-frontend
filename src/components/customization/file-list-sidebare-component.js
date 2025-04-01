@@ -100,7 +100,7 @@ const FileListSidebar = ({
   };
 
   return (
-    <div className="w-64 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 overflow-y-auto">
+    <div className="h-full border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 overflow-y-auto">
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">

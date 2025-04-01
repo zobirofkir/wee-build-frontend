@@ -10,9 +10,10 @@ const ThemeFileEditorComponent = ({
   fileName,
   files,
   onFileSelect,
+  isFileListVisible,
+  onToggleFileList,
 }) => {
   const [content, setContent] = useState("");
-  const [isFileListVisible, setIsFileListVisible] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const dispatch = useDispatch();
 
@@ -153,7 +154,7 @@ const ThemeFileEditorComponent = ({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div className="flex items-center space-x-4">
           <button
-            onClick={() => setIsFileListVisible(!isFileListVisible)}
+            onClick={onToggleFileList}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             aria-label={isFileListVisible ? "Hide file list" : "Show file list"}
           >

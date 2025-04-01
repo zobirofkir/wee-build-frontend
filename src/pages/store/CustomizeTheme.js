@@ -43,6 +43,7 @@ const CustomizeTheme = () => {
     css: true,
     js: true,
   });
+  const [isFileListVisible, setIsFileListVisible] = useState(true);
 
   useEffect(() => {
     dispatch(listThemeFiles());
@@ -248,15 +249,21 @@ const CustomizeTheme = () => {
                       />
                     ) : (
                       <div className="flex flex-col lg:flex-row h-full">
-                        <FileListSidebar
-                          files={files}
-                          selectedFile={selectedFile}
-                          selectedFileType={selectedFileType}
-                          expandedSections={expandedSections}
-                          onFileSelect={handleFileSelect}
-                          onFileTypeChange={setSelectedFileType}
-                          onToggleSection={toggleSection}
-                        />
+                        <div
+                          className={`transition-all duration-300 ${
+                            isFileListVisible ? "w-64" : "w-0"
+                          }`}
+                        >
+                          <FileListSidebar
+                            files={files}
+                            selectedFile={selectedFile}
+                            selectedFileType={selectedFileType}
+                            expandedSections={expandedSections}
+                            onFileSelect={handleFileSelect}
+                            onFileTypeChange={setSelectedFileType}
+                            onToggleSection={toggleSection}
+                          />
+                        </div>
 
                         {/* Editor Area */}
                         <div className="flex-1 p-4">
@@ -266,6 +273,10 @@ const CustomizeTheme = () => {
                               fileName={selectedFile.name}
                               files={files}
                               onFileSelect={handleFileSelect}
+                              isFileListVisible={isFileListVisible}
+                              onToggleFileList={() =>
+                                setIsFileListVisible(!isFileListVisible)
+                              }
                             />
                           ) : (
                             <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
