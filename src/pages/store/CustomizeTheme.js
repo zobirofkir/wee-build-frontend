@@ -323,39 +323,14 @@ const CustomizeTheme = () => {
                       />
                     ) : (
                       <div className="flex flex-col lg:flex-row h-full">
-                        {/* File List Sidebar */}
-                        <div className="w-full lg:w-64 border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
-                          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
-                            Theme Files
-                          </h3>
-                          <div className="space-y-2">
-                            {files.map((file) => (
-                              <button
-                                key={file.path}
-                                onClick={() => handleFileSelect(file)}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
-                                  selectedFile?.path === file.path
-                                    ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
-                                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                                }`}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <span className="truncate">{file.name}</span>
-                                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                                    {(file.size / 1024).toFixed(1)} KB
-                                  </span>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
                         {/* Editor Area */}
                         <div className="flex-1 p-4">
                           {selectedFile ? (
                             <ThemeFileEditorComponent
                               filePath={selectedFile.path}
                               fileName={selectedFile.name}
+                              files={files}
+                              onFileSelect={handleFileSelect}
                             />
                           ) : (
                             <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
