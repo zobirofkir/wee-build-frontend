@@ -4,7 +4,7 @@ import {
   FiMoon,
   FiMessageSquare,
   FiUser,
-  FiSettings,
+  FiEdit2,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -110,7 +110,7 @@ const HeaderComponent = ({ darkMode, setDarkMode }) => {
           className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 flex items-center transition-colors duration-300"
           title="Customize Theme"
         >
-          <FiSettings className="h-5 w-5" />
+          <FiEdit2 className="h-5 w-5" />
         </Link>
 
         <button

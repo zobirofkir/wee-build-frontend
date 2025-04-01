@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
   FiHome,
-  FiSettings,
   FiShoppingBag,
+  FiEdit2
 } from "react-icons/fi";
 import DesktopSidebareComponent from "../../components/auth/desktop-sidebare-component";
 import MobileSidebareComponent from "../../components/auth/mobile-sidebare-component";
@@ -51,8 +51,8 @@ const AuthAppLayout = ({ children }) => {
       path: "/auth/themes",
     },
     {
-      icon: <FiSettings className="h-5 w-5" />,
-      label: "Settings",
+      icon: <FiEdit2 className="h-5 w-5" />,
+      label: "Theme Customization",
       active: false,
       path: "/auth/themes/customize",
     }
