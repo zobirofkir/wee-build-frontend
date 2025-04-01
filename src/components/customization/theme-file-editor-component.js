@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getAuthToken } from "../../utils/cookie-utils";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getThemeFile,
+  updateThemeFile,
+} from "../../redux/action/store/customize-theme-file-action";
 
 const ThemeFileEditorComponent = ({
   filePath,
@@ -10,77 +12,38 @@ const ThemeFileEditorComponent = ({
   onFileSelect,
 }) => {
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState(null);
-  const [saveSuccess, setSaveSuccess] = useState(false);
   const [isFileListVisible, setIsFileListVisible] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
+  const dispatch = useDispatch();
+
+  const { loading, error, currentFile, updating, updateError } = useSelector(
+    (state) => state.customizeThemeFile
+  );
 
   useEffect(() => {
-    fetchFileContent();
-  }, [filePath]);
+    if (filePath) {
+      dispatch(getThemeFile(filePath));
+    }
+  }, [filePath, dispatch]);
 
   useEffect(() => {
-    // Set initial selected file
+    if (currentFile?.content) {
+      setContent(currentFile.content);
+    }
+  }, [currentFile]);
+
+  useEffect(() => {
     if (files && files.length > 0) {
       const currentFile = files.find((f) => f.path === filePath);
       setSelectedFile(currentFile);
     }
   }, [files, filePath]);
 
-  const fetchFileContent = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const token = getAuthToken();
-
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/file`,
-        {
-          params: {
-            file_path: filePath,
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setContent(response.data.content);
-    } catch (error) {
-      setError(error.response?.data?.message || "Failed to fetch file content");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSave = async () => {
     try {
-      setSaving(true);
-      setSaveError(null);
-      setSaveSuccess(false);
-      const token = getAuthToken();
-
-      await axios.put(
-        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/file`,
-        {
-          file_path: filePath,
-          content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setSaveSuccess(true);
+      await dispatch(updateThemeFile(filePath, content));
     } catch (error) {
-      setSaveError(error.response?.data?.message || "Failed to save file");
-    } finally {
-      setSaving(false);
+      console.error("Failed to save file:", error);
     }
   };
 
@@ -175,7 +138,7 @@ const ThemeFileEditorComponent = ({
           <p className="font-medium">{error}</p>
         </div>
         <button
-          onClick={fetchFileContent}
+          onClick={() => dispatch(getThemeFile(filePath))}
           className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
         >
           Try Again
@@ -221,25 +184,7 @@ const ThemeFileEditorComponent = ({
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          {saveSuccess && (
-            <span className="text-sm text-green-600 dark:text-green-400 flex items-center">
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              Saved successfully!
-            </span>
-          )}
-          {saveError && (
+          {updateError && (
             <span className="text-sm text-red-600 dark:text-red-400 flex items-center">
               <svg
                 className="w-4 h-4 mr-1"
@@ -254,15 +199,15 @@ const ThemeFileEditorComponent = ({
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              {saveError}
+              {updateError}
             </span>
           )}
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={updating}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           >
-            {saving ? (
+            {updating ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                 Saving...
