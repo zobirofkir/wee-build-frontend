@@ -7,7 +7,7 @@ import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import PreviewSectionLeftSideComponent from "../../components/customization/preview-section-left-side-component";
 import EditorRightSideComponent from "../../components/customization/editor-right-side-component";
 import ThemeFileEditorComponent from "../../components/customization/theme-file-editor-component";
-import FileListSidebar from "../../components/customization/FileListSidebar";
+import FileListSidebar from "../../components/customization/file-list-sidebare-component";
 import { useThemeManagement } from "../../hooks/useThemeManagement";
 import { presetSchemes } from "../../config/themeConfig";
 
