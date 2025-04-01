@@ -96,12 +96,14 @@ const ThemeFileEditorComponent = ({ filePath, fileName }) => {
   return (
     <div className="flex flex-col h-full">
       {/* Editor Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div>
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
             {fileName}
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{filePath}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 break-all">
+            {filePath}
+          </p>
         </div>
         <div className="flex items-center space-x-2">
           {saveSuccess && (
@@ -132,11 +134,11 @@ const ThemeFileEditorComponent = ({ filePath, fileName }) => {
       </div>
 
       {/* Editor Content */}
-      <div className="flex-1 bg-gray-900 rounded-lg overflow-hidden">
+      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full h-full p-4 font-mono text-sm text-gray-100 bg-gray-900 resize-none focus:outline-none"
+          className="w-full h-full p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none"
           spellCheck="false"
         />
       </div>

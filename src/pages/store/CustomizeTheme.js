@@ -177,7 +177,7 @@ const CustomizeTheme = () => {
             <div
               className={`w-full ${
                 isPreviewMode ? "lg:w-1/2" : "lg:w-0"
-              } transition-all duration-300`}
+              } transition-all duration-300 overflow-hidden`}
             >
               <div className="h-full bg-white dark:bg-gray-800 shadow-xl border-r border-gray-200 dark:border-gray-700">
                 <div className="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -188,6 +188,9 @@ const CustomizeTheme = () => {
                     <button
                       onClick={() => setIsPreviewMode(!isPreviewMode)}
                       className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      aria-label={
+                        isPreviewMode ? "Hide preview" : "Show preview"
+                      }
                     >
                       <svg
                         className={`w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform ${
@@ -230,6 +233,7 @@ const CustomizeTheme = () => {
                       <button
                         onClick={() => setIsPreviewMode(true)}
                         className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        aria-label="Show preview"
                       >
                         <svg
                           className="w-6 h-6 text-gray-600 dark:text-gray-300 transform rotate-180"
@@ -249,12 +253,12 @@ const CustomizeTheme = () => {
                   </div>
                 </div>
 
-                <div className="p-6 overflow-y-auto h-[calc(100%-4rem)]">
+                <div className="p-4 sm:p-6 overflow-y-auto h-[calc(100%-4rem)]">
                   {/* Tab Navigation */}
-                  <div className="flex space-x-4 mb-8 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex space-x-4 mb-8 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
                     <button
                       onClick={() => setActiveTab("visual")}
-                      className={`px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 ${
+                      className={`px-4 sm:px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
                         activeTab === "visual"
                           ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
                           : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -279,7 +283,7 @@ const CustomizeTheme = () => {
                     </button>
                     <button
                       onClick={() => setActiveTab("code")}
-                      className={`px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 ${
+                      className={`px-4 sm:px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
                         activeTab === "code"
                           ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
                           : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -318,9 +322,9 @@ const CustomizeTheme = () => {
                         themeOptions={themeOptions}
                       />
                     ) : (
-                      <div className="flex h-full">
+                      <div className="flex flex-col lg:flex-row h-full">
                         {/* File List Sidebar */}
-                        <div className="w-64 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
+                        <div className="w-full lg:w-64 border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
                           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                             Theme Files
                           </h3>
