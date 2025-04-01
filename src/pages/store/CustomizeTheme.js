@@ -5,6 +5,7 @@ import { updateTheme } from "../../redux/action/store/customize-current-theme-ac
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import PreviewSectionLeftSideComponent from "../../components/customization/preview-section-left-side-component";
 import EditorRightSideComponent from "../../components/customization/editor-right-side-component";
+import ThemeFileEditorComponent from "../../components/customization/theme-file-editor-component";
 
 const CustomizeTheme = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const CustomizeTheme = () => {
 
   const [isPreviewMode, setIsPreviewMode] = useState(true);
   const [originalTheme, setOriginalTheme] = useState(null);
+  const [activeTab, setActiveTab] = useState("visual"); // 'visual' or 'code'
 
   const [themeOptions, setThemeOptions] = useState({
     colors: {
@@ -154,22 +156,156 @@ const CustomizeTheme = () => {
         {currentTheme && (
           <div className="flex flex-col lg:flex-row h-[calc(100vh-4rem)]">
             {/* Preview Section - Left Side */}
-            <PreviewSectionLeftSideComponent
-              isPreviewMode={isPreviewMode}
-              currentTheme={currentTheme}
-            />
+            <div
+              className={`w-full ${
+                isPreviewMode ? "lg:w-1/2" : "lg:w-0"
+              } transition-all duration-300`}
+            >
+              <div className="h-full bg-white dark:bg-gray-800 shadow-xl border-r border-gray-200 dark:border-gray-700">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      Theme Preview
+                    </h2>
+                    <button
+                      onClick={() => setIsPreviewMode(!isPreviewMode)}
+                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <svg
+                        className={`w-6 h-6 text-gray-600 dark:text-gray-300 transform transition-transform ${
+                          isPreviewMode ? "rotate-0" : "rotate-180"
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <PreviewSectionLeftSideComponent
+                  isPreviewMode={isPreviewMode}
+                  currentTheme={currentTheme}
+                />
+              </div>
+            </div>
 
             {/* Editor Section - Right Side */}
-            <EditorRightSideComponent
-              isPreviewMode={isPreviewMode}
-              handleSubmit={handleSubmit}
-              handleColorChange={handleColorChange}
-              handleTypographyChange={handleTypographyChange}
-              handleLayoutChange={handleLayoutChange}
-              applyPresetScheme={applyPresetScheme}
-              presetSchemes={presetSchemes}
-              themeOptions={themeOptions}
-            />
+            <div
+              className={`w-full ${
+                isPreviewMode ? "lg:w-1/2" : "lg:w-full"
+              } transition-all duration-300`}
+            >
+              <div className="h-full bg-white dark:bg-gray-800 shadow-xl">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      Theme Editor
+                    </h2>
+                    {!isPreviewMode && (
+                      <button
+                        onClick={() => setIsPreviewMode(true)}
+                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        <svg
+                          className="w-6 h-6 text-gray-600 dark:text-gray-300 transform rotate-180"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="p-6 overflow-y-auto h-[calc(100%-4rem)]">
+                  {/* Tab Navigation */}
+                  <div className="flex space-x-4 mb-8 border-b border-gray-200 dark:border-gray-700">
+                    <button
+                      onClick={() => setActiveTab("visual")}
+                      className={`px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 ${
+                        activeTab === "visual"
+                          ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
+                          : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      }`}
+                    >
+                      <span className="flex items-center">
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                          />
+                        </svg>
+                        Visual Editor
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("code")}
+                      className={`px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 ${
+                        activeTab === "code"
+                          ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
+                          : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      }`}
+                    >
+                      <span className="flex items-center">
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                          />
+                        </svg>
+                        Code Editor
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Tab Content */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    {activeTab === "visual" ? (
+                      <EditorRightSideComponent
+                        isPreviewMode={isPreviewMode}
+                        handleSubmit={handleSubmit}
+                        handleColorChange={handleColorChange}
+                        handleTypographyChange={handleTypographyChange}
+                        handleLayoutChange={handleLayoutChange}
+                        applyPresetScheme={applyPresetScheme}
+                        presetSchemes={presetSchemes}
+                        themeOptions={themeOptions}
+                      />
+                    ) : (
+                      <ThemeFileEditorComponent filePath="index.html" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
