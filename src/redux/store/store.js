@@ -11,6 +11,7 @@ import ApplyThemeReducer from "../reducer/store/apply-theme-reducer";
 import GetCurrentThemeReducer from "../reducer/store/get-current-theme-reducer";
 import CustomizeCurrentThemeReducer from "../reducer/store/customize-current-theme-reducer";
 import CustomizeThemeFileReducer from "../reducer/store/customize-theme-file-reducer";
+import ListThemeFilesReducer from "../reducer/store/list-theme-files-reducer";
 
 const rootReducer = combineReducers({
   register: RegisterReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   currentTheme: GetCurrentThemeReducer,
   customizeCurrentTheme: CustomizeCurrentThemeReducer,
   customizeThemeFile: CustomizeThemeFileReducer,
+  themeFiles: ListThemeFilesReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

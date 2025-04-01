@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentTheme } from "../../redux/action/store/get-current-theme-action";
 import { updateTheme } from "../../redux/action/store/customize-current-theme-action";
+import { listThemeFiles } from "../../redux/action/store/list-theme-files-action";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
 import PreviewSectionLeftSideComponent from "../../components/customization/preview-section-left-side-component";
 import EditorRightSideComponent from "../../components/customization/editor-right-side-component";
@@ -15,10 +16,16 @@ const CustomizeTheme = () => {
   const { loading: updateLoading, error: updateError } = useSelector(
     (state) => state.customizeCurrentTheme
   );
+  const {
+    files,
+    loading: filesLoading,
+    error: filesError,
+  } = useSelector((state) => state.themeFiles);
 
   const [isPreviewMode, setIsPreviewMode] = useState(true);
   const [originalTheme, setOriginalTheme] = useState(null);
   const [activeTab, setActiveTab] = useState("visual"); // 'visual' or 'code'
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [themeOptions, setThemeOptions] = useState({
     colors: {
@@ -67,6 +74,7 @@ const CustomizeTheme = () => {
 
   useEffect(() => {
     dispatch(fetchCurrentTheme());
+    dispatch(listThemeFiles());
   }, [dispatch]);
 
   useEffect(() => {
@@ -122,7 +130,12 @@ const CustomizeTheme = () => {
     }
   };
 
-  if (loading) {
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
+    setActiveTab("code");
+  };
+
+  if (loading || filesLoading) {
     return (
       <AuthAppLayout>
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -132,14 +145,19 @@ const CustomizeTheme = () => {
     );
   }
 
-  if (error) {
+  if (error || filesError) {
     return (
       <AuthAppLayout>
         <div className="min-h-screen p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
           <div className="max-w-2xl mx-auto bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-8 rounded-2xl shadow-xl border border-red-100 dark:border-red-800">
-            <p className="text-lg font-medium mb-6">Error: {error}</p>
+            <p className="text-lg font-medium mb-6">
+              Error: {error || filesError}
+            </p>
             <button
-              onClick={() => dispatch(fetchCurrentTheme())}
+              onClick={() => {
+                dispatch(fetchCurrentTheme());
+                dispatch(listThemeFiles());
+              }}
               className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Try again
@@ -300,7 +318,48 @@ const CustomizeTheme = () => {
                         themeOptions={themeOptions}
                       />
                     ) : (
-                      <ThemeFileEditorComponent filePath="index.html" />
+                      <div className="flex h-full">
+                        {/* File List Sidebar */}
+                        <div className="w-64 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
+                          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
+                            Theme Files
+                          </h3>
+                          <div className="space-y-2">
+                            {files.map((file) => (
+                              <button
+                                key={file.path}
+                                onClick={() => handleFileSelect(file)}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                                  selectedFile?.path === file.path
+                                    ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
+                                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="truncate">{file.name}</span>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                                    {(file.size / 1024).toFixed(1)} KB
+                                  </span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Editor Area */}
+                        <div className="flex-1 p-4">
+                          {selectedFile ? (
+                            <ThemeFileEditorComponent
+                              filePath={selectedFile.path}
+                              fileName={selectedFile.name}
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                              Select a file to edit
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
