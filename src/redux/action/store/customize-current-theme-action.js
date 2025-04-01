@@ -42,7 +42,6 @@ export const updateTheme = (themeOptions) => {
       );
 
       dispatch(updateThemeSuccess(response.data));
-      console.log(response.data);
       return response.data;
     } catch (error) {
       const errorMessage =
