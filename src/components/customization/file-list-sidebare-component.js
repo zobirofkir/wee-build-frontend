@@ -5,7 +5,7 @@ import {
   JsIcon,
   DefaultFileIcon,
   ChevronIcon,
-} from "../icons/FileIcons";
+} from "../icons/file-icons";
 
 const FileListSidebar = ({
   files,
