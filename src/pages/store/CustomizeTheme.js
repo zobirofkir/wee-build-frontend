@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentTheme } from "../../redux/action/store/get-current-theme-action";
 import { updateTheme } from "../../redux/action/store/customize-current-theme-action";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
+import PreviewSectionLeftSideComponent from "../../components/customization/preview-section-left-side-component";
 
 const CustomizeTheme = () => {
   const dispatch = useDispatch();
@@ -152,23 +153,10 @@ const CustomizeTheme = () => {
         {currentTheme && (
           <div className="flex flex-col lg:flex-row h-[calc(100vh-4rem)]">
             {/* Preview Section - Left Side */}
-            <div
-              className={`w-full ${
-                isPreviewMode ? "lg:w-1/2" : "lg:w-0"
-              } p-8 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-all duration-300 shadow-lg`}
-            >
-              <div className="h-full flex flex-col">
-                <div className="flex-1 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <div className="relative h-full">
-                    <iframe
-                      src={currentTheme.preview_url}
-                      className="w-full h-full border-0"
-                      title="Theme Preview"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <PreviewSectionLeftSideComponent
+              isPreviewMode={isPreviewMode}
+              currentTheme={currentTheme}
+            />
 
             {/* Editor Section - Right Side */}
             <div
