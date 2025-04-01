@@ -114,7 +114,7 @@ const CustomizeTheme = () => {
     e.preventDefault();
     try {
       await dispatch(updateTheme(themeOptions));
-      dispatch(fetchCurrentTheme()); // Refresh the current theme
+      dispatch(fetchCurrentTheme());
     } catch (error) {
       console.error("Failed to update theme:", error);
     }
