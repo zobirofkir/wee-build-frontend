@@ -237,55 +237,6 @@ const ThemeFileEditorComponent = ({
       {/* Editor Content */}
       <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div className="flex h-full">
-          {/* File List Sidebar */}
-          <div
-            className={`${
-              isFileListVisible ? "w-64" : "w-0"
-            } transition-all duration-300 overflow-hidden border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900`}
-          >
-            <div className="p-4">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4 flex items-center">
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                  />
-                </svg>
-                Theme Files
-              </h3>
-              <div className="space-y-2">
-                {files?.map((file) => (
-                  <button
-                    key={file.path}
-                    onClick={() => handleFileClick(file)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
-                      selectedFile?.path === file.path
-                        ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        {getFileIcon(file.name)}
-                        <span className="ml-2 truncate">{file.name}</span>
-                      </div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {(file.size / 1024).toFixed(1)} KB
-                      </span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
           {/* Editor Area */}
           <div className="flex-1">
             <textarea
