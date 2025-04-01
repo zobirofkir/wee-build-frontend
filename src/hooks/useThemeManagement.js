@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentTheme } from "../redux/action/store/get-current-theme-action";
 import { updateTheme } from "../redux/action/store/customize-current-theme-action";
-import { defaultThemeOptions } from "../config/themeConfig";
+import { defaultThemeOptions } from "../config/theme-config";
 
 export const useThemeManagement = () => {
   const dispatch = useDispatch();

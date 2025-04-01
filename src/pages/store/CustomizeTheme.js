@@ -9,7 +9,7 @@ import EditorRightSideComponent from "../../components/customization/editor-righ
 import ThemeFileEditorComponent from "../../components/customization/theme-file-editor-component";
 import FileListSidebar from "../../components/customization/file-list-sidebare-component";
 import { useThemeManagement } from "../../hooks/useThemeManagement";
-import { presetSchemes } from "../../config/themeConfig";
+import { presetSchemes } from "../../config/theme-config";
 
 const CustomizeTheme = () => {
   const dispatch = useDispatch();
