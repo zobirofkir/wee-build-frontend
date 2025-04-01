@@ -125,7 +125,7 @@ const ThemeFileEditorComponent = ({ filePath, fileName }) => {
                 Saving...
               </>
             ) : (
-              "Save Changes"
+              "Save"
             )}
           </button>
         </div>
