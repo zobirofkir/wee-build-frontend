@@ -52,7 +52,7 @@ const AuthAppLayout = ({ children }) => {
     },
     {
       icon: <FiEdit2 className="h-5 w-5" />,
-      label: "Theme Customization",
+      label: "Customization",
       active: false,
       path: "/auth/themes/customize",
     }
