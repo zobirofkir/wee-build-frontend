@@ -22,8 +22,11 @@ const ThemeFileEditorComponent = ({ filePath, fileName }) => {
       const token = getAuthToken();
 
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/files/${filePath}`,
+        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/file`,
         {
+          params: {
+            file_path: filePath,
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -46,8 +49,9 @@ const ThemeFileEditorComponent = ({ filePath, fileName }) => {
       const token = getAuthToken();
 
       await axios.put(
-        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/files/${filePath}`,
+        `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/file`,
         {
+          file_path: filePath,
           content,
         },
         {
