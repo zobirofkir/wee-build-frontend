@@ -16,7 +16,6 @@ const PromptFormComponent = ({
     if (!textareaRef.current) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
-      // Prevent ResizeObserver loop by debouncing the resize events
       window.requestAnimationFrame(() => {
         if (!Array.isArray(entries) || !entries.length) {
           return;

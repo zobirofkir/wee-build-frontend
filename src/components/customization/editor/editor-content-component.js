@@ -16,9 +16,11 @@ const EditorContentComponent = ({
     if (!containerRef.current) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
-      if (editorRef.current) {
-        editorRef.current.layout();
-      }
+      window.requestAnimationFrame(() => {
+        if (editorRef.current) {
+          editorRef.current.layout();
+        }  
+      });
     });
 
     resizeObserver.observe(containerRef.current);
