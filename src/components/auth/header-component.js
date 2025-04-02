@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { useProfileHook } from "../../hooks/use-profile-hook";
 import { useDropdownHook } from "../../hooks/use-dropdown-hook";
-import HeaderActions from "./header/header-action-component";
+import HeaderActionsComponent from "./header/header-action-component";
 import ProfileMenu from "./header/profile-menu-component";
 import NotificationsMenu from "./header/notifications-menu-component";
 
@@ -51,7 +51,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
           </div>
 
           {/* Right section - Actions and profile */}
-          <HeaderActions
+          <HeaderActionsComponent
             darkMode={darkMode}
             toggleDarkMode={toggleDarkMode}
             showNotifications={showNotifications}

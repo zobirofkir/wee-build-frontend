@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiEdit2, FiSun, FiMoon, FiBell, FiUser } from "react-icons/fi";
 
-const HeaderActions = ({
+const HeaderActionsComponent = ({
   darkMode,
   toggleDarkMode,
   showNotifications,
@@ -89,4 +89,4 @@ const HeaderActions = ({
   );
 };
 
-export default HeaderActions;
+export default HeaderActionsComponent;
