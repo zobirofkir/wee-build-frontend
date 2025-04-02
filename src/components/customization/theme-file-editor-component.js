@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Editor from "@monaco-editor/react";
 import {
   getThemeFile,
   updateThemeFile,
@@ -20,6 +21,9 @@ const ThemeFileEditorComponent = ({
   const { loading, error, currentFile, updating, updateError } = useSelector(
     (state) => state.customizeThemeFile
   );
+
+  // Get the current theme from the system
+  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
   useEffect(() => {
     if (filePath) {
@@ -155,17 +159,42 @@ const ThemeFileEditorComponent = ({
         <div className="flex h-full">
           {/* Editor Area */}
           <div className="flex-1">
-            <textarea
+            <Editor
+              height="100%"
+              defaultLanguage="javascript"
+              theme={isDarkMode ? "vs-dark" : "light"}
               value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full h-full p-3 sm:p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none"
-              spellCheck="false"
+              onChange={setContent}
+              options={{
+                minimap: { enabled: true },
+                fontSize: 14,
+                lineNumbers: "on",
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                automaticLayout: true,
+                wordWrap: "on",
+                scrollbar: {
+                  vertical: "visible",
+                  horizontal: "visible",
+                },
+                padding: { top: 10 },
+                renderWhitespace: "selection",
+                tabSize: 2,
+                insertSpaces: true,
+                bracketPairColorization: {
+                  enabled: true,
+                },
+                guides: {
+                  indentation: true,
+                },
+              }}
             />
           </div>
         </div>
       </div>
 
-      {/* Editor */}
+      {/* Editor Footer */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
         <div className="flex items-center space-x-2 sm:space-x-4">
           <button
