@@ -8,6 +8,7 @@ import PreviewSectionLeftSideComponent from "../../components/customization/prev
 import EditorRightSideComponent from "../../components/customization/editor-right-side-component";
 import ThemeFileEditorComponent from "../../components/customization/theme-file-editor-component";
 import FileListSidebar from "../../components/customization/file-list-sidebare-component";
+import ThemePagePromptCustomizer from "../../components/customization/theme-page-prompt-customizer";
 import { useThemeManagement } from "../../hooks/useThemeManagement";
 import { presetSchemes } from "../../config/theme-config";
 
@@ -208,6 +209,31 @@ const CustomizeTheme = () => {
                       </span>
                     </button>
                     <button
+                      onClick={() => setActiveTab("ai")}
+                      className={`px-3 sm:px-6 py-2 sm:py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
+                        activeTab === "ai"
+                          ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20"
+                          : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                      }`}
+                    >
+                      <span className="flex items-center">
+                        <svg
+                          className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 10V3L4 14h7v7l9-11h-7z"
+                          />
+                        </svg>
+                        AI Customization
+                      </span>
+                    </button>
+                    <button
                       onClick={() => setActiveTab("code")}
                       className={`px-3 sm:px-6 py-2 sm:py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap ${
                         activeTab === "code"
@@ -247,6 +273,10 @@ const CustomizeTheme = () => {
                         presetSchemes={presetSchemes}
                         themeOptions={themeOptions}
                       />
+                    ) : activeTab === "ai" ? (
+                      <div className="p-4">
+                        <ThemePagePromptCustomizer />
+                      </div>
                     ) : (
                       <div className="flex flex-col lg:flex-row h-full">
                         <div
