@@ -1,7 +1,7 @@
 import React from "react";
 import { FiBell } from "react-icons/fi";
 
-const NotificationsMenu = ({ showNotifications }) => {
+const NotificationsMenuComponent = ({ showNotifications }) => {
   if (!showNotifications) return null;
 
   return (
@@ -22,4 +22,4 @@ const NotificationsMenu = ({ showNotifications }) => {
   );
 };
 
-export default NotificationsMenu;
+export default NotificationsMenuComponent;

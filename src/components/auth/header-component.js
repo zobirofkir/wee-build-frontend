@@ -7,7 +7,7 @@ import { useProfileHook } from "../../hooks/use-profile-hook";
 import { useDropdownHook } from "../../hooks/use-dropdown-hook";
 import HeaderActionsComponent from "./header/header-action-component";
 import ProfileMenu from "./header/profile-menu-component";
-import NotificationsMenu from "./header/notifications-menu-component";
+import NotificationsMenuComponent from "./header/notifications-menu-component";
 
 const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
       </div>
 
       {/* Dropdown Menus */}
-      <NotificationsMenu showNotifications={showNotifications} />
+      <NotificationsMenuComponent showNotifications={showNotifications} />
       <ProfileMenu
         showProfileMenu={showProfileMenu}
         handleLogout={handleLogout}
