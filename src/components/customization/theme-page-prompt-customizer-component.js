@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PageSelector from "./ai-customization/PageSelector";
+import PageSelectorComponent from "./ai-customization/page-selector-component";
 import PromptForm from "./ai-customization/PromptForm";
 import GeneratedCodePreviewComponent from "./ai-customization/generated-code-preview-component";
 
@@ -35,7 +35,7 @@ const ThemePagePromptCustomizerComponent = () => {
 
   return (
     <div className="flex flex-col h-full space-y-6">
-      <PageSelector
+      <PageSelectorComponent
         selectedPage={selectedPage}
         onPageSelect={setSelectedPage}
       />

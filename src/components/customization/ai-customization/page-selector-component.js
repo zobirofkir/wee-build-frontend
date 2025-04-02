@@ -1,7 +1,7 @@
 import React from "react";
 import { pages } from "./constants";
 
-const PageSelector = ({ selectedPage, onPageSelect }) => {
+const PageSelectorComponent = ({ selectedPage, onPageSelect }) => {
   return (
     <div className="flex space-x-2 overflow-x-auto pb-2">
       {pages.map((page) => (
@@ -21,4 +21,4 @@ const PageSelector = ({ selectedPage, onPageSelect }) => {
   );
 };
 
-export default PageSelector;
+export default PageSelectorComponent;
