@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
-import { useProfile } from "../../hooks/use-profile-hook";
+import { useProfileHook } from "../../hooks/use-profile-hook";
 import { useDropdown } from "../../hooks/use-dropdown-hook";
 import HeaderActions from "./header/header-action-component";
 import ProfileMenu from "./header/profile-menu-component";
@@ -14,7 +14,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
   const { currentUser } = useSelector(
     (state) => state.getCurrentAuthenticatedUser || {}
   );
-  const { avatarPreview } = useProfile();
+  const { avatarPreview } = useProfileHook();
   const {
     showProfileMenu,
     setShowProfileMenu,

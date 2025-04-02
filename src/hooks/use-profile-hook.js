@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export const useProfile = () => {
+export const useProfileHook = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
