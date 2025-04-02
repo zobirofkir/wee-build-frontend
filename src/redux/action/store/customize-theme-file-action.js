@@ -9,7 +9,6 @@ export const UPDATE_THEME_FILE_REQUEST = "UPDATE_THEME_FILE_REQUEST";
 export const UPDATE_THEME_FILE_SUCCESS = "UPDATE_THEME_FILE_SUCCESS";
 export const UPDATE_THEME_FILE_FAILURE = "UPDATE_THEME_FILE_FAILURE";
 
-// Get Theme File Actions
 export const getThemeFileRequest = () => ({
   type: GET_THEME_FILE_REQUEST,
 });
@@ -24,7 +23,6 @@ export const getThemeFileFailure = (error) => ({
   payload: error,
 });
 
-// Update Theme File Actions
 export const updateThemeFileRequest = () => ({
   type: UPDATE_THEME_FILE_REQUEST,
 });
@@ -39,7 +37,11 @@ export const updateThemeFileFailure = (error) => ({
   payload: error,
 });
 
-// Action Creators
+/**
+ * Action Creators
+ * @param {*} filePath 
+ * @returns 
+ */
 export const getThemeFile = (filePath) => {
   return async (dispatch) => {
     dispatch(getThemeFileRequest());

@@ -47,39 +47,42 @@ export const listThemeFiles = () => {
       console.log("Full API Response:", response);
       console.log("Response data:", response.data);
 
-      // Handle different possible response structures
+      /**
+       * Handle different possible response structures
+       */
       let files = [];
       let total = 0;
 
       if (response.data) {
-        // Case 1: response.data is an array
+        /**
+         * Case 1: response.data is an array
+         */
         if (Array.isArray(response.data)) {
           files = response.data.filter((file) => {
-            // Get file extension from path
             const extension = file.path.split(".").pop().toLowerCase();
-            // Only include CSS, JS, and HTML files
             const allowedTypes = ["css", "js", "html"];
             return allowedTypes.includes(extension);
           });
           total = files.length;
         }
-        // Case 2: response.data has a data property that's an array
+
+        /**
+         * Case 2: response.data has a data property that's an array
+         */
         else if (response.data.data && Array.isArray(response.data.data)) {
           files = response.data.data.filter((file) => {
-            // Get file extension from path
             const extension = file.path.split(".").pop().toLowerCase();
-            // Only include CSS, JS, and HTML files
             const allowedTypes = ["css", "js", "html"];
             return allowedTypes.includes(extension);
           });
           total = files.length;
         }
-        // Case 3: response.data has a files property that's an array
+        /**
+         * Case 3: response.data has a files property that's an array
+         */
         else if (response.data.files && Array.isArray(response.data.files)) {
           files = response.data.files.filter((file) => {
-            // Get file extension from path
             const extension = file.path.split(".").pop().toLowerCase();
-            // Only include CSS, JS, and HTML files
             const allowedTypes = ["css", "js", "html"];
             return allowedTypes.includes(extension);
           });
