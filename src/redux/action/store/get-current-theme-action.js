@@ -26,7 +26,8 @@ export const fetchCurrentTheme = () => {
     try {
       const token = getAuthToken();
       if (!token) {
-        throw new Error("No access token found");
+        dispatch(getCurrentThemeFailure("No access token found"));
+        return null;
       }
 
       const response = await axios.get(
