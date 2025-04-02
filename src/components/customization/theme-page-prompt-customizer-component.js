@@ -3,7 +3,7 @@ import PageSelector from "./ai-customization/PageSelector";
 import PromptForm from "./ai-customization/PromptForm";
 import GeneratedCodePreview from "./ai-customization/GeneratedCodePreview";
 
-const ThemePagePromptCustomizer = () => {
+const ThemePagePromptCustomizerComponent = () => {
   const [selectedPage, setSelectedPage] = useState("home");
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -17,8 +17,6 @@ const ThemePagePromptCustomizer = () => {
     setGeneratedCode("");
 
     try {
-      // Here you would integrate with your AI service
-      // For now, we'll simulate a response
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setGeneratedCode(
         `// Generated code for ${selectedPage} page based on prompt: ${prompt}`
@@ -61,4 +59,4 @@ const ThemePagePromptCustomizer = () => {
   );
 };
 
-export default ThemePagePromptCustomizer;
+export default ThemePagePromptCustomizerComponent;

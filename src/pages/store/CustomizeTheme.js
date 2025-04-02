@@ -8,7 +8,7 @@ import PreviewSectionLeftSideComponent from "../../components/customization/prev
 import EditorRightSideComponent from "../../components/customization/editor-right-side-component";
 import ThemeFileEditorComponent from "../../components/customization/theme-file-editor-component";
 import FileListSidebar from "../../components/customization/file-list-sidebare-component";
-import ThemePagePromptCustomizer from "../../components/customization/theme-page-prompt-customizer";
+import ThemePagePromptCustomizerComponent from "../../components/customization/theme-page-prompt-customizer-component";
 import { presetSchemes } from "../../config/theme-config";
 import { useThemeManagementHook } from "../../hooks/use-theme-management-hook";
 
@@ -275,7 +275,7 @@ const CustomizeTheme = () => {
                       />
                     ) : activeTab === "ai" ? (
                       <div className="p-4">
-                        <ThemePagePromptCustomizer />
+                        <ThemePagePromptCustomizerComponent />
                       </div>
                     ) : (
                       <div className="flex flex-col lg:flex-row h-full">
