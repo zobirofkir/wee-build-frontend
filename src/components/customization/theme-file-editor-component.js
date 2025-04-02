@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Editor from "@monaco-editor/react";
 import {
@@ -16,6 +16,9 @@ const ThemeFileEditorComponent = ({
 }) => {
   const [content, setContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const editorRef = useRef(null);
+  const containerRef = useRef(null);
   const dispatch = useDispatch();
 
   const { loading, error, currentFile, updating, updateError } = useSelector(
@@ -24,6 +27,26 @@ const ThemeFileEditorComponent = ({
 
   // Get the current theme from the system
   const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  // Handle window resize with debounce
+  useEffect(() => {
+    let timeoutId;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobile(window.innerWidth < 768);
+        if (editorRef.current) {
+          editorRef.current.layout();
+        }
+      }, 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     if (filePath) {
@@ -43,6 +66,29 @@ const ThemeFileEditorComponent = ({
       setSelectedFile(currentFile);
     }
   }, [files, filePath]);
+
+  // Handle editor mount
+  const handleEditorDidMount = (editor) => {
+    editorRef.current = editor;
+    // Initial layout
+    setTimeout(() => {
+      editor.layout();
+    }, 0);
+  };
+
+  // Handle container resize
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (editorRef.current) {
+        editorRef.current.layout();
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const handleSave = async () => {
     try {
@@ -153,49 +199,9 @@ const ThemeFileEditorComponent = ({
   }
 
   return (
-    <div className="flex flex-col h-screen sm:h-full">
-      {/* Editor Content */}
-      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div className="flex h-full">
-          {/* Editor Area */}
-          <div className="flex-1">
-            <Editor
-              height="100%"
-              defaultLanguage="javascript"
-              theme={isDarkMode ? "vs-dark" : "light"}
-              value={content}
-              onChange={setContent}
-              options={{
-                minimap: { enabled: true },
-                fontSize: 14,
-                lineNumbers: "on",
-                roundedSelection: false,
-                scrollBeyondLastLine: false,
-                readOnly: false,
-                automaticLayout: true,
-                wordWrap: "on",
-                scrollbar: {
-                  vertical: "visible",
-                  horizontal: "visible",
-                },
-                padding: { top: 10 },
-                renderWhitespace: "selection",
-                tabSize: 2,
-                insertSpaces: true,
-                bracketPairColorization: {
-                  enabled: true,
-                },
-                guides: {
-                  indentation: true,
-                },
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Editor Footer */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
+    <div className="flex flex-col h-screen sm:h-full relative">
+      {/* Editor Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center space-x-2 sm:space-x-4">
           <button
             onClick={onToggleFileList}
@@ -221,7 +227,9 @@ const ThemeFileEditorComponent = ({
           <div>
             <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white flex items-center">
               {getFileIcon(fileName)}
-              <span className="ml-2 truncate">{fileName}</span>
+              <span className="ml-2 truncate max-w-[200px] sm:max-w-[300px]">
+                {fileName}
+              </span>
             </h3>
             <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 break-all">
               {filePath}
@@ -250,7 +258,7 @@ const ThemeFileEditorComponent = ({
           <button
             onClick={handleSave}
             disabled={updating}
-            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 md:flex hidden bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm shadow-sm"
           >
             {updating ? (
               <>
@@ -278,6 +286,93 @@ const ThemeFileEditorComponent = ({
           </button>
         </div>
       </div>
+
+      {/* Editor Content */}
+      <div
+        ref={containerRef}
+        className="flex-1 bg-white dark:bg-gray-800 overflow-hidden relative"
+      >
+        <div className="flex h-full">
+          {/* Editor Area */}
+          <div className="flex-1">
+            <Editor
+              height="100%"
+              defaultLanguage="javascript"
+              theme={isDarkMode ? "vs-dark" : "light"}
+              value={content}
+              onChange={setContent}
+              onMount={handleEditorDidMount}
+              options={{
+                minimap: { enabled: !isMobile },
+                fontSize: isMobile ? 12 : 14,
+                lineNumbers: "on",
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                automaticLayout: true,
+                wordWrap: isMobile ? "on" : "off",
+                padding: { top: 10, bottom: isMobile ? 80 : 60 },
+                renderWhitespace: "selection",
+                tabSize: 2,
+                insertSpaces: true,
+                bracketPairColorization: {
+                  enabled: true,
+                },
+                guides: {
+                  indentation: true,
+                },
+                folding: true,
+                lineDecorationsWidth: 0,
+                lineNumbersMinChars: 3,
+                renderLineHighlight: "all",
+                scrollbar: {
+                  vertical: "visible",
+                  horizontal: "visible",
+                  useShadows: false,
+                  verticalScrollbarSize: 10,
+                  horizontalScrollbarSize: 10,
+                  arrowSize: 30,
+                },
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Fixed Save Button at Bottom for Mobile */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex justify-end shadow-lg">
+          <button
+            onClick={handleSave}
+            disabled={updating}
+            className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm shadow-md w-full justify-center"
+          >
+            {updating ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                Saving...
+              </>
+            ) : (
+              <>
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                  />
+                </svg>
+                Save Changes
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
