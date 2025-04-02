@@ -10,8 +10,10 @@ import FilterThemeComponent from "../../components/themes/filter-theme-component
 import ThemeListComponent from "../../components/themes/theme-list-component";
 import ApplyThemeButtonComponent from "../../components/themes/apply-theme-button-component";
 import EmptyThemeComponent from "../../components/themes/empty-theme-component";
+
 const Theme = () => {
   const dispatch = useDispatch();
+  
   const { themes, currentTheme, loading, error } = useSelector(
     (state) => state.githubThemes
   );

@@ -11,8 +11,11 @@ import MobileSidebareComponent from "../../components/auth/mobile-sidebare-compo
 import HeaderComponent from "../../components/auth/header-component";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { useDispatch } from "react-redux";
+import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
 
 const AuthAppLayout = ({ children }) => {
+  const dispatch = useDispatch();
+
   const [darkMode, setDarkMode] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
@@ -62,7 +65,13 @@ const AuthAppLayout = ({ children }) => {
     },
   ];
 
-  const dispatch = useDispatch();
+    /**
+     * Get Current Authenticated User
+    */
+    useEffect(() => {
+      dispatch(getCurrentAuthenticatedUser());
+    }, [dispatch]);
+  
 
   const logout = () => {
     dispatch(LogoutAction());
