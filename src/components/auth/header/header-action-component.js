@@ -75,11 +75,13 @@ const HeaderActionsComponent = ({
           className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
         >
           {avatarPreview ? (
-            <img
-              src={avatarPreview}
-              alt="Avatar"
-              className="h-8 w-8 rounded-full"
-            />
+            <Link to="/auth/profile">
+              <img
+                src={avatarPreview}
+                alt="Avatar"
+                className="h-8 w-8 rounded-full"
+              />
+            </Link>
           ) : (
             <FiUser className="h-5 w-5 text-gray-600 dark:text-gray-300" />
           )}
