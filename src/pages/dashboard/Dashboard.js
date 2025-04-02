@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AuthAppLayout from "../../layouts/auth/auth-app-layout";
-import { getCurrentAuthenticatedUser } from "../../redux/action/auth/get-current-authenticated-user-action";
 import {
   FiBarChart2,
   FiUsers,
   FiShoppingBag,
 } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DashboardHeaderComponent from "../../components/dashboard/dashboard-header-component";
 import DashboardStatsComponent from "../../components/dashboard/dashboard-stats-component";
 import ChatDashboardComponent from "../../components/dashboard/chat-dashboard-component";
@@ -16,17 +15,6 @@ import QuickActionComponent from "../../components/dashboard/quick-action-compon
 import HelpActionComponent from "../../components/dashboard/help-action-component";
 
 const Dashboard = () => {
-  /**
-   * Dispatch
-   */
-  const dispatch = useDispatch();
-
-  /**
-   * Get Current Authenticated User
-   */
-  useEffect(() => {
-    dispatch(getCurrentAuthenticatedUser());
-  }, [dispatch]);
 
   /**
    * Current User
