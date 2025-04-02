@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 
-const ProfileMenu = ({ showProfileMenu, handleLogout, avatarPreview }) => {
+const ProfileMenuComponent = ({ showProfileMenu, handleLogout, avatarPreview }) => {
   if (!showProfileMenu) return null;
 
   return (
@@ -32,4 +32,4 @@ const ProfileMenu = ({ showProfileMenu, handleLogout, avatarPreview }) => {
   );
 };
 
-export default ProfileMenu;
+export default ProfileMenuComponent;

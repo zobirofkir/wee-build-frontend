@@ -6,7 +6,7 @@ import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { useProfileHook } from "../../hooks/use-profile-hook";
 import { useDropdownHook } from "../../hooks/use-dropdown-hook";
 import HeaderActionsComponent from "./header/header-action-component";
-import ProfileMenu from "./header/profile-menu-component";
+import ProfileMenuComponent from "./header/profile-menu-component";
 import NotificationsMenuComponent from "./header/notifications-menu-component";
 
 const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
@@ -66,7 +66,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
 
       {/* Dropdown Menus */}
       <NotificationsMenuComponent showNotifications={showNotifications} />
-      <ProfileMenu
+      <ProfileMenuComponent
         showProfileMenu={showProfileMenu}
         handleLogout={handleLogout}
         avatarPreview={avatarPreview}
