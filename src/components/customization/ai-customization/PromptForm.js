@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { pages } from "./constants";
 
 const PromptForm = ({
@@ -9,7 +9,27 @@ const PromptForm = ({
   error,
   onSubmit,
 }) => {
+  const textareaRef = useRef(null);
   const selectedPageName = pages.find((p) => p.id === selectedPage)?.name;
+
+  useEffect(() => {
+    if (!textareaRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      // Prevent ResizeObserver loop by debouncing the resize events
+      window.requestAnimationFrame(() => {
+        if (!Array.isArray(entries) || !entries.length) {
+          return;
+        }
+      });
+    });
+
+    resizeObserver.observe(textareaRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
@@ -26,12 +46,14 @@ const PromptForm = ({
             Describe your desired changes
           </label>
           <textarea
+            ref={textareaRef}
             id="prompt"
             rows={4}
             value={prompt}
             onChange={(e) => onPromptChange(e.target.value)}
             placeholder="Example: Add a hero section with a full-width image and centered text overlay. Include a call-to-action button."
-            className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+            className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white resize-none"
+            style={{ minHeight: "100px", maxHeight: "300px" }}
           />
         </div>
 
