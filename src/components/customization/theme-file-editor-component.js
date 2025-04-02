@@ -15,7 +15,7 @@ const ThemeFileEditorComponent = ({
   onToggleFileList,
 }) => {
   const [content, setContent] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [setSelectedFile] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const editorRef = useRef(null);
   const containerRef = useRef(null);
@@ -25,10 +25,14 @@ const ThemeFileEditorComponent = ({
     (state) => state.customizeThemeFile
   );
 
-  // Get the current theme from the system
+  /**
+   * Get the current theme from the system
+   */
   const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-  // Handle window resize with debounce
+  /**
+   * Handle window resize with debounce
+   */
   useEffect(() => {
     let timeoutId;
     const handleResize = () => {
@@ -65,7 +69,7 @@ const ThemeFileEditorComponent = ({
       const currentFile = files.find((f) => f.path === filePath);
       setSelectedFile(currentFile);
     }
-  }, [files, filePath]);
+  }, [files, filePath, setSelectedFile]);
 
   // Handle editor mount
   const handleEditorDidMount = (editor) => {
@@ -96,11 +100,6 @@ const ThemeFileEditorComponent = ({
     } catch (error) {
       console.error("Failed to save file:", error);
     }
-  };
-
-  const handleFileClick = (file) => {
-    setSelectedFile(file);
-    onFileSelect(file);
   };
 
   const getFileIcon = (fileName) => {
