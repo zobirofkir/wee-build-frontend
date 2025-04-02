@@ -93,7 +93,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
               <FiMenu className="h-6 w-6 text-gray-600 dark:text-gray-300" />
             </button>
             <Link to="/auth/dashboard" className="flex items-center">
-              <h1 className="text-xl font-bold text-purple-800 dark:text-purple-400">
+              <h1 className="text-xl font-bold text-purple-800 dark:text-purple-400 md:hidden block">
                 AI Store
               </h1>
             </Link>
