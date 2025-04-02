@@ -15,7 +15,7 @@ const ThemeFileEditorComponent = ({
   onToggleFileList,
 }) => {
   const [content, setContent] = useState("");
-  const [setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const editorRef = useRef(null);
   const containerRef = useRef(null);
