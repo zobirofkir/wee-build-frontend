@@ -101,7 +101,7 @@ export const listThemeFiles = () => {
         error.message ||
         "Failed to fetch theme files";
       dispatch(listThemeFilesFailure(errorMessage));
-      throw error;
+      return null;
     }
   };
 };

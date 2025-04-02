@@ -48,7 +48,7 @@ export const fetchGithubThemes = () => {
       const errorMessage =
         error.response?.data?.message || "Failed to fetch themes";
       dispatch(getGithubThemesFailure(errorMessage));
-      throw error;
+      return null;
     }
   };
 };

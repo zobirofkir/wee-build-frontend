@@ -66,7 +66,7 @@ export const getThemeFile = (filePath) => {
       const errorMessage =
         error.response?.data?.message || "Failed to get theme file";
       dispatch(getThemeFileFailure(errorMessage));
-      throw error;
+      return null;
     }
   };
 };
@@ -100,7 +100,7 @@ export const updateThemeFile = (filePath, content) => {
       const errorMessage =
         error.response?.data?.message || "Failed to update theme file";
       dispatch(updateThemeFileFailure(errorMessage));
-      throw error;
+      return null;
     }
   };
 };

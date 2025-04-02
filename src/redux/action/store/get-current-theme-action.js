@@ -45,7 +45,7 @@ export const fetchCurrentTheme = () => {
       const errorMessage =
         error.response?.data?.message || "Failed to fetch current theme";
       dispatch(getCurrentThemeFailure(errorMessage));
-      throw error;
+      return null;
     }
   };
 };

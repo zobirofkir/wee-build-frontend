@@ -47,7 +47,7 @@ export const updateTheme = (themeOptions) => {
       const errorMessage =
         error.response?.data?.message || "Failed to update theme";
       dispatch(updateThemeFailure(errorMessage));
-      throw error;
+      return null;
     }
   };
 };
