@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   FiSun,
   FiMoon,
-  FiMessageSquare,
   FiUser,
   FiEdit2,
   FiMenu,
@@ -17,7 +16,7 @@ import { LogoutAction } from "../../redux/action/auth/logout-action";
 const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [formData, setFormData] = useState({
+  const [setFormData] = useState({
     name: "",
     email: "",
     phone: "",
@@ -51,7 +50,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
         setAvatarPreview(null);
       }
     }
-  }, [currentUser]);
+  }, [currentUser, setFormData]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
