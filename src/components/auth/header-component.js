@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useProfileHook } from "../../hooks/use-profile-hook";
 import { useDropdownHook } from "../../hooks/use-dropdown-hook";
