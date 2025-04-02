@@ -150,7 +150,22 @@ const ThemeFileEditorComponent = ({
 
   return (
     <div className="flex flex-col h-full">
-      {/* Editor Header */}
+      {/* Editor Content */}
+      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div className="flex h-full">
+          {/* Editor Area */}
+          <div className="flex-1">
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-full h-full p-3 sm:p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none"
+              spellCheck="false"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Editor */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
         <div className="flex items-center space-x-2 sm:space-x-4">
           <button
@@ -232,21 +247,6 @@ const ThemeFileEditorComponent = ({
               </>
             )}
           </button>
-        </div>
-      </div>
-
-      {/* Editor Content */}
-      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div className="flex h-full">
-          {/* Editor Area */}
-          <div className="flex-1">
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full h-full p-3 sm:p-4 font-mono text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 resize-none focus:outline-none"
-              spellCheck="false"
-            />
-          </div>
         </div>
       </div>
     </div>
