@@ -1,7 +1,7 @@
 import React from "react";
 import { getFileIcon } from "../../../utils/get-file-icon";
 
-const EditorHeader = ({
+const EditorHeaderComponent = ({
   fileName,
   filePath,
   isFileListVisible,
@@ -99,4 +99,4 @@ const EditorHeader = ({
   );
 };
 
-export default EditorHeader;
+export default EditorHeaderComponent;

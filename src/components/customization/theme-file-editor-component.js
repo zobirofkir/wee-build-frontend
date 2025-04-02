@@ -4,9 +4,9 @@ import {
   getThemeFile,
   updateThemeFile,
 } from "../../redux/action/store/customize-theme-file-action";
-import EditorHeader from "./editor/EditorHeader";
-import EditorContent from "./editor/EditorContent";
-import MobileSaveButton from "./editor/MobileSaveButton";
+import EditorHeaderComponent from "./editor/editor-header-component";
+import EditorContentComponent from "./editor/editor-content-component";
+import MobileSaveButtonComponent from "./editor/mobile-save-button-component";
 
 const ThemeFileEditorComponent = ({
   filePath,
@@ -178,7 +178,7 @@ const ThemeFileEditorComponent = ({
 
   return (
     <div className="flex flex-col h-screen sm:h-full relative">
-      <EditorHeader
+      <EditorHeaderComponent
         fileName={fileName}
         filePath={filePath}
         isFileListVisible={isFileListVisible}
@@ -188,7 +188,7 @@ const ThemeFileEditorComponent = ({
         onSave={handleSave}
       />
 
-      <EditorContent
+      <EditorContentComponent
         content={content}
         onContentChange={setContent}
         isDarkMode={isDarkMode}
@@ -197,7 +197,7 @@ const ThemeFileEditorComponent = ({
         onEditorMount={(editor) => (editorRef.current = editor)}
       />
 
-      {isMobile && <MobileSaveButton updating={updating} onSave={handleSave} />}
+      {isMobile && <MobileSaveButtonComponent updating={updating} onSave={handleSave} />}
     </div>
   );
 };

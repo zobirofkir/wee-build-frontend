@@ -1,6 +1,6 @@
 import React from "react";
 
-const MobileSaveButton = ({ updating, onSave }) => {
+const MobileSaveButtonComponent = ({ updating, onSave }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex justify-end shadow-lg">
       <button
@@ -36,4 +36,4 @@ const MobileSaveButton = ({ updating, onSave }) => {
   );
 };
 
-export default MobileSaveButton;
+export default MobileSaveButtonComponent;

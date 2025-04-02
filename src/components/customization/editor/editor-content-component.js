@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 
-const EditorContent = ({
+const EditorContentComponent = ({
   content,
   onContentChange,
   isDarkMode,
@@ -88,4 +88,4 @@ const EditorContent = ({
   );
 };
 
-export default EditorContent;
+export default EditorContentComponent;
