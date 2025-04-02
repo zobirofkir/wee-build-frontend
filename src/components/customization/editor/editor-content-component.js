@@ -11,7 +11,9 @@ const EditorContentComponent = ({
 }) => {
   const editorRef = useRef(null);
 
-  // Handle container resize
+  /**
+   * Handle container resize
+   */
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -27,11 +29,13 @@ const EditorContentComponent = ({
     return () => resizeObserver.disconnect();
   }, [containerRef]);
 
-  // Handle editor mount
+  /**
+   * Handle editor mount
+   * @param {*} editor 
+   */
   const handleEditorDidMount = (editor) => {
     editorRef.current = editor;
     onEditorMount(editor);
-    // Initial layout
     setTimeout(() => {
       editor.layout();
     }, 0);
