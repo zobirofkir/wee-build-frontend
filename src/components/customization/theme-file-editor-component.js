@@ -149,7 +149,7 @@ const ThemeFileEditorComponent = ({
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen sm:h-full">
       {/* Editor Content */}
       <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div className="flex h-full">
