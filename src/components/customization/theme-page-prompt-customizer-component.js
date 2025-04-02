@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageSelectorComponent from "./ai-customization/page-selector-component";
-import PromptForm from "./ai-customization/PromptForm";
+import PromptFormComponent from "./ai-customization/prompt-form-component";
 import GeneratedCodePreviewComponent from "./ai-customization/generated-code-preview-component";
 
 const ThemePagePromptCustomizerComponent = () => {
@@ -40,7 +40,7 @@ const ThemePagePromptCustomizerComponent = () => {
         onPageSelect={setSelectedPage}
       />
 
-      <PromptForm
+      <PromptFormComponent
         selectedPage={selectedPage}
         prompt={prompt}
         onPromptChange={setPrompt}

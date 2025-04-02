@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { pages } from "./constants";
 
-const PromptForm = ({
+const PromptFormComponent = ({
   selectedPage,
   prompt,
   onPromptChange,
@@ -107,4 +107,4 @@ const PromptForm = ({
   );
 };
 
-export default PromptForm;
+export default PromptFormComponent;
