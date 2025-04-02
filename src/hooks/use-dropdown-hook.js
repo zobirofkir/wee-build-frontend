@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const useDropdown = () => {
+export const useDropdownHook = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 

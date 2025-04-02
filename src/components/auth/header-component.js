@@ -4,7 +4,7 @@ import { FiMenu } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
 import { useProfileHook } from "../../hooks/use-profile-hook";
-import { useDropdown } from "../../hooks/use-dropdown-hook";
+import { useDropdownHook } from "../../hooks/use-dropdown-hook";
 import HeaderActions from "./header/header-action-component";
 import ProfileMenu from "./header/profile-menu-component";
 import NotificationsMenu from "./header/notifications-menu-component";
@@ -20,7 +20,7 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
     setShowProfileMenu,
     showNotifications,
     setShowNotifications,
-  } = useDropdown();
+  } = useDropdownHook();
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
