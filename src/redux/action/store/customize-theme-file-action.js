@@ -46,7 +46,11 @@ export const getThemeFile = (filePath) => {
   return async (dispatch) => {
     dispatch(getThemeFileRequest());
 
+    try {
       const token = getAuthToken();
+      if (!token) {
+        throw new Error("No access token found");
+      }
 
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/file`,
@@ -60,6 +64,12 @@ export const getThemeFile = (filePath) => {
 
       dispatch(getThemeFileSuccess(response.data));
       return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to get theme file";
+      dispatch(getThemeFileFailure(errorMessage));
+      return null;
+    }
   };
 };
 
@@ -67,7 +77,16 @@ export const updateThemeFile = (filePath, content) => {
   return async (dispatch) => {
     dispatch(updateThemeFileRequest());
 
+    try {
       const token = getAuthToken();
+
+      if (!content || content.trim() === "") {
+        throw new Error("Content cannot be empty");
+      }
+
+      if (!token) {
+        throw new Error("No access token found");
+      }
 
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_APP_URL}/auth/themes/customization/file`,
@@ -84,5 +103,11 @@ export const updateThemeFile = (filePath, content) => {
 
       dispatch(updateThemeFileSuccess(response.data));
       return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to update theme file";
+      dispatch(updateThemeFileFailure(errorMessage));
+      return null;
+    }
   };
 };
