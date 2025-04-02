@@ -187,9 +187,6 @@ const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
                 ) : (
                   <FiUser className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                 )}
-                <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {currentUser?.name || "User"}
-                </span>
               </button>
               {showProfileMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50 border dark:border-gray-700">
