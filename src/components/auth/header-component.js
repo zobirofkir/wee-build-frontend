@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAction } from "../../redux/action/auth/logout-action";
-import { useProfile } from "../../hooks/useProfile";
-import { useDropdown } from "../../hooks/useDropdown";
-import HeaderActions from "./header/HeaderActions";
-import ProfileMenu from "./header/ProfileMenu";
-import NotificationsMenu from "./header/NotificationsMenu";
+import { useProfile } from "../../hooks/use-profile-hook";
+import { useDropdown } from "../../hooks/use-dropdown-hook";
+import HeaderActions from "./header/header-action-component";
+import ProfileMenu from "./header/profile-menu-component";
+import NotificationsMenu from "./header/notifications-menu-component";
 
 const HeaderComponent = ({ darkMode, setDarkMode, onMenuClick }) => {
   const dispatch = useDispatch();
