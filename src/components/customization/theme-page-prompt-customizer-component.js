@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PageSelector from "./ai-customization/PageSelector";
 import PromptForm from "./ai-customization/PromptForm";
-import GeneratedCodePreview from "./ai-customization/GeneratedCodePreview";
+import GeneratedCodePreviewComponent from "./ai-customization/generated-code-preview-component";
 
 const ThemePagePromptCustomizerComponent = () => {
   const [selectedPage, setSelectedPage] = useState("home");
@@ -50,7 +50,7 @@ const ThemePagePromptCustomizerComponent = () => {
       />
 
       {generatedCode && (
-        <GeneratedCodePreview
+        <GeneratedCodePreviewComponent
           generatedCode={generatedCode}
           onApplyCode={handleApplyCode}
         />

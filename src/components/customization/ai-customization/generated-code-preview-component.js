@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const GeneratedCodePreview = ({ generatedCode, onApplyCode }) => {
+const GeneratedCodePreviewComponent = ({ generatedCode, onApplyCode }) => {
   const codeContainerRef = useRef(null);
 
   useEffect(() => {
@@ -48,4 +48,4 @@ const GeneratedCodePreview = ({ generatedCode, onApplyCode }) => {
   );
 };
 
-export default GeneratedCodePreview;
+export default GeneratedCodePreviewComponent;
