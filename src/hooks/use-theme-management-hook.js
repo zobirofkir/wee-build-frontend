@@ -4,7 +4,7 @@ import { fetchCurrentTheme } from "../redux/action/store/get-current-theme-actio
 import { updateTheme } from "../redux/action/store/customize-current-theme-action";
 import { defaultThemeOptions } from "../config/theme-config";
 
-export const useThemeManagement = () => {
+export const useThemeManagementHook = () => {
   const dispatch = useDispatch();
   const { currentTheme, loading, error } = useSelector(
     (state) => state.currentTheme
